@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import Student from "./Student"
 import Admin from "./Admin"
-import Login from "./Login"
+import Login from "./Home"
 import About from "./About"
 import Contact from "./Contact"
 import NotFound from "./NotFound"
