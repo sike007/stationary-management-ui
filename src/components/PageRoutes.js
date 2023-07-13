@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import Student from "./Student"
-import Home from "./Home"
+import Admin from "./Admin"
+import Login from "./Login"
 import About from "./About"
 import Contact from "./Contact"
 import NotFound from "./NotFound"
@@ -8,10 +9,13 @@ import NotFound from "./NotFound"
 const PageRoutes = () => {
     return (
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Login />} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/student" element={<Student />} />
+          {/* protected routes */}
+          <Route exact path="/admin" element={<Admin />} />
+          {/* catch all */}
           <Route path='*' element={<NotFound />}/>
         </Routes>
     )
