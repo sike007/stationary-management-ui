@@ -4,5 +4,8 @@ class items{
     getAllItems(){
         return axios.get(url);
     }
+    deleteItem(pram){
+        return axios.delete(url+"/"+pram)
+    }
 }
 export default new items();

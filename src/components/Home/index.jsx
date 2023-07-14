@@ -26,7 +26,7 @@ const Home = () => {
                     <th> Item Id </th>
                     <th> Item Name </th>
                     <th> Item Quantity </th>
-                    <th> returnable tyoe </th>
+                    <th> returnable type </th>
                 </thead>
                 <tbody>
                     {

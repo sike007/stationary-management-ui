@@ -2,6 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, {useEffect, useState} from 'react'
 import adm from "../../server/adm";
+import { Alert } from 'bootstrap';
     
 
 
@@ -70,7 +71,6 @@ const AdminLogin = () => {
                                 <button onClick={(e)=>saveAndCheck(e)}>next</button>
                             </form>
                         </div>
-                        <h1>{results.message}</h1>
                     </div>
                 </div>
             </div>
