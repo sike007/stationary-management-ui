@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from 'react-router-dom';
 
-const SideNavigation = () => {
+const SideNavigation2 = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate()
   const open = Boolean(anchorEl);
@@ -14,12 +14,8 @@ const SideNavigation = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleAdmin = () => {
-    navigate('/admin')
-    handleClose()
-  }
-  const handleStudent = () => {
-    navigate('/student')
+  const handleHome = () => {
+    navigate('/')
     handleClose()
   }
   return (
@@ -31,7 +27,7 @@ const SideNavigation = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <>login</>
+        <>home</>
       </Button>
       <Menu
         id="basic-menu"
@@ -42,10 +38,9 @@ const SideNavigation = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleAdmin}>admin</MenuItem>
-        <MenuItem onClick={handleStudent}>Student</MenuItem>
+        <MenuItem onClick={handleHome}>Home</MenuItem>
       </Menu>
     </>
   );
 };
-export default SideNavigation;
+export default SideNavigation2;
