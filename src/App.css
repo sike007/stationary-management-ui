@@ -42,3 +42,46 @@
   margin-right: 20px;
   text-decoration: none !important;
 }
+.butt{
+  background-color: #476fbf;
+  border: none;
+  color: white;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block; 
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 8px;
+}
+.butt2{
+  background-color: #3c9e6b;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; 
+  margin: 4px 2px;
+  border-radius: 8px;
+}
+.butt3{
+  background-color: #b4521d;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; 
+  margin: 4px 2px;
+  border-radius: 8px;
+}
+.con{
+  width: 300px;  
+  height: 2000px;  
+  border: 5px solid rgb(154, 38, 38);  
+  display: grid;  
+
+}

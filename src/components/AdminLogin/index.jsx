@@ -68,7 +68,7 @@ const AdminLogin = () => {
                                     ></input>
                                 </div>
                                 
-                                <button onClick={(e)=>saveAndCheck(e)}>next</button>
+                                <button className='butt' onClick={(e)=>saveAndCheck(e)}>next</button>
                             </form>
                         </div>
                     </div>
