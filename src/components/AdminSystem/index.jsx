@@ -157,7 +157,7 @@ const AdminSystem = (pa) => {
         <div>
             <Dialog open={open2} onClose={handleCa}>
                 <DialogTitle>
-                    do you want to edit this item
+                    do you want to add item
                 </DialogTitle>
                 <DialogActions>
                 
