@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import * as React from 'react';  
-import { useLocation } from "react-router-dom"
 import items from "../../server/items";
 import { Card} from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import { Button , Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 
-const AdminSystem = (pa) => {
-    const location = useLocation();
+const AdminSystem = () => {
     const [item , setItem] = useState([])
     const [id,setId] = useState()
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [quant , setQuant] = useState(0)
-    const [ret,setRet] = useState(false)
+    const [ret,setRet] = useState()
+    const [i2,setI2] = useState()
+    const [i3, setI3] = React.useState(0);
+    const [i4, setI4] = React.useState();
+    const [results,setResults] = useState();
     useEffect(() => {
 
         getAll();
@@ -51,10 +53,6 @@ const AdminSystem = (pa) => {
     const handleC = () => {
         setOpen1(false);
     };
-    const handleCa1 = () => {
-        setOpen2(false);
-        window.location.reload();
-    }
     const handleCa = () => {
         setOpen2(false);
     };
@@ -69,26 +67,41 @@ const AdminSystem = (pa) => {
     const fun = () => {
         if(ret){setRet(false)}else{setRet(true)}
     }
+    const handleSubmit = (event) => {
+        console.log('handleSubmit ran');
+        event.preventDefault(); 
+    }
+    const saveAndCheck = (e) => {
+        e.preventDefault();
+        console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='true'})
+        items.saveItem({ "itemName":i2, "quantity":i3,"returnable":i4}).then((response)=>{ setResults(response.data)
+            console.log(response.data);}).catch(error => {
+            console.log(error)
+            alert("name shouldn't be empty or same")
+        })
+        setOpen2(false);
+        window.location.reload();
+    }
     return(
         <div>
             <div>
                 <button className="butt" onClick={handleClickOpen2}>add item</button>
-            </div>
-        <Card className="App-Card">
-            <table className="table table-bordered table-striped">
-                <thead>
-                    <th> Item Id </th>
-                    <th> Item Name </th>
-                    <th> Item Quantity </th>
-                    <th> returnable type </th>
-                    <th> actions</th>
-                </thead>
-                <tbody>
-                    {
+                </div>
+            <Card className="App-Card">
+                <table className="table table-bordered table-striped" >
+                    <thead>
+                        <th> No </th>
+                        <th> Item Name </th>
+                        <th> Item Quantity </th>
+                        <th> returnable type </th>
+                        <th> actions</th>
+                    </thead>
+                    <tbody>
+                        {
                         item.map(
                             itm =>
                             <tr key = {itm.itemId}> 
-                                <td> {itm.itemId} </td>
+                                <td> {itm.itemId}</td>
                                 <td> {itm.itemName} </td>
                                 <td> {itm.quantity} </td>
                                 {itm.returnable ? (
@@ -137,7 +150,7 @@ const AdminSystem = (pa) => {
                     do you want to add this item
                 </DialogTitle>
                 <DialogContent>
-                    <button className="butt3" onClick={()=>{setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
+                    <button className="butt3" onClick={()=>{if(quant!==0)setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
                     <button className="butt2" onClick={()=>{setQuant(quant+1)}}>+</button>
                 </DialogContent>
                 <DialogContent>
@@ -155,15 +168,66 @@ const AdminSystem = (pa) => {
             </Dialog>
         </div>
         <div>
-            <Dialog open={open2} onClose={handleCa}>
+            <Dialog open={open2} maxWidth="sm" onClose={handleCa}> 
                 <DialogTitle>
-                    do you want to add item
+                    <div>
+                    <div className="container">
+                <div className="row">
+                    <div >
+                        <div className="card-body">
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group-mb-2">
+                                    <label className="form-label">
+                                        name
+                                    </label>
+                                    <input
+                                        type = "text"
+                                        placeholder="enter name"
+                                        name = "i2"
+                                        value = {i2}
+                                        className="form-control"
+                                        onChange={(e)=>setI2(e.target.value)}
+                                    ></input>
+                                </div>
+                                <div className="form-group-mb-2">
+                                    <label className="form-label">
+                                        item count
+                                    </label>
+                                    <input
+                                        type = "number"
+                                        placeholder="enter count"
+                                        name = "i3"
+                                        value = {i3}
+                                        className="form-control"
+                                        onChange={(e)=>setI3(e.target.value)}
+                                    ></input>
+                                </div>
+                                <div className="form-group-mb-2">
+                                    <label className="form-label">
+                                        returnable
+                                    </label>
+                                    <input
+                                        type = "radio"
+                                        value = "true"
+                                        name = "ok"
+                                        onChange={(e)=>setI4(e.target.value)}
+                                    ></input>true
+                                    <input
+                                        type = "radio"
+                                        value = "false"
+                                        name = "ok"
+                                        onChange={(e)=>setI4(e.target.value)}
+                                    ></input>false
+                                </div>
+                                <button className='butt2' onClick={(e)=>saveAndCheck(e)}>save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    </div>
                 </DialogTitle>
                 <DialogActions>
-                
-                    <Button onClick={handleCa1} color="primary">
-                        Yes
-                    </Button>
                     <Button onClick={handleCa} color="primary" autoFocus>
                         No
                     </Button>
@@ -171,7 +235,6 @@ const AdminSystem = (pa) => {
             </Dialog>
         </div>
     </div>
-        
     )
 }
 export default AdminSystem

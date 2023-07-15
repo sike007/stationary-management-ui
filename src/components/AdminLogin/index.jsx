@@ -26,6 +26,9 @@ const AdminLogin = () => {
         adm.loginAdmin({ "adminEmail":name, "adminPassword":pass} ).then((response)=>{ setResults(response.data)
             console.log(response.data);}).catch(error => {
             console.log(error)
+            alert("invalid email or password")
+            setName("")
+            setPass("")
         })
     }
     useEffect(()=>{
