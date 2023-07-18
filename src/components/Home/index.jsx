@@ -4,6 +4,12 @@ import items from "../../server/items"
 
 
 const Home = () => {
+    useEffect(
+        () =>
+          {window.history.pushState(null, document.title, window.location.href);
+            window.addEventListener('popstate', function (event){
+                window.history.pushState(null, document.title,  window.location.href);
+            });})
     const [item , setItem] = useState([])
     useEffect(() => {
 

@@ -4,20 +4,23 @@ import items from "../../server/items";
 import { Card} from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Event } from "@mui/icons-material";
 
 
 const AdminSystem = () => {
+
     const [item , setItem] = useState([])
     const [id,setId] = useState()
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
+    const [open3, setOpen3] = React.useState(false);
     const [quant , setQuant] = useState(0)
     const [ret,setRet] = useState()
     const [i2,setI2] = useState()
     const [i3, setI3] = React.useState(0);
     const [i4, setI4] = React.useState();
-    const [results,setResults] = useState();
+    const [results,setResults] = useState(0);
     useEffect(() => {
 
         getAll();
@@ -36,11 +39,15 @@ const AdminSystem = () => {
     const handleClickOpen2 = () => {
         setOpen2(true);
     };
+    const handleClickOpen3 = () => {
+        setOpen3(true);
+    };
     const handleClose1 = () => {
         items.deleteItem(id).catch(error=>{console.log(error)});
         setOpen(false);
         window.location.reload();
     }
+    
     const handleClose = () => {
         setOpen(false);
     };
@@ -55,6 +62,9 @@ const AdminSystem = () => {
     };
     const handleCa = () => {
         setOpen2(false);
+    };
+    const handle2 = () => {
+        setOpen3(false);
     };
     const getAll = () => {
         items.getAllItems().then((response) => {
@@ -77,11 +87,17 @@ const AdminSystem = () => {
         items.saveItem({ "itemName":i2, "quantity":i3,"returnable":i4}).then((response)=>{ setResults(response.data)
             console.log(response.data);}).catch(error => {
             console.log(error)
-            alert("name shouldn't be empty or same")
+            handleClickOpen3();
         })
-        setOpen2(false);
-        window.location.reload();
     }
+    useEffect(()=>{
+        if(results !== 0){
+            setOpen2(false);
+            window.location.reload()}else{
+            setOpen2(false);
+            setResults(0);
+        }
+    },[results])
     return(
         <div>
             <div>
@@ -230,6 +246,18 @@ const AdminSystem = () => {
                 <DialogActions>
                     <Button onClick={handleCa} color="primary" autoFocus>
                         No
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+        <div>
+            <Dialog open={open3} onClose={handle2}>
+                <DialogTitle>
+                    name shouldn't be empty or same
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handle2} color="primary">
+                        Ok
                     </Button>
                 </DialogActions>
             </Dialog>

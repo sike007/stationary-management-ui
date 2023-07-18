@@ -2,13 +2,15 @@
 import { useNavigate } from 'react-router-dom';
 import React, {useEffect, useState} from 'react'
 import adm from "../../server/adm";
-import { Alert } from 'bootstrap';
+import { Navigation } from '@mui/icons-material';
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
     
 
 
 const AdminLogin = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate()
+    const [open, setOpen] = React.useState(false);
     const handleSystem = () => {
         navigate('/admin/system',{state:{who:results.admin.adminName}})
         handleClose()
@@ -16,7 +18,12 @@ const AdminLogin = () => {
     const handleClose = () => {
         setAnchorEl(null);
       };
-      
+      const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose1 = () => {
+        setOpen(false);
+    };
     const [name, setName] = useState("");
     const [pass, setPass] = useState("");
     const [results,setResults] = useState({});
@@ -26,9 +33,9 @@ const AdminLogin = () => {
         adm.loginAdmin({ "adminEmail":name, "adminPassword":pass} ).then((response)=>{ setResults(response.data)
             console.log(response.data);}).catch(error => {
             console.log(error)
-            alert("invalid email or password")
             setName("")
             setPass("")
+            handleClickOpen();
         })
     }
     useEffect(()=>{
@@ -36,6 +43,8 @@ const AdminLogin = () => {
             handleSystem()
         }
       },[results])
+      
+      
     return (
         <div>
             <div className="container">
@@ -62,7 +71,7 @@ const AdminLogin = () => {
                                         password
                                     </label>
                                     <input
-                                        type = "text"
+                                        type = "password"
                                         placeholder="enter password"
                                         name = "pass"
                                         value = {pass}
@@ -77,6 +86,18 @@ const AdminLogin = () => {
                     </div>
                 </div>
             </div>
+            <div>
+            <Dialog open={open} onClose={handleClose1}>
+                <DialogTitle>
+                    invalid email or password 
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose1} color="primary">
+                        Ok
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
         </div>
         
     )
