@@ -2,18 +2,28 @@
   height: 40vmin;
   pointer-events: none;
 }
+.App-logo1 {
+  height: 5vmin;
+  pointer-events: none;
+  padding-right: 20px;
+  padding-left: 40px;
+}
 
 .App-header {
-  background: #6c88c8;
+  background: #c11d1d;
   font-size: 16px;
   color: white;
   display: flex;
+}
+.header1{
+  background-color: white;
+  padding: 8px;
 }
 .App-header img {
   max-height: 70px;
 }
 .App-footer {
-  background-color: #6c88c8;
+  background-color: #c11d1d;
   font-size: 16px;
   bottom: 0;
   position: absolute;
@@ -43,38 +53,41 @@
   text-decoration: none !important;
 }
 .butt{
-  background-color: #476fbf;
+  background-color: white;
   border: none;
-  color: white;
+  color: black;
   padding: 8px;
+  padding-inline: 15px;
   text-align: center;
-  text-decoration: none;
-  display: inline-block; 
-  font-size: 16px;
+  text-decoration: none; 
+  font-size: 18px;
   margin: 4px 2px;
   border-radius: 8px;
+  font-weight: 700;
+}
+.butt:hover {
+  background-color: rgb(225, 225, 225);
+  color: black;
+  cursor: pointer;
 }
 .butt2{
-  background-color: #3c9e6b;
+  background-color: #c11d1d;
   border: none;
   color: white;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px; 
-  margin: 4px 2px;
   border-radius: 8px;
 }
-.butt3{
-  background-color: #b4521d;
-  border: none;
+.butt2:hover {
+  background-color: #e92626;
   color: white;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px; 
-  margin: 4px 2px;
-  border-radius: 8px;
+  cursor: pointer;
+}
+.dialog1{
+  color: red;
+  font-size: larger;
+  justify-content: end;
 }

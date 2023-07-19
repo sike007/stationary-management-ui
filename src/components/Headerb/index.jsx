@@ -1,15 +1,13 @@
 import Logo from "../Logo";
-import SideNavigation3 from "../SideNavigation3";
-import { useLocation } from "react-router-dom"
+import SideNavigation1 from "../SideNavigation1";
 
 const Headerb = () => {
-    const location = useLocation();
   return (
     <>
       <header className="App-header">
         <Logo />
         <h2>Stationary Management System</h2>
-        <SideNavigation3 />
+        <SideNavigation1 />
       </header>
     </>
   );

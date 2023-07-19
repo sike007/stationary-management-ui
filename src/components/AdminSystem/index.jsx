@@ -3,9 +3,8 @@ import * as React from 'react';
 import items from "../../server/items";
 import { Card} from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { Event } from "@mui/icons-material";
-
+import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import Timg from "../../images/targetLogo.png"
 
 const AdminSystem = () => {
 
@@ -100,8 +99,13 @@ const AdminSystem = () => {
     },[results])
     return(
         <div>
+            <header className="header1">
+            <img src={Timg} className="App-logo1"  />
+            <button className="butt" onClick={handleClickOpen2}>add item</button>
+            <button className="butt" >collectable items</button>
+            </header>
             <div>
-                <button className="butt" onClick={handleClickOpen2}>add item</button>
+                
                 </div>
             <Card className="App-Card">
                 <table className="table table-bordered table-striped" >
@@ -146,7 +150,8 @@ const AdminSystem = () => {
             
         </Card>
         <div>
-            <Dialog open={open} onClose={handleClose}>
+        
+            <Dialog open={open} onClose={handleClose} position={{ X: 0, Y: 140 }}>
                 <DialogTitle>
                     do you want to delete this item
                 </DialogTitle>
@@ -161,17 +166,17 @@ const AdminSystem = () => {
             </Dialog>
         </div>
         <div>
-            <Dialog open={open1} onClose={handleC}>
+            <Dialog className="dialog1" open={open1} onClose={handleC}>
                 <DialogTitle>
-                    do you want to add this item
+                    do you want to edit this item
                 </DialogTitle>
                 <DialogContent>
-                    <button className="butt3" onClick={()=>{if(quant!==0)setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
+                    <button className="butt2" onClick={()=>{if(quant!==0)setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
                     <button className="butt2" onClick={()=>{setQuant(quant+1)}}>+</button>
                 </DialogContent>
                 <DialogContent>
                     <test>return type:{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
-                    <button className="butt" onClick={fun}>change</button></DialogContent>
+                    <button className="butt2" onClick={fun}>change</button></DialogContent>
                 <DialogActions>
                 
                     <Button onClick={handleC1} color="primary">
@@ -183,8 +188,8 @@ const AdminSystem = () => {
                 </DialogActions>
             </Dialog>
         </div>
-        <div>
-            <Dialog open={open2} maxWidth="sm" onClose={handleCa}> 
+        <div >
+            <Dialog maxWidth="md" open={open2} onClose={handleCa} > 
                 <DialogTitle>
                     <div>
                     <div className="container">
