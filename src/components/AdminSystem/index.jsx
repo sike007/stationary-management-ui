@@ -3,7 +3,7 @@ import * as React from 'react';
 import items from "../../server/items";
 import { Card} from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import Timg from "../../images/targetLogo.png"
 
 const AdminSystem = () => {
