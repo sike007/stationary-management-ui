@@ -1,15 +1,15 @@
 import Logo from "../Logo";
-import SideNavigation from "../SideNavigation";
+import SideNavigation1 from "../SideNavigation1";
 
-const Header = () => {
+const Headerb = () => {
   return (
     <>
       <header className="App-header">
         <Logo />
         <h2>Stationary Management System</h2>
-        <SideNavigation />
+        <SideNavigation1 />
       </header>
     </>
   );
 };
-export default Header;
+export default Headerb;
