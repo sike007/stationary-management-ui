@@ -8,9 +8,30 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from "axios";
+import { styled } from '@mui/material/styles';
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080/api'
+});
+
+const CssTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: '#c11d1d',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#c11d1d',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: ' light grey',
+    },
+    '&:hover fieldset': {
+      borderColor: 'black',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#c11d1d',
+    },
+  },
 });
 
 const Login = ({ setToken }) => {
@@ -40,24 +61,26 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container component="main" maxWidth="xs" >
+      
       <Box
         sx={{
           marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+         
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: '#6c88c8' }}>
+        <Avatar sx={{ m: 1, bgcolor: '#c11d1d' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
+         
+          <CssTextField 
             margin="normal"
             required
             fullWidth
@@ -66,7 +89,7 @@ const Login = ({ setToken }) => {
             name="email"
             autoFocus
           />
-          <TextField
+          <CssTextField
             margin="normal"
             required
             fullWidth
@@ -79,7 +102,10 @@ const Login = ({ setToken }) => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2 , bgcolor: '#c11d1d', ':hover': {
+              bgcolor: '#c11d1d', // theme.palette.primary.main
+              color: 'white',
+            },}}
           >
             Sign In
           </Button>
