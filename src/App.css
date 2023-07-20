@@ -10,11 +10,12 @@
 }
 
 .App-header {
-  background: #c11d1d;
-  font-size: 16px;
+  background: #a31c1c;
+  font-size: 20px;
   color: white;
   display: flex;
 }
+
 .header1{
   background-color: white;
   padding: 8px;
@@ -23,9 +24,10 @@
   max-height: 70px;
 }
 .App-footer {
-  background-color: #c11d1d;
+  background-color: #a31c1c;
   font-size: 16px;
   bottom: 0;
+  position: absolute;
   width: 100%;
   text-align: center;
   padding: 25px;
