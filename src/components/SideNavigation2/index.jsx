@@ -27,7 +27,7 @@ const SideNavigation2 = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <>home</>
+        <>Menu</>
       </Button>
       <Menu
         id="basic-menu"

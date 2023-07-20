@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 import * as React from 'react';  
 import items from "../../server/items";
-import { Card} from "@mui/material";
+import { Card, FormControlLabel} from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
-import Timg from "../../images/targetLogo.png"
-
+import Timg from "../../images/targetLogo.png";
+import Checkbox from "@mui/material/Checkbox";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    Box,
+    IconButton,
+    Typography,
+  } from '@material-ui/core';
+  import InputLabel from '@mui/material/InputLabel';
+  import MenuItem from '@mui/material/MenuItem';
+  import FormControl from '@mui/material/FormControl';
+  import Select from '@mui/material/Select';  import TextField from '@mui/material/TextField';
 const AdminSystem = () => {
 
     const [item , setItem] = useState([])
@@ -15,11 +29,12 @@ const AdminSystem = () => {
     const [open2, setOpen2] = React.useState(false);
     const [open3, setOpen3] = React.useState(false);
     const [quant , setQuant] = useState(0)
-    const [ret,setRet] = useState()
+    const [ret,setRet] = React.useState()
     const [i2,setI2] = useState()
     const [i3, setI3] = React.useState(0);
-    const [i4, setI4] = React.useState();
+    const [i4, setI4] = React.useState(true);
     const [results,setResults] = useState(0);
+    
     useEffect(() => {
 
         getAll();
@@ -50,12 +65,13 @@ const AdminSystem = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleC1 = () => {
+    const handleC1 = (open1) => {
         console.log({"quantity":quant})
         items.updateItem(id,{"quantity":quant,"returnable":ret}).catch(error=>{console.log(error)});
         setOpen1(false);
         window.location.reload();
     }
+    const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
         setOpen1(false);
     };
@@ -89,6 +105,8 @@ const AdminSystem = () => {
             handleClickOpen3();
         })
     }
+
+
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
@@ -97,6 +115,7 @@ const AdminSystem = () => {
             setResults(0);
         }
     },[results])
+
     return(
         <div>
             <header className="header1">
@@ -151,55 +170,85 @@ const AdminSystem = () => {
         </Card>
         <div>
         
-            <Dialog open={open} onClose={handleClose} position={{ X: 0, Y: 140 }}>
+            <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
                 <DialogTitle>
-                    do you want to delete this item
+                    Confirm the action
                 </DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleClose1} color="primary">
-                        Yes
-                    </Button>
-                    <Button onClick={handleClose} color="primary" autoFocus>
-                        No
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-        <div>
-            <Dialog className="dialog1" open={open1} onClose={handleC}>
-                <DialogTitle>
-                    do you want to edit this item
-                </DialogTitle>
+                {/* <Box position="absolute" top={0} right={0}>
+                    <IconButton onClick={handleClose}>
+                        <Close />
+                    </IconButton>
+                </Box> */}
                 <DialogContent>
-                    <button className="butt2" onClick={()=>{if(quant!==0)setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
-                    <button className="butt2" onClick={()=>{setQuant(quant+1)}}>+</button>
+                <Typography>Are you sure you want to delete this item?</Typography>
                 </DialogContent>
-                <DialogContent>
-                    <test>return type:{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
-                    <button className="butt2" onClick={fun}>change</button></DialogContent>
                 <DialogActions>
-                
-                    <Button onClick={handleC1} color="primary">
-                        Yes
+                    <Button onClick={handleClose} color="primary" variant="contained" >
+                        Cancel
                     </Button>
-                    <Button onClick={handleC} color="primary" autoFocus>
-                        No
+                    <Button onClick={handleClose1} color="secondary" variant="contained">
+                        Confirm
                     </Button>
                 </DialogActions>
             </Dialog>
         </div>
+
+        <div>
+        
+            <Dialog className="dialog1" open={open1} onClose={handleC} maxWidth="sm" fullWidth>
+                <DialogTitle>
+                    Confirm the action
+                </DialogTitle>
+                <DialogContent>
+                <Typography>Item quantity</Typography>
+                
+                <TextField
+                    id="outlined-number"
+                    
+                    type="number"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={event => setQuant(event.target.value)}
+                    
+                    />
+
+                </DialogContent>
+               <DialogContent>
+               <test>returnable type : {ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
+                    <button className="butt2" onClick={fun}>change</button>
+                 </DialogContent>
+
+            
+                
+                <DialogActions>
+                    <Button onClick={handleC} color="primary" variant="contained" >
+                        Cancel
+                    </Button>
+                    <Button onClick={handleC1} color="secondary" variant="contained">
+                        Save
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>  
+
+    
         <div >
             <Dialog maxWidth="md" open={open2} onClose={handleCa} > 
+            <div >
+                <IconButton >
+                    <CloseOutlinedIcon className='align-right' onClick={handleCa} />
+                </IconButton></div>
                 <DialogTitle>
                     <div>
                     <div className="container">
-                <div className="row">
+                <div className="column">
                     <div >
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group-mb-2">
-                                    <label className="form-label">
-                                        name
+                                    <label className="form-label" color="#c11d1d">
+                                        Name
                                     </label>
                                     <input
                                         type = "text"
@@ -211,8 +260,8 @@ const AdminSystem = () => {
                                     ></input>
                                 </div>
                                 <div className="form-group-mb-2">
-                                    <label className="form-label">
-                                        item count
+                                    <label className="form-label" color="#c11d1d">
+                                        Item Quantity
                                     </label>
                                     <input
                                         type = "number"
@@ -223,22 +272,17 @@ const AdminSystem = () => {
                                         onChange={(e)=>setI3(e.target.value)}
                                     ></input>
                                 </div>
-                                <div className="form-group-mb-2">
-                                    <label className="form-label">
-                                        returnable
-                                    </label>
-                                    <input
-                                        type = "radio"
-                                        value = "true"
-                                        name = "ok"
-                                        onChange={(e)=>setI4(e.target.value)}
-                                    ></input>true
-                                    <input
-                                        type = "radio"
-                                        value = "false"
-                                        name = "ok"
-                                        onChange={(e)=>setI4(e.target.value)}
-                                    ></input>false
+                                <div >
+                                    <label color="#c11d1d">Returnable</label>
+                                    <Checkbox defaultChecked
+                                    
+                                    onChange={(e)=>setI4(e.target.i4)}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                    
+                                        
+                                       
+                                
                                 </div>
                                 <button className='butt2' onClick={(e)=>saveAndCheck(e)}>save</button>
                             </form>
@@ -248,11 +292,7 @@ const AdminSystem = () => {
             </div>
                     </div>
                 </DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleCa} color="primary" autoFocus>
-                        No
-                    </Button>
-                </DialogActions>
+                
             </Dialog>
         </div>
         <div>

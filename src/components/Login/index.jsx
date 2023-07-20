@@ -62,7 +62,8 @@ const Login = ({ setToken }) => {
 
   return (
     <Container component="main" maxWidth="xs" >
-      
+      <grid>
+      <grid>
       <Box
         sx={{
           marginTop: 8,
@@ -111,7 +112,10 @@ const Login = ({ setToken }) => {
           </Button>
 
         </Box>
-      </Box>
+      </Box></grid>
+      <grid>
+            <item>item2</item>
+      </grid></grid>
     </Container>
   );
 }
