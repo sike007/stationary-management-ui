@@ -36,7 +36,7 @@ const AdminSystem = () => {
     const [i2,setI2] = useState()
     const [i3, setI3] = React.useState(0);
     const [i1, setI1] = useState();
-    const [i4, setI4] = React.useState(true);
+    const [i4, setI4] = React.useState({});
     const [results,setResults] = useState(0);
     
     useEffect(() => {
@@ -128,7 +128,11 @@ const AdminSystem = () => {
         })
     }
 
-
+    const preventMinus = (e) => {
+        if (e.code === 'Minus') {
+            e.preventDefault();
+        }
+    };
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
@@ -225,31 +229,32 @@ const AdminSystem = () => {
                 </DialogTitle>
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
-                    <Grid container item xs={6} direction="column" >
+                    <Grid container item xs={5} direction="column" >
                       <>Item quantity :</>  
                     </Grid>
-                    <Grid container item xs={6} direction="column" >
-                <TextField className="pl-4"
-                    id="outlined-number"
-                    
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    onChange={event => setQuant(event.target.value)}
-                    
-                    /> 
+                    <Grid container item xs={4} direction="column" >
+                    <input
+                                        type = "number"
+                                        placeholder="enter count"
+                                        name = "i3"
+                                        min="0"
+                                        onKeyPress={preventMinus}
+                                        //value = {i3}
+                                        //className="form-control"
+                                        onChange={event => setQuant(event.target.value)}
+                                    ></input>
+               
                     </Grid>
                 </Grid>
 
                 </DialogContent>
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
-                    <Grid container item xs={6} direction="column" >
+                    <Grid container item xs={5} direction="column" >
                     <>max Days :</>
                         
                     </Grid>
-                    <Grid container item xs={6} direction="column" >
+                    <Grid container item xs={4} direction="column" >
                     {ret?<>
                     <button className="pl-4" onClick={()=>{if(days!==0)setDays(days-1)}}>-</button>&nbsp;&nbsp;{days===null ?<>{setDays(0)}</>:days}&nbsp;&nbsp;
                     <button className="pl-4" onClick={()=>{setDays(days+1)}}>+</button></>:<>&nbsp;0</>}
@@ -259,10 +264,10 @@ const AdminSystem = () => {
                 </DialogContent>
                <DialogContent className="pr-4">
                <Grid container spacing={2} >
-                    <Grid container item xs={6} direction="column" >
+                    <Grid container item xs={5} direction="column" >
                     <>returnable type : </>
                     </Grid>
-                    <Grid container item xs={6} direction="column" >
+                    <Grid container item xs={4} direction="column" >
                         <test>{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
                     <button className="pl-4" onClick={fun}>change</button>
                     </Grid>
@@ -287,7 +292,9 @@ const AdminSystem = () => {
         <div >
             <Dialog maxWidth="md" open={open2} onClose={handleCa} > 
             
-                <DialogTitle fontSize={36}>Add details here
+            <DialogTitle>
+                   Add the details here
+                </DialogTitle>
                     <div>
                     <div className="container">
                 <div className="row">
@@ -296,8 +303,8 @@ const AdminSystem = () => {
                             <form onSubmit={handleSubmit}>
                                 
                                 <div className="form-group-mb-2">
-                                <Grid container spacing={1.5} >
-                                    <Grid container item xs={4} direction="column" >
+                                <Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
                                     <>Item name : &nbsp;</>
                                         
                                     </Grid>
@@ -315,8 +322,8 @@ const AdminSystem = () => {
                                     </Grid>
                                 </div>
                                 <div className="form-group-mb-2">
-                                <Grid container spacing={1.5} >
-                                    <Grid container item xs={4} direction="column" >
+                                <Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
                                     <>Item Quantity : &nbsp;&nbsp;</>
                                         
                                     </Grid>
@@ -333,29 +340,38 @@ const AdminSystem = () => {
                                     </Grid>
                                     </Grid>
                                 </div>
-                                <div ><Grid container spacing={1.5} >
-                                    <Grid container item xs={4} direction="column" >
+                                <div ><Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
                                     <>Returnable</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
-                                    <Checkbox defaultChecked
+                                    <select 
+                                        onChange={(e4)=>setI4(e4.target.i4)}
+                                        
+                                    >
+                                        <option disabled selected value=''> -- select an option -- </option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    {/* <Checkbox defaultChecked
                                     
                                     onChange={(e)=>setI4(e.target.i4)}
                                     inputProps={{ 'aria-label': 'controlled' }}
-                                    />
+                                    /> */}
                                         
                                     </Grid>
                                     </Grid>
                                 </div>
                                 <div>
-                                <Grid container spacing={1.5} >
-                                <Grid container item xs={4} direction="column" >
+                                <Grid container spacing={2} >
+                                <Grid container item xs={5} direction="column" >
                                     <>max days :</>
                                     
                                 </Grid>
                                 <Grid container item xs={4} direction="column" >
-                                    {i4==='yes'?<div className="form-group-mb-2">
+                                    
+                                    {(i4=='Yes')?(<div className="form-group-mb-2">
                                     <input
                                         type = "number"
                                         placeholder="enter max days"
@@ -363,9 +379,10 @@ const AdminSystem = () => {
                                         
                                         onChange={(e)=>setI1(e.target.value)}
                                     ></input>
-                                    </div>:<div className="form-group-mb-2"><label className="form-label">
+                                    </div>):
+                                    (<div className="form-group-mb-2"><label className="form-label">
                                             -
-                                        </label></div>}
+                                        </label></div>)}
                                   
                                 </Grid>
                                 </Grid>
@@ -385,7 +402,7 @@ const AdminSystem = () => {
                 </div>
             </div>
                     </div>
-                </DialogTitle>
+                
                 
             </Dialog>
         </div>
