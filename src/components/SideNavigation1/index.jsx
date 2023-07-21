@@ -24,7 +24,7 @@ const SideNavigation3 = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <>admin</>
+        <>Menu</>
       </Button>
       <Menu
         id="basic-menu"
@@ -35,6 +35,7 @@ const SideNavigation3 = () => {
           "aria-labelledby": "basic-button",
         }}
       >
+        <MenuItem>adminName</MenuItem>
         <MenuItem onClick={handleHome}>Logout</MenuItem>
       </Menu>
     </>

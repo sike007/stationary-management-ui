@@ -5,6 +5,8 @@ import { Card} from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import Timg from "../../images/targetLogo.png"
+import { CheckBox } from "@mui/icons-material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const AdminSystem = () => {
 
@@ -20,7 +22,7 @@ const AdminSystem = () => {
     const [ret,setRet] = useState()
     const [i2,setI2] = useState()
     const [i3, setI3] = useState(0);
-    const [i4, setI4] = useState('no');
+    const [i4, setI4] = useState(true);
     const [i1, setI1] = useState();
     const [results,setResults] = useState(0);
     useEffect(() => {
@@ -184,7 +186,7 @@ const AdminSystem = () => {
                     <Button onClick={handleClose1} color="primary">
                         Yes
                     </Button>
-                    <Button onClick={handleClose} color="primary" autoFocus>
+                    <Button onClick={handleClose} color="primary" >
                         No
                     </Button>
                 </DialogActions>
@@ -223,7 +225,7 @@ const AdminSystem = () => {
         </div>
         <div >
             <Dialog maxWidth="md" open={open2} onClose={handleCa} > 
-                <DialogTitle>Do you want to add item</DialogTitle>
+                <DialogTitle className="title"  >Do you want to add item</DialogTitle>
                 <DialogContent>
                     <div>
                     <div className="container">
@@ -232,7 +234,7 @@ const AdminSystem = () => {
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group-mb-2">
-                                    <label className="form-label">
+                                    <label className="title"  >
                                         Item name : &nbsp;
                                     </label>
                                     <input
@@ -244,8 +246,8 @@ const AdminSystem = () => {
                                     ></input>
                                 </div>
                                 <div className="form-group-mb-2">
-                                    <label className="form-label">
-                                        quantity : &nbsp;&nbsp;
+                                    <label className="title"  >
+                                        quantity    : &nbsp;&nbsp;
                                     </label>
                                     <input
                                         type = "number"
@@ -256,25 +258,20 @@ const AdminSystem = () => {
                                     ></input>
                                 </div>
                                 <div className="form-group-mb-2">
-                                    <label className="form-label">
+                                    <FormControlLabel><label className="title" >
                                         returnable type :
                                     </label>
-                                    <input
-                                        type = "radio"
-                                        value = "yes"
-                                        name = "ok"
-                                        onChange={(e)=>setI4(e.target.value)}
-                                    ></input>yes
-                                    <input
-                                        type = "radio"
-                                        value = "no"
-                                        name = "ok"
-                                        onChange={(e)=>setI4(e.target.value)}
-                                    ></input>no
+                                    control=<CheckBox
+                                       // defaultChecked
+                                       checked={i4}
+                                        onChange={(e)=>setI4(e.target.i4)}
+                                        
+                                    />
+                                    </FormControlLabel>
                                 </div>
                                 <div>
                                     {i4==='yes'?<div className="form-group-mb-2">
-                                    <label className="form-label">
+                                    <label className="title">
                                         max days : 
                                     </label>
                                     <input
