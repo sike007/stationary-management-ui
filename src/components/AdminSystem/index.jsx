@@ -36,7 +36,7 @@ const AdminSystem = () => {
     const [i2,setI2] = useState()
     const [i3, setI3] = React.useState(0);
     const [i1, setI1] = useState();
-    const [i4, setI4] = React.useState({});
+    const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
     
     useEffect(() => {
@@ -96,6 +96,7 @@ const AdminSystem = () => {
         setOpen1(false);
     };
     const handleCa = () => {
+        setI2()
         setI3(0)
         setI4('no')
         setOpen2(false);
@@ -120,8 +121,8 @@ const AdminSystem = () => {
     }
     const saveAndCheck = (e) => {
         e.preventDefault();
-        console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='yes',"maxDays":parseInt(i1)})
-        items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
+        console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
+        items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);}).catch(error => {
             console.log(error)
             handleClickOpen3();
@@ -254,7 +255,7 @@ const AdminSystem = () => {
                     <>max Days :</>
                         
                     </Grid>
-                    <Grid container item xs={4} direction="column" >
+                    <Grid direction="column" >
                     {ret?<>
                     <button className="pl-4" onClick={()=>{if(days!==0)setDays(days-1)}}>-</button>&nbsp;&nbsp;{days===null ?<>{setDays(0)}</>:days}&nbsp;&nbsp;
                     <button className="pl-4" onClick={()=>{setDays(days+1)}}>+</button></>:<>&nbsp;0</>}
@@ -332,6 +333,7 @@ const AdminSystem = () => {
                                         type = "number"
                                         placeholder="enter count"
                                         name = "i3"
+                                        onKeyPress={preventMinus}
                                         //value = {i3}
                                         //className="form-control"
                                         onChange={(e)=>setI3(e.target.value)}
@@ -342,17 +344,18 @@ const AdminSystem = () => {
                                 </div>
                                 <div ><Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Returnable</>
+                                    <>Returnable :</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
-                                    <select 
-                                        onChange={(e4)=>setI4(e4.target.i4)}
+                                    <select id="mySelect"
+                                        onChange={(e)=>setI4(e.target.value)}
                                         
                                     >
                                         <option disabled selected value=''> -- select an option -- </option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
+                                        
                                     </select>
                                     {/* <Checkbox defaultChecked
                                     
@@ -371,7 +374,7 @@ const AdminSystem = () => {
                                 </Grid>
                                 <Grid container item xs={4} direction="column" >
                                     
-                                    {(i4=='Yes')?(<div className="form-group-mb-2">
+                                    {(i4==='Yes')?(<div className="form-group-mb-2">
                                     <input
                                         type = "number"
                                         placeholder="enter max days"
