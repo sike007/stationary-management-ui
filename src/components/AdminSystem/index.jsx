@@ -25,6 +25,14 @@ const AdminSystem = () => {
 
     const [item , setItem] = useState([])
     const [item1,setItem1] = useState()  
+import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import Timg from "../../images/targetLogo.png"
+
+const AdminSystem = () => {
+
+    const [item , setItem] = useState([])
+    const [item1,setItem1] = useState()
+
     const [id,setId] = useState()
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
@@ -37,6 +45,11 @@ const AdminSystem = () => {
     const [i3, setI3] = React.useState(0);
     const [i1, setI1] = useState();
     const [i4, setI4] = React.useState('no');
+    const [ret,setRet] = useState()
+    const [i2,setI2] = useState()
+    const [i3, setI3] = useState(0);
+    const [i4, setI4] = useState('no');
+    const [i1, setI1] = useState();
     const [results,setResults] = useState(0);
     
     useEffect(() => {
@@ -44,12 +57,10 @@ const AdminSystem = () => {
         getAll();
     }, [])
     useEffect(() => {
-
         console.log("hi")
         console.log(item.sort((a,b)=>(a.itemId-b.itemId)))
         setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
     }, [item])
-    
     const handleClickOpen = (e) => {
         setOpen(true);
         setId(e);
@@ -96,6 +107,7 @@ const AdminSystem = () => {
         setOpen1(false);
     };
     const handleCa = () => {
+
         setI2()
         setI3(0)
         setI4('no')
@@ -123,6 +135,8 @@ const AdminSystem = () => {
         e.preventDefault();
         console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
         items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
+        console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='yes',"maxDays":parseInt(i1)})
+        items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);}).catch(error => {
             console.log(error)
             handleClickOpen3();
@@ -171,6 +185,7 @@ const AdminSystem = () => {
                                 <td> {itm.itemId}</td>
                                 <td> {itm.itemName} </td>
                                 <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
+                                <td> {itm.quantity===null ?<>0</>:itm.quantity}</td>
                                 {itm.returnable ? (
                                     <td>yes</td>
                                         ) : (
@@ -277,6 +292,22 @@ const AdminSystem = () => {
                  </DialogContent>
 
             
+                <DialogContent>
+                    <>quantity :</>
+                    <button className="butt2" onClick={()=>{if(quant!==0)setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
+                    <button className="butt2" onClick={()=>{setQuant(quant+1)}}>+</button>
+                </DialogContent>
+                <DialogContent >
+                {ret?<>
+                    <>max Days :</>
+                    <button className="butt2" onClick={()=>{if(days!==0)setDays(days-1)}}>-</button>&nbsp;&nbsp;{days===null ?<>{setDays(0)}</>:days}&nbsp;&nbsp;
+                    <button className="butt2" onClick={()=>{setDays(days+1)}}>+</button></>:<>max Days :&nbsp;0</>}
+                </DialogContent>
+                <DialogContent>
+                    <test>return type:{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
+                    <button className="butt2" onClick={fun}>change</button></DialogContent>
+                
+                <DialogActions>
                 
                 <DialogActions>
                     <Button onClick={handleC} color="primary" variant="contained" >
@@ -296,6 +327,8 @@ const AdminSystem = () => {
             <DialogTitle>
                    Add the details here
                 </DialogTitle>
+                <DialogTitle>Do you want to add item</DialogTitle>
+                <DialogContent>
                     <div>
                     <div className="container">
                 <div className="row">
@@ -310,6 +343,9 @@ const AdminSystem = () => {
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
+                                    <label className="form-label">
+                                        Item name : &nbsp;
+                                    </label>
                                     <input
                                         type = "text"
                                         placeholder="enter name"
@@ -329,6 +365,9 @@ const AdminSystem = () => {
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
+                                    <label className="form-label">
+                                        quantity : &nbsp;&nbsp;
+                                    </label>
                                     <input
                                         type = "number"
                                         placeholder="enter count"
@@ -336,6 +375,7 @@ const AdminSystem = () => {
                                         onKeyPress={preventMinus}
                                         //value = {i3}
                                         //className="form-control"
+                                        
                                         onChange={(e)=>setI3(e.target.value)}
                                     ></input>
                                         
@@ -398,6 +438,45 @@ const AdminSystem = () => {
                                         Cancel
                                     </Button>
                                     
+                                <div className="form-group-mb-2">
+                                    <label className="form-label">
+                                        returnable type :
+                                    </label>
+                                    <input
+                                        type = "radio"
+                                        value = "yes"
+                                        name = "ok"
+                                        onChange={(e)=>setI4(e.target.value)}
+                                    ></input>yes
+                                    <input
+                                        type = "radio"
+                                        value = "no"
+                                        name = "ok"
+                                        onChange={(e)=>setI4(e.target.value)}
+                                    ></input>no
+                                </div>
+                                <div>
+                                    {i4==='yes'?<div className="form-group-mb-2">
+                                    <label className="form-label">
+                                        max days : 
+                                    </label>
+                                    <input
+                                        type = "number"
+                                        placeholder="enter max days"
+                                        name = "i1"
+                                        
+                                        onChange={(e)=>setI1(e.target.value)}
+                                    ></input>
+                                </div>:<div className="form-group-mb-2"><label className="form-label">
+                                        max days : -
+                                    </label></div>}
+                                </div>
+                                <DialogActions>
+                                    <Button onClick={(e)=>saveAndCheck(e)}>save
+                                    </Button>
+                                    <Button onClick={handleCa} color="primary" autoFocus>
+                                         No
+                                    </Button>
                                 </DialogActions>
                             </form>
                         </div>
@@ -405,8 +484,8 @@ const AdminSystem = () => {
                 </div>
             </div>
                     </div>
-                
-                
+                              
+                </DialogContent>
             </Dialog>
         </div>
         <div>
