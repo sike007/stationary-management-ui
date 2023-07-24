@@ -174,7 +174,7 @@ const AdminSystem = () => {
                         <th> Item Name </th>
                         <th> Item Quantity </th>
                         <th> returnable type </th>
-                        <th> max days</th>
+                        <th> Borrow days</th>
                         <th> actions</th>
                     </thead>
                     <tbody>
@@ -267,7 +267,7 @@ const AdminSystem = () => {
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                    <>max Days :</>
+                    <>Borrow days :</>
                         
                     </Grid>
                     <Grid direction="column" >
@@ -281,7 +281,7 @@ const AdminSystem = () => {
                <DialogContent className="pr-4">
                <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                    <>returnable type : </>
+                    <>returnable type: </>
                     </Grid>
                     <Grid container item xs={4} direction="column" >
                         <test>{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
@@ -409,7 +409,7 @@ const AdminSystem = () => {
                                 <div>
                                 <Grid container spacing={2} >
                                 <Grid container item xs={5} direction="column" >
-                                    <>max days :</>
+                                    <>Borrow days :</>
                                     
                                 </Grid>
                                 <Grid container item xs={4} direction="column" >
