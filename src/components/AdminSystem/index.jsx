@@ -47,9 +47,8 @@ const AdminSystem = () => {
         setOpen(true);
         setId(e);
     };
-    const handleClickOpen1 = (a,b,c,d) => {
+    const handleClickOpen1 = (a,b,c) => {
         setOpen1(true);
-        setDays(d)
         setQuant(b)
         setRet(c)
         setId(a);
@@ -70,19 +69,10 @@ const AdminSystem = () => {
         setOpen(false);
     };
     const handleC1 = () => {
-        if(ret){
-            console.log({"quantity":quant,"returnable":ret,"maxDays":days})
-            items.updateItem(id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
-            setOpen1(false);
-            window.location.reload()
-        }
-        else{
-            console.log({"quantity":quant,"returnable":ret,"maxDays":null})
-            items.updateItem(id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
-            setOpen1(false);
-            window.location.reload()
-        }
-        
+        console.log({"quantity":quant})
+        items.updateItem(id,{"quantity":quant,"returnable":ret}).catch(error=>{console.log(error)});
+        setOpen1(false);
+        window.location.reload();
     }
    // const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
@@ -138,13 +128,8 @@ const AdminSystem = () => {
 
     return(
         <div>
-            <header className="header1">
-            <img src={Timg} className="App-logo1"  />
-            <button className="butt" onClick={handleClickOpen2}>add item</button>
-            <button className="butt" >collectable items</button>
-            </header>
             <div>
-                
+                <button className="butt" onClick={handleClickOpen2}>add item</button>
                 </div>
             <Card className="App-Card">
             <h3>Admin</h3>
@@ -154,7 +139,6 @@ const AdminSystem = () => {
                         <th> Item Name </th>
                         <th> Item Quantity </th>
                         <th> returnable type </th>
-                        <th> max days</th>
                         <th> actions</th>
                     </thead>
                     <tbody>
@@ -170,12 +154,11 @@ const AdminSystem = () => {
                                         ) : (
                                     <td>no</td>
                                 )}
-                                <td>{itm.maxDays===null ?<>-</>:itm.maxDays}</td>
                                 <td className="fit">
                                     <span className="actions">
                                     <BsFillPencilFill
                                             className="edit-btn"
-                                            onClick={() => handleClickOpen1(itm.itemId,itm.quantity,itm.returnable,itm.maxDays)}
+                                            onClick={() => handleClickOpen1(itm.itemId,itm.quantity,itm.returnable)}
                                         />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <BsFillTrashFill
                                             className="delete-btn"
@@ -192,8 +175,7 @@ const AdminSystem = () => {
             
         </Card>
         <div>
-        
-            <Dialog open={open} onClose={handleClose} position={{ X: 0, Y: 140 }}>
+            <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>
                     Confirm the action
                 </DialogTitle>
@@ -270,8 +252,6 @@ const AdminSystem = () => {
                
                  </DialogContent>
 
-            
-                
                 <DialogActions>
                     <Button onClick={handleC} color="primary" variant="contained" >
                         Cancel
@@ -309,7 +289,6 @@ const AdminSystem = () => {
                                         placeholder="enter name"
                                         name = "i2"
                                         value = {i2}
-                                       // className="form-control"
                                         onChange={(e)=>setI2(e.target.value)}
                                     ></input>
                                         
@@ -399,8 +378,6 @@ const AdminSystem = () => {
                 </div>
             </div>
                     </div>
-                
-                
             </Dialog>
         </div>
         <div>
