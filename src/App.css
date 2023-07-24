@@ -27,7 +27,7 @@
   background-color: #a31c1c;
   font-size: 16px;
   bottom: 0;
-  position: relative;
+  position: fixed;
   width: 100%;
   text-align: center;
   padding: 25px;
