@@ -35,7 +35,7 @@ const SideNavigation3 = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem>adminName</MenuItem>
+        <MenuItem>Name</MenuItem>
         <MenuItem onClick={handleHome}>Logout</MenuItem>
       </Menu>
     </>

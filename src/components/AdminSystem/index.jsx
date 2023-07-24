@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import * as React from 'react';  
 import items from "../../server/items";
-import { Card} from "@mui/material";
+import { Card } from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import { Button , Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import Timg from "../../images/targetLogo.png"
-import { CheckBox } from "@mui/icons-material";
-import FormControlLabel from "@mui/material/FormControlLabel";
-
+import Timg from "../../images/targetLogo.png";
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    Typography,
+  } from '@material-ui/core';
+  import Grid from '@material-ui/core/Grid';
+ 
 const AdminSystem = () => {
 
     const [item , setItem] = useState([])
-    const [item1,setItem1] = useState()
+    const [item1,setItem1] = useState()  
     const [id,setId] = useState()
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
@@ -19,12 +25,13 @@ const AdminSystem = () => {
     const [open3, setOpen3] = React.useState(false);
     const [quant , setQuant] = useState(0)
     const [days , setDays] = useState(0)
-    const [ret,setRet] = useState()
+    const [ret,setRet] = React.useState()
     const [i2,setI2] = useState()
-    const [i3, setI3] = useState(0);
-    const [i4, setI4] = useState(true);
+    const [i3, setI3] = React.useState(0);
     const [i1, setI1] = useState();
+    const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
+    
     useEffect(() => {
 
         getAll();
@@ -35,7 +42,6 @@ const AdminSystem = () => {
         console.log(item.sort((a,b)=>(a.itemId-b.itemId)))
         setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
     }, [item])
-    
     
     const handleClickOpen = (e) => {
         setOpen(true);
@@ -78,10 +84,12 @@ const AdminSystem = () => {
         }
         
     }
+   // const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
         setOpen1(false);
     };
     const handleCa = () => {
+        setI2()
         setI3(0)
         setI4('no')
         setOpen2(false);
@@ -106,14 +114,19 @@ const AdminSystem = () => {
     }
     const saveAndCheck = (e) => {
         e.preventDefault();
-
-        console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='yes',"maxDays":parseInt(i1)})
-        items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
+        console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
+        items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);}).catch(error => {
             console.log(error)
             handleClickOpen3();
         })
     }
+
+    const preventMinus = (e) => {
+        if (e.code === 'Minus') {
+            e.preventDefault();
+        }
+    };
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
@@ -122,6 +135,7 @@ const AdminSystem = () => {
             setResults(0);
         }
     },[results])
+
     return(
         <div>
             <header className="header1">
@@ -133,6 +147,7 @@ const AdminSystem = () => {
                 
                 </div>
             <Card className="App-Card">
+            <h3>Admin</h3>
                 <table className="table table-bordered table-striped" >
                     <thead>
                         <th> No </th>
@@ -149,7 +164,7 @@ const AdminSystem = () => {
                             <tr key = {itm.itemId}> 
                                 <td> {itm.itemId}</td>
                                 <td> {itm.itemName} </td>
-                                <td> {itm.quantity===null ?<>0</>:itm.quantity}</td>
+                                <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
                                 {itm.returnable ? (
                                     <td>yes</td>
                                         ) : (
@@ -180,100 +195,180 @@ const AdminSystem = () => {
         
             <Dialog open={open} onClose={handleClose} position={{ X: 0, Y: 140 }}>
                 <DialogTitle>
-                    do you want to delete this item
+                    Confirm the action
                 </DialogTitle>
+                {/* <Box position="absolute" top={0} right={0}>
+                    <IconButton onClick={handleClose}>
+                        <Close />
+                    </IconButton>
+                </Box> */}
+                <DialogContent>
+                <Typography>Are you sure you want to delete this item?</Typography>
+                </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose1} color="primary">
-                        Yes
+                    <Button onClick={handleClose} color="primary" variant="contained" >
+                        Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary" >
-                        No
+                    <Button onClick={handleClose1} color="secondary" variant="contained">
+                        Confirm
                     </Button>
                 </DialogActions>
             </Dialog>
         </div>
+
         <div>
-            <Dialog className="dialog1" open={open1} onClose={handleC}>
+        
+            <Dialog className="bd-example text-white example-margin" style={{padding: "0rem"}} open={open1} onClose={handleC} >
                 <DialogTitle>
-                    do you want to edit this item
+                   Edit the details here
                 </DialogTitle>
-                <DialogContent>
-                    <>quantity :</>
-                    <button className="butt2" onClick={()=>{if(quant!==0)setQuant(quant-1)}}>-</button>&nbsp;&nbsp;{quant}&nbsp;&nbsp;
-                    <button className="butt2" onClick={()=>{setQuant(quant+1)}}>+</button>
+                <DialogContent className="pr-4">
+                <Grid container spacing={2} >
+                    <Grid container item xs={5} direction="column" >
+                      <>Item quantity :</>  
+                    </Grid>
+                    <Grid container item xs={4} direction="column" >
+                    <input
+                                        type = "number"
+                                        placeholder="enter count"
+                                        name = "i3"
+                                        min="0"
+                                        onKeyPress={preventMinus}
+                                        //value = {i3}
+                                        //className="form-control"
+                                        onChange={event => setQuant(event.target.value)}
+                                    ></input>
+               
+                    </Grid>
+                </Grid>
+
                 </DialogContent>
-                <DialogContent >
-                {ret?<>
+                <DialogContent className="pr-4">
+                <Grid container spacing={2} >
+                    <Grid container item xs={5} direction="column" >
                     <>max Days :</>
-                    <button className="butt2" onClick={()=>{if(days!==0)setDays(days-1)}}>-</button>&nbsp;&nbsp;{days===null ?<>{setDays(0)}</>:days}&nbsp;&nbsp;
-                    <button className="butt2" onClick={()=>{setDays(days+1)}}>+</button></>:<>max Days :&nbsp;0</>}
+                        
+                    </Grid>
+                    <Grid direction="column" >
+                    {ret?<>
+                    <button className="pl-4" onClick={()=>{if(days!==0)setDays(days-1)}}>-</button>&nbsp;&nbsp;{days===null ?<>{setDays(0)}</>:days}&nbsp;&nbsp;
+                    <button className="pl-4" onClick={()=>{setDays(days+1)}}>+</button></>:<>&nbsp;0</>}
+                        
+                    </Grid>
+                </Grid>
                 </DialogContent>
-                <DialogContent>
-                    <test>return type:{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
-                    <button className="butt2" onClick={fun}>change</button></DialogContent>
+               <DialogContent className="pr-4">
+               <Grid container spacing={2} >
+                    <Grid container item xs={5} direction="column" >
+                    <>returnable type : </>
+                    </Grid>
+                    <Grid container item xs={4} direction="column" >
+                        <test>{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
+                    <button className="pl-4" onClick={fun}>change</button>
+                    </Grid>
+                </Grid>
+               
+                 </DialogContent>
+
+            
                 
                 <DialogActions>
-                
-                    <Button onClick={handleC1} color="primary">
-                        Yes
+                    <Button onClick={handleC} color="primary" variant="contained" >
+                        Cancel
                     </Button>
-                    <Button onClick={handleC} color="primary" autoFocus>
-                        No
+                    <Button onClick={handleC1} color="secondary" variant="contained">
+                        Save
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </div>  
+
+    
         <div >
             <Dialog maxWidth="md" open={open2} onClose={handleCa} > 
-                <DialogTitle className="title"  >Do you want to add item</DialogTitle>
-                <DialogContent>
+            
+            <DialogTitle>
+                   Add the details here
+                </DialogTitle>
                     <div>
                     <div className="container">
                 <div className="row">
                     <div >
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
+                                
                                 <div className="form-group-mb-2">
-                                    <label className="title"  >
-                                        Item name : &nbsp;
-                                    </label>
+                                <Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
+                                    <>Item name : &nbsp;</>
+                                        
+                                    </Grid>
+                                    <Grid container item xs={4} direction="column" >
                                     <input
                                         type = "text"
                                         placeholder="enter name"
                                         name = "i2"
                                         value = {i2}
+                                       // className="form-control"
                                         onChange={(e)=>setI2(e.target.value)}
                                     ></input>
+                                        
+                                    </Grid>
+                                    </Grid>
                                 </div>
                                 <div className="form-group-mb-2">
-                                    <label className="title"  >
-                                        quantity    : &nbsp;&nbsp;
-                                    </label>
+                                <Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
+                                    <>Item Quantity : &nbsp;&nbsp;</>
+                                        
+                                    </Grid>
+                                    <Grid container item xs={4} direction="column" >
                                     <input
                                         type = "number"
                                         placeholder="enter count"
                                         name = "i3"
-                                        
+                                        onKeyPress={preventMinus}
+                                        //value = {i3}
+                                        //className="form-control"
                                         onChange={(e)=>setI3(e.target.value)}
                                     ></input>
-                                </div>
-                                <div className="form-group-mb-2">
-                                    <FormControlLabel><label className="title" >
-                                        returnable type :
-                                    </label>
-                                    control=<CheckBox
-                                       // defaultChecked
-                                       checked={i4}
-                                        onChange={(e)=>setI4(e.target.i4)}
                                         
-                                    />
-                                    </FormControlLabel>
+                                    </Grid>
+                                    </Grid>
+                                </div>
+                                <div ><Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
+                                    <>Returnable :</>
+                                        
+                                    </Grid>
+                                    <Grid container item xs={4} direction="column" >
+                                    <select id="mySelect"
+                                        onChange={(e)=>setI4(e.target.value)}
+                                        
+                                    >
+                                        <option disabled selected value=''> -- select an option -- </option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                        
+                                    </select>
+                                    {/* <Checkbox defaultChecked
+                                    
+                                    onChange={(e)=>setI4(e.target.i4)}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    /> */}
+                                        
+                                    </Grid>
+                                    </Grid>
                                 </div>
                                 <div>
-                                    {i4==='yes'?<div className="form-group-mb-2">
-                                    <label className="title">
-                                        max days : 
-                                    </label>
+                                <Grid container spacing={2} >
+                                <Grid container item xs={5} direction="column" >
+                                    <>max days :</>
+                                    
+                                </Grid>
+                                <Grid container item xs={4} direction="column" >
+                                    
+                                    {(i4==='Yes')?(<div className="form-group-mb-2">
                                     <input
                                         type = "number"
                                         placeholder="enter max days"
@@ -281,16 +376,22 @@ const AdminSystem = () => {
                                         
                                         onChange={(e)=>setI1(e.target.value)}
                                     ></input>
-                                </div>:<div className="form-group-mb-2"><label className="form-label">
-                                        max days : -
-                                    </label></div>}
+                                    </div>):
+                                    (<div className="form-group-mb-2"><label className="form-label">
+                                            -
+                                        </label></div>)}
+                                  
+                                </Grid>
+                                </Grid>
                                 </div>
                                 <DialogActions>
-                                    <Button onClick={(e)=>saveAndCheck(e)}>save
+                                    <Button onClick={(e)=>saveAndCheck(e)} color="primary" variant="contained" >
+                                        Save
                                     </Button>
-                                    <Button onClick={handleCa} color="primary" autoFocus>
-                                         No
+                                    <Button onClick={handleCa} color="secondary" variant="contained">
+                                        Cancel
                                     </Button>
+                                    
                                 </DialogActions>
                             </form>
                         </div>
@@ -298,7 +399,8 @@ const AdminSystem = () => {
                 </div>
             </div>
                     </div>
-                </DialogContent>
+                
+                
             </Dialog>
         </div>
         <div>

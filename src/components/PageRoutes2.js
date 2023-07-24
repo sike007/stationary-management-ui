@@ -7,6 +7,7 @@ const PageRoutes2 = () => {
           <Route exact path="/" element={<Headerb />} />
           <Route exact path="/about" element={<Headera />} />
           <Route exact path="/contact" element={<Headera />} />
+          <Route exact path="/transaction" element={<Headera/>}/>
         </Routes>
     )
   }
