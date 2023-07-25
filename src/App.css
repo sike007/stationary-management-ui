@@ -37,7 +37,7 @@
   background-color: #a31c1c;
   font-size: 16px;
   bottom: 0;
-  position: relative;
+  position: fixed;
   width: 100%;
   text-align: center;
   padding: 25px;
@@ -81,7 +81,20 @@
   color: black;
   cursor: pointer;
 }
-
+.title {
+  color: #c11d1d;
+}
+.butt2{
+  background-color: #c11d1d;
+  border: none;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; 
+  border-radius: 8px;
+}
 .butt2:hover {
   background-color: #e92626;
   color: white;
