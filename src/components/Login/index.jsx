@@ -16,7 +16,7 @@ import Grid from "@mui/material/Grid";
 import Logo from "../Logo";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api'
+  baseURL: 'http://localhost:8080/inventory/v1'
 });
 
 const CssTextField = styled(TextField)({
