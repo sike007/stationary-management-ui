@@ -121,12 +121,6 @@ const AdminSystem = () => {
             handleClickOpen3();
         })
     }
-
-    const preventMinus = (e) => {
-        if (e.code === 'Minus') {
-            e.preventDefault();
-        }
-    };
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
@@ -197,11 +191,7 @@ const AdminSystem = () => {
                 <DialogTitle>
                     Confirm the action
                 </DialogTitle>
-                {/* <Box position="absolute" top={0} right={0}>
-                    <IconButton onClick={handleClose}>
-                        <Close />
-                    </IconButton>
-                </Box> */}
+                
                 <DialogContent>
                 <Typography>Are you sure you want to delete this item?</Typography>
                 </DialogContent>
@@ -327,7 +317,7 @@ const AdminSystem = () => {
                                         type = "number"
                                         placeholder="enter count"
                                         name = "i3"
-                                        onKeyPress={preventMinus}
+                                        min="0"
                                         //value = {i3}
                                         //className="form-control"
                                         onChange={(e)=>setI3(e.target.value)}
