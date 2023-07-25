@@ -132,7 +132,7 @@ const Student = () => {
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 
-                                <div className="form-group-mb-2">
+                                {/* <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
                                     <>Item name : &nbsp;</>
@@ -143,14 +143,14 @@ const Student = () => {
                                         type = "text"
                                         //placeholder=item.itemName
                                         name = "i2"
-                                        value = {item.itemName}
+                                        value = {items.}
                                        // className="form-control"
                                       // onChange={handleChange}
                                     ></input>
                                         
                                     </Grid>
                                     </Grid>
-                                </div>
+                                </div> */}
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >

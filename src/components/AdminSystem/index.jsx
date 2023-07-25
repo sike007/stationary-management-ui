@@ -84,7 +84,7 @@ const AdminSystem = () => {
         }
         
     }
-   // const handleaa =(event1)=>{setRet(event1.target.value);};
+    const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
         setOpen1(false);
     };
@@ -223,7 +223,6 @@ const AdminSystem = () => {
                                         placeholder="enter count"
                                         name = "i3"
                                         min="0"
-                                        onKeyPress={preventMinus}
                                         //value = {i3}
                                         //className="form-control"
                                         onChange={event => setQuant(event.target.value)}
