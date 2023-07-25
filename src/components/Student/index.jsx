@@ -12,21 +12,34 @@ import {
     Typography,
   } from '@material-ui/core';  
 import Grid from '@material-ui/core/Grid';
+import transaction from "../../server/transaction";
 
 
 const Student = () => {
     const [quant , setQuant] = useState(0)
-
+    const [item1,setItem1] = useState()  
     const [open1, setOpen1] = React.useState(false);
-    const handleClickOpen1 = () => {
+    const [item , setItem] = useState([])
+    const [id,setId] = useState()
+    const [count,setCount] = useState(0)
+    const [type,setType] = useState()
+    const [maxd , setMaxd] = useState()
+    useEffect(() => {
+        setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
+    }, [item])
+    const handleClickOpen1 = (a,b,c,d) => {
+        setId(a)
+        setQuant(b)
+        setType(c)
+        setMaxd(d)
         setOpen1(true);
     };
     const handleca =()=>{
+        setCount(0)
         setOpen1(false);
     }
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate()
-    const [item , setItem] = useState([])
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
      setAnchorEl(event.currentTarget);
@@ -44,12 +57,24 @@ const Student = () => {
     const handletransaction =()=>{
         navigate('/transaction')
         handleClose()
-    }  
-    const handleChange =(event)=>{
-        if(event.target.value <= item.quantity){
-            setQuant(event.target.value)
-            console.log(event.target.value);
-            
+    }
+    const withdraw = (e) => {
+        console.log(quant)
+        e.preventDefault()
+        if(count===0){alert("Item quantity shouldn't be zero" )}
+        else{
+            if(quant<count){alert("Item quantity must be less than "+quant)}
+            else{
+                if(!type){
+                    items.updateItem(id,{"quantity":quant-count})
+                    window.location.reload()
+                }
+                else{
+                    console.log({"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":maxd,"returned":false})
+                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":maxd,"returned":false})
+                    window.location.reload()
+                }
+            }
         }
     }
     
@@ -77,7 +102,7 @@ const Student = () => {
         }, [])
 
     return (
-    <div>
+    <div class name="body">
         <header className="header1">
             <button className="butt" onClick={handletransaction}>My Transactions</button>
             </header>
@@ -89,7 +114,7 @@ const Student = () => {
                         <th> Item Name </th>
                         <th> Item Quantity </th>
                         <th> returnable type </th>
-                        <th> max days</th>
+                        <th> Borrow days</th>
                         <th> actions</th> 
                     </thead>
                     <tbody>
@@ -108,7 +133,7 @@ const Student = () => {
                                 <td>{itm.maxDays===null ?<>-</>:itm.maxDays}</td>
                                 <td >
                                     
-                                    <Button onClick={handleClickOpen1} color="info" variant="contained" >
+                                    <Button onClick={()=>handleClickOpen1(itm.itemId,itm.quantity,itm.returnable,itm.maxDays)} color="info" variant="contained" >
                                         Withdraw
                                     </Button>
                                     
@@ -161,10 +186,10 @@ const Student = () => {
                                     
                                     <input
                                         type = "number"
-                                        min="0"
+                                        min="1"
                                         placeholder="enter count"
                                         name = "i3"
-                                        onChange={handleChange}
+                                        onChange={(e)=>setCount(e.target.value)}
                                     ></input>
                                         
                                     </Grid>
@@ -214,7 +239,7 @@ const Student = () => {
                                 </Grid>
                 </div>*/}
                                 <DialogActions>
-                                    <Button /*onClick={(e)=>saveAndCheck(e)}*/ color="primary" variant="contained" >
+                                    <Button onClick={(e)=>withdraw(e)} color="primary" variant="contained" >
                                         Withdraw
                                     </Button>
                                     <Button onClick={handleca} color="secondary" variant="contained">

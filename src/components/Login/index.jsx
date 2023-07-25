@@ -16,7 +16,7 @@ import Grid from "@mui/material/Grid";
 import Logo from "../Logo";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api'
+  baseURL: 'http://localhost:8080'
 });
 
 const CssTextField = styled(TextField)({
@@ -43,18 +43,22 @@ const Login = ({ setToken }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    instance.post('/admin/login',
+    instance.post('/inventory/v1/admin/login',
       { "adminEmail": data.get("email"), "adminPassword": data.get("password") })
       .then(function (response) {
         setToken({token:"admin"});
+        sessionStorage.setItem("name",response.data.admin.adminName)
+        sessionStorage.setItem("id",response.data.admin.adminId)
       })
       .catch(function(response){
         console.log("not admin => " + response);
         
-        instance.post('/student/login',
+        instance.post('/inventory/v1/student/login ',
         { "studentEmail": data.get("email"), "studentPassword": data.get("password") })
         .then(function (response) {
           setToken({token:"student"});
+          sessionStorage.setItem("name",response.data.student.studentName)
+        sessionStorage.setItem("id",response.data.student.studentId)
         })
         .catch(function(response){
           console.log("not student => " + response);

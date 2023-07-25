@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = 'http://localhost:8080/api/stationaryItem'
+const url = 'http://localhost:8080/inventory/v1/stationary_item'
 class items{
     getAllItems(){
         return axios.get(url);
@@ -11,7 +11,7 @@ class items{
         return axios.patch(url+"/"+pram1,data)
     }
     saveItem(data){
-        return axios.post(url+"/save",data)
+        return axios.post(url+"/add_item ",data)
     }
 }
 export default new items();
