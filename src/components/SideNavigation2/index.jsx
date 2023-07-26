@@ -2,11 +2,9 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useNavigate } from 'react-router-dom';
-
-const SideNavigation2 = () => {
+import { useNavigate } from "react-router-dom";
+const SideNavigation1 = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const navigate = useNavigate()
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -14,9 +12,20 @@ const SideNavigation2 = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleHome = () => {
-    navigate('/')
+  const nav = useNavigate()
+  const handleHome=()=>{
+    nav("/")
     handleClose()
+  }
+  const handleTransaction=()=>{
+    nav('/transaction')
+    handleClose()
+  }
+  const handleLogout = () => {
+    sessionStorage.clear()
+    nav("/")
+    handleClose()
+    window.location.reload()
   }
   return (
     <>
@@ -27,7 +36,7 @@ const SideNavigation2 = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <>home</>
+        <>Menu</>
       </Button>
       <Menu
         id="basic-menu"
@@ -39,8 +48,10 @@ const SideNavigation2 = () => {
         }}
       >
         <MenuItem onClick={handleHome}>Home</MenuItem>
+        <MenuItem onClick={handleTransaction}>Transactions</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>
   );
 };
-export default SideNavigation2;
+export default SideNavigation1;

@@ -3,7 +3,6 @@ import * as React from 'react';
 import items from "../../server/items";
 import { Card } from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import Timg from "../../images/targetLogo.png";
 import {
     Dialog,
     DialogTitle,
@@ -13,10 +12,8 @@ import {
     Typography,
   } from '@material-ui/core';
   import Grid from '@material-ui/core/Grid';
-import { useNavigate } from "react-router-dom";
  
 const AdminSystem = () => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const [item , setItem] = useState([])
     const [item1,setItem1] = useState()  
     const [id,setId] = useState()
@@ -32,13 +29,6 @@ const AdminSystem = () => {
     const [i1, setI1] = useState();
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
-    const open0 = Boolean(anchorEl);
-    const handleClick = (event) => {
-     setAnchorEl(event.currentTarget);
-     };
-        const handleClose0 = () => {
-            setAnchorEl(null);
-        };
     
     useEffect(() => {
 
@@ -92,8 +82,6 @@ const AdminSystem = () => {
         }
         
     }
-    const nav = useNavigate()
-    const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
         setOpen1(false);
     };
@@ -138,17 +126,11 @@ const AdminSystem = () => {
             setResults(0);
         }
     },[results])
-    const handletransaction =()=>{
-        nav('/transaction')
-        handleClose()
-    }
 
     return(
         <div>
             <header className="header1">
-            <img src={Timg} className="App-logo1"  />
-            <button className="butt" onClick={handleClickOpen2}>add item</button>
-            <button className="butt" onClick={handletransaction}>collectable items</button>
+            <button className="butt" onClick={handleClickOpen2}>Add Item</button>
             </header>
             <div>
                 
@@ -160,9 +142,9 @@ const AdminSystem = () => {
                         <th> No </th>
                         <th> Item Name </th>
                         <th> Item Quantity </th>
-                        <th> returnable type </th>
-                        <th> Borrow days</th>
-                        <th> actions</th>
+                        <th> Returnable Type </th>
+                        <th> Borrow Days</th>
+                        <th> Actions</th>
                     </thead>
                     <tbody>
                         {
@@ -173,9 +155,9 @@ const AdminSystem = () => {
                                 <td> {itm.itemName} </td>
                                 <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
                                 {itm.returnable ? (
-                                    <td>yes</td>
+                                    <td>Yes</td>
                                         ) : (
-                                    <td>no</td>
+                                    <td>No</td>
                                 )}
                                 <td>{itm.maxDays===null ?<>-</>:itm.maxDays}</td>
                                 <td className="fit">
@@ -228,7 +210,7 @@ const AdminSystem = () => {
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                      <>Item quantity :</>  
+                      <>Item Quantity :</>  
                     </Grid>
                     <Grid container item xs={4} direction="column" >
                     <input
@@ -262,11 +244,11 @@ const AdminSystem = () => {
                <DialogContent className="pr-4">
                <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                    <>returnable type : </>
+                    <>Return Type:</>
                     </Grid>
                     <Grid container item xs={4} direction="column" >
-                        <test>{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
-                    <button className="pl-4" onClick={fun}>change</button>
+                        <test>{ret ? (<test>Yes</test>) : (<test>No</test>)}&nbsp;&nbsp;</test>
+                    <button className="pl-4" onClick={fun}>Change</button>
                     </Grid>
                 </Grid>
                
@@ -302,7 +284,7 @@ const AdminSystem = () => {
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Item name : &nbsp;</>
+                                    <>Item Name : &nbsp;</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
@@ -340,7 +322,7 @@ const AdminSystem = () => {
                                 </div>
                                 <div ><Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Returnable :</>
+                                    <>Return Type :</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
@@ -365,7 +347,7 @@ const AdminSystem = () => {
                                 <div>
                                 <Grid container spacing={2} >
                                 <Grid container item xs={5} direction="column" >
-                                    <>Borrow days :</>
+                                    <>Borrow Days :</>
                                     
                                 </Grid>
                                 <Grid container item xs={4} direction="column" >

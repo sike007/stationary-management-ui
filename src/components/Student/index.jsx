@@ -2,14 +2,11 @@ import { Card } from "@mui/material"
 import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
-import { useNavigate } from 'react-router-dom';
 import {
     Dialog,
     DialogTitle,
-    DialogContent,
     DialogActions,
     Button,
-    Typography,
   } from '@material-ui/core';  
 import Grid from '@material-ui/core/Grid';
 import transaction from "../../server/transaction";
@@ -24,6 +21,7 @@ const Student = () => {
     const [count,setCount] = useState(0)
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
+    const [date1] = useState(new Date());
     useEffect(() => {
         setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
     }, [item])
@@ -38,15 +36,6 @@ const Student = () => {
         setCount(0)
         setOpen1(false);
     }
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const navigate = useNavigate()
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-     setAnchorEl(event.currentTarget);
-     };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     const getAll = () => {
         items.getAllItems().then((response) => {
             setItem(response.data)
@@ -54,13 +43,9 @@ const Student = () => {
         }).catch(error =>{
             console.log(error);
         })}
-    const handletransaction =()=>{
-        navigate('/transaction')
-        handleClose()
-    }
     const withdraw = (e) => {
-        console.log(quant)
-        e.preventDefault()
+        var ndate = new Date(date1.getTime());
+        ndate.setDate(date1.getDate() + maxd);
         if(count===0){alert("Item quantity shouldn't be zero" )}
         else{
             if(quant<count){alert("Item quantity must be less than "+quant)}
@@ -70,8 +55,12 @@ const Student = () => {
                     window.location.reload()
                 }
                 else{
-                    console.log({"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":maxd,"returned":false})
-                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":maxd,"returned":false})
+                    console.log({"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
+                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }).split('/').reverse().join('-'),"returned":false})
                     window.location.reload()
                 }
             }
@@ -102,10 +91,8 @@ const Student = () => {
         }, [])
 
     return (
-    <div class name="body">
-        <header className="header1">
-            <button className="butt" onClick={handletransaction}>My Transactions</button>
-            </header>
+    <div>
+        <div><div>
         <Card className="App-Card">
             <h3>Student</h3>
             <table className="table table-bordered table-striped" >
@@ -113,9 +100,9 @@ const Student = () => {
                         <th> No </th>
                         <th> Item Name </th>
                         <th> Item Quantity </th>
-                        <th> returnable type </th>
+                        <th> Returnable Type </th>
                         <th> Borrow days</th>
-                        <th> actions</th> 
+                        <th> Actions</th> 
                     </thead>
                     <tbody>
                         {
@@ -126,9 +113,9 @@ const Student = () => {
                                 <td> {itm.itemName} </td>
                                 <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
                                 {itm.returnable ? (
-                                    <td>yes</td>
+                                    <td>Yes</td>
                                         ) : (
-                                    <td>no</td>
+                                    <td>No</td>
                                 )}
                                 <td>{itm.maxDays===null ?<>-</>:itm.maxDays}</td>
                                 <td >
@@ -255,6 +242,7 @@ const Student = () => {
                     </div>
             </Dialog>
         </div>
+        </div></div>
     </div>
     )
 }

@@ -1,17 +1,12 @@
 import { Card } from "@mui/material"
-import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
-import { useNavigate } from 'react-router-dom';
 import {
     Dialog,
     DialogTitle,
-    DialogContent,
     DialogActions,
     Button,
-    Typography,
   } from '@material-ui/core';  
-import Grid from '@material-ui/core/Grid';
 import transaction from "../../server/transaction";
 
 
@@ -19,9 +14,13 @@ const Transaction = () => {
     const [item , setItem] = useState([])
     const [open1, setOpen1] = React.useState(false);
     const [id,setId] = useState()
+    const [item1,setItem1] = useState()
     const handleca =()=>{
         setOpen1(false);
     }
+    useEffect(() => {
+        setItem1(item.sort((a,b)=>(a.transactionId-b.transactionId)))
+    }, [item])
     const return1=()=>{
         transaction.updateOneTransaction(id,{"returned":true})
         window.location.reload()
@@ -49,10 +48,10 @@ const Transaction = () => {
             <table className="table table-bordered table-striped" >
                     <thead>
                         <th> No </th>
-                        <th> Item Id </th>
+                        <th> Item Name </th>
                         <th> Item Quantity </th>
-                        <th> Borrow days</th>
-                        <th> actions</th> 
+                        <th> Return Date</th>
+                        <th> Actions</th> 
                     </thead>
                     <tbody>
                         {
@@ -60,7 +59,7 @@ const Transaction = () => {
                             itm =>
                             {return !itm.returned?<tr open={itm.returned} key = {itm.transactionId}> 
                             <td> {itm.transactionId}</td>
-                            <td> {itm.stationaryItemId} </td>
+                            <td> {itm.stationaryItem.itemName} </td>
                             <td> {itm.withdrawnQuantity===null ?<>0</>:itm.withdrawnQuantity} </td>
                             <td>{itm.returnDate===null ?<>-</>:itm.returnDate}</td>
                             <td >

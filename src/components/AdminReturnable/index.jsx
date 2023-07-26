@@ -1,15 +1,11 @@
 import { Card } from "@mui/material"
-import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
-import { useNavigate } from 'react-router-dom';
 import {
     Dialog,
     DialogTitle,
-    DialogContent,
     DialogActions,
     Button,
-    Typography,
   } from '@material-ui/core';  
 import Grid from '@material-ui/core/Grid';
 import transaction from "../../server/transaction";
@@ -20,11 +16,22 @@ const AdminReturnable = () => {
     const [open1, setOpen1] = React.useState(false);
     const [id,setId] = useState()
     const [i1,setI1] = useState()
+    const [date1] = useState(new Date())
+    const [item1,setItem1] = useState()
     const handleca =()=>{
         setOpen1(false);
     }
+    useEffect(() => {
+        setItem1(item.sort((a,b)=>(a.transactionId-b.transactionId)))
+    }, [item])
     const return1=()=>{
-        transaction.updateOneTransaction(id,{"returnDate":i1}).then((response)=>{console.log(response)}).catch(error=>{console.log(error)})
+        var ndate = new Date(date1.getTime());
+        ndate.setDate(date1.getDate() + parseInt(i1));
+        transaction.updateOneTransaction(id,{"returnDate":ndate.toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).split('/').reverse().join('-')}).then((response)=>{console.log(response)}).catch(error=>{console.log(error)})
         window.location.reload()
         
     }
@@ -48,19 +55,18 @@ const AdminReturnable = () => {
         }
         
     return (
-        <div class name="body">
-        <header className="header1">
-            </header>
+        <div>
+            <div><div>
         <Card className="App-Card">
-            <h3>Collectable items</h3>
+            <h3>Collectable Items</h3>
             <table className="table table-bordered table-striped" >
                     <thead>
                         <th> No </th>
-                        <th> Student Id</th>
-                        <th> Item Id </th>
+                        <th> Student Name</th>
+                        <th> Item Name </th>
                         <th> Item Quantity </th>
-                        <th> Borrow days</th>
-                        <th> actions</th> 
+                        <th> Return Date</th>
+                        <th> Actions</th> 
                     </thead>
                     <tbody>
                         {
@@ -68,8 +74,8 @@ const AdminReturnable = () => {
                             itm =>
                             {return !itm.returned?<tr open={itm.returned} key = {itm.transactionId}> 
                             <td> {itm.transactionId}</td>
-                            <td> {itm.studentId}</td>
-                            <td> {itm.stationaryItemId} </td>
+                            <td> {itm.student.studentName}</td>
+                            <td> {itm.stationaryItem.itemName} </td>
                             <td> {itm.withdrawnQuantity===null ?<>0</>:itm.withdrawnQuantity} </td>
                             <td>{itm.returnDate===null ?<>-</>:itm.returnDate}</td>
                             <td >
@@ -88,7 +94,7 @@ const AdminReturnable = () => {
         <div >
         <Dialog maxWidth="md" open={open1} onClose={ handleca} > 
                 <DialogTitle>
-                Add the details here
+                Change the return date here
                 </DialogTitle>
                 <div>
                     <div className="container">
@@ -119,7 +125,7 @@ const AdminReturnable = () => {
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Borrow days : &nbsp;&nbsp;</>
+                                    <>Borrow Date : &nbsp;&nbsp;</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
@@ -180,7 +186,7 @@ const AdminReturnable = () => {
                 </div>*/}
                                 <DialogActions>
                                     <Button onClick={(e)=>return1(e)} color="primary" variant="contained" >
-                                        Withdraw
+                                        change
                                     </Button>
                                     <Button onClick={handleca} color="secondary" variant="contained">
                                         Cancel
@@ -195,6 +201,7 @@ const AdminReturnable = () => {
                     </div>
             </Dialog>
         </div>
+        </div></div>
     </div>
     )
 }
