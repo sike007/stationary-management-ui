@@ -13,9 +13,10 @@ import {
     Typography,
   } from '@material-ui/core';
   import Grid from '@material-ui/core/Grid';
+import { useNavigate } from "react-router-dom";
  
 const AdminSystem = () => {
-
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const [item , setItem] = useState([])
     const [item1,setItem1] = useState()  
     const [id,setId] = useState()
@@ -31,6 +32,13 @@ const AdminSystem = () => {
     const [i1, setI1] = useState();
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
+    const open0 = Boolean(anchorEl);
+    const handleClick = (event) => {
+     setAnchorEl(event.currentTarget);
+     };
+        const handleClose0 = () => {
+            setAnchorEl(null);
+        };
     
     useEffect(() => {
 
@@ -84,6 +92,7 @@ const AdminSystem = () => {
         }
         
     }
+    const nav = useNavigate()
     const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
         setOpen1(false);
@@ -129,13 +138,17 @@ const AdminSystem = () => {
             setResults(0);
         }
     },[results])
+    const handletransaction =()=>{
+        nav('/transaction')
+        handleClose()
+    }
 
     return(
         <div>
             <header className="header1">
             <img src={Timg} className="App-logo1"  />
             <button className="butt" onClick={handleClickOpen2}>add item</button>
-            <button className="butt" >collectable items</button>
+            <button className="butt" onClick={handletransaction}>collectable items</button>
             </header>
             <div>
                 

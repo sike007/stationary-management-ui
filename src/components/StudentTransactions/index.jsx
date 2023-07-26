@@ -17,6 +17,15 @@ import transaction from "../../server/transaction";
 
 const Transaction = () => {
     const [item , setItem] = useState([])
+    const [open1, setOpen1] = React.useState(false);
+    const [id,setId] = useState()
+    const handleca =()=>{
+        setOpen1(false);
+    }
+    const return1=()=>{
+        transaction.updateOneTransaction(id,{"returned":true})
+        window.location.reload()
+    }
     const getAll = () => {
         transaction.getTransactionByStudent(sessionStorage.getItem('id')).then((response) => {
             setItem(response.data)
@@ -27,6 +36,10 @@ const Transaction = () => {
         useEffect(() => {
             getAll();
         }, [])
+        const handleClickOpen1 = (a) => {
+            setId(a)
+            setOpen1(true);
+        };
     return (
         <div class name="body">
         <header className="header1">
@@ -45,24 +58,39 @@ const Transaction = () => {
                         {
                         item.map(
                             itm =>
-                            <tr key = {itm.transactionId}> 
-                                <td> {itm.transactionId}</td>
-                                <td> {itm.stationaryItemId} </td>
-                                <td> {itm.withdrawnQuantity===null ?<>0</>:itm.withdrawnQuantity} </td>
-                                <td>{itm.returnDate===null ?<>-</>:itm.returnDate}</td>
-                                <td >
-                                    
-                                    <Button  color="info" variant="contained" >
-                                        return
-                                    </Button>
-                                    
-                                </td>
-                            </tr>
+                            {return !itm.returned?<tr open={itm.returned} key = {itm.transactionId}> 
+                            <td> {itm.transactionId}</td>
+                            <td> {itm.stationaryItemId} </td>
+                            <td> {itm.withdrawnQuantity===null ?<>0</>:itm.withdrawnQuantity} </td>
+                            <td>{itm.returnDate===null ?<>-</>:itm.returnDate}</td>
+                            <td >
+                                
+                                <Button onClick={()=>handleClickOpen1(itm.transactionId)} color="info" variant="contained" >
+                                    return
+                                </Button>
+                                
+                            </td>
+                        </tr>:<></>}
                         )
                     }
                 </tbody>
             </table>
         </Card>
+        <div >
+            <Dialog maxWidth="md" open={open1} onClose={ handleca} > 
+                <DialogTitle>
+                Do you want to return this item
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={return1} color="primary" variant="contained" >
+                        return
+                    </Button>
+                    <Button onClick={handleca} color="secondary" variant="contained">
+                        Cancel
+                    </Button>
+                </DialogActions> 
+            </Dialog>
+        </div>
     </div>
     )
 }
