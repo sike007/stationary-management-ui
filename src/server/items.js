@@ -11,7 +11,7 @@ class items{
         return axios.patch(url+"/"+pram1,data)
     }
     saveItem(data){
-        return axios.post(url+"/add_item",data)
+        return axios.post(url+"/add_item ",data)
     }
 }
 export default new items();

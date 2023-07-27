@@ -4,8 +4,9 @@ import PageRoutes from './components/PageRoutes';
 import { BrowserRouter } from 'react-router-dom';
 import useToken from './components/App/useToken.js';
 import Login from './components/Login';
-import PageRoutes2 from './components/PageRoutes2';
 import PageRoutes3 from './components/PageRoutes3';
+import Headerb from './components/Headerb';
+import Headera from './components/Headera';
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
     return (
       <BrowserRouter>
         <div className="App">
-          <PageRoutes2 />
+          <Headerb />
           <PageRoutes />
           <Footer />
         </div>
@@ -29,7 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <PageRoutes2 />
+        <Headera />
         <PageRoutes3 />
         <Footer />
       </div>

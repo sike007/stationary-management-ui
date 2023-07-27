@@ -3,7 +3,6 @@ import * as React from 'react';
 import items from "../../server/items";
 import { Card } from "@mui/material";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import Timg from "../../images/targetLogo.png";
 import {
     Dialog,
     DialogTitle,
@@ -15,7 +14,6 @@ import {
   import Grid from '@material-ui/core/Grid';
  
 const AdminSystem = () => {
-
     const [item , setItem] = useState([])
     const [item1,setItem1] = useState()  
     const [id,setId] = useState()
@@ -74,7 +72,6 @@ const AdminSystem = () => {
         setOpen1(false);
         window.location.reload();
     }
-   // const handleaa =(event1)=>{setRet(event1.target.value);};
     const handleC = () => {
         setOpen1(false);
     };
@@ -111,12 +108,6 @@ const AdminSystem = () => {
             handleClickOpen3();
         })
     }
-
-    const preventMinus = (e) => {
-        if (e.code === 'Minus') {
-            e.preventDefault();
-        }
-    };
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
@@ -128,6 +119,10 @@ const AdminSystem = () => {
 
     return(
         <div>
+
+            <header className="header1">
+            <button className="butt" onClick={handleClickOpen2}>Add Item</button>
+            </header>
             <div>
                 <button className="butt" onClick={handleClickOpen2}>add item</button>
                 </div>
@@ -138,8 +133,11 @@ const AdminSystem = () => {
                         <th> No </th>
                         <th> Item Name </th>
                         <th> Item Quantity </th>
-                        <th> returnable type </th>
-                        <th> actions</th>
+
+                        <th> Returnable Type </th>
+                        <th> Borrow Days</th>
+                        <th> Actions</th>
+
                     </thead>
                     <tbody>
                         {
@@ -150,9 +148,9 @@ const AdminSystem = () => {
                                 <td> {itm.itemName} </td>
                                 <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
                                 {itm.returnable ? (
-                                    <td>yes</td>
+                                    <td>Yes</td>
                                         ) : (
-                                    <td>no</td>
+                                    <td>No</td>
                                 )}
                                 <td className="fit">
                                     <span className="actions">
@@ -179,11 +177,7 @@ const AdminSystem = () => {
                 <DialogTitle>
                     Confirm the action
                 </DialogTitle>
-                {/* <Box position="absolute" top={0} right={0}>
-                    <IconButton onClick={handleClose}>
-                        <Close />
-                    </IconButton>
-                </Box> */}
+                
                 <DialogContent>
                 <Typography>Are you sure you want to delete this item?</Typography>
                 </DialogContent>
@@ -207,7 +201,7 @@ const AdminSystem = () => {
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                      <>Item quantity :</>  
+                      <>Item Quantity :</>  
                     </Grid>
                     <Grid container item xs={4} direction="column" >
                     <input
@@ -215,7 +209,6 @@ const AdminSystem = () => {
                                         placeholder="enter count"
                                         name = "i3"
                                         min="0"
-                                        onKeyPress={preventMinus}
                                         //value = {i3}
                                         //className="form-control"
                                         onChange={event => setQuant(event.target.value)}
@@ -228,7 +221,7 @@ const AdminSystem = () => {
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                    <>max Days :</>
+                    <>Borrow Days :</>
                         
                     </Grid>
                     <Grid direction="column" >
@@ -242,11 +235,11 @@ const AdminSystem = () => {
                <DialogContent className="pr-4">
                <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                    <>returnable type : </>
+                    <>Return Type:</>
                     </Grid>
                     <Grid container item xs={4} direction="column" >
-                        <test>{ret ? (<test>yes</test>) : (<test>no</test>)}&nbsp;&nbsp;</test>
-                    <button className="pl-4" onClick={fun}>change</button>
+                        <test>{ret ? (<test>Yes</test>) : (<test>No</test>)}&nbsp;&nbsp;</test>
+                    <button className="pl-4" onClick={fun}>Change</button>
                     </Grid>
                 </Grid>
                
@@ -280,7 +273,7 @@ const AdminSystem = () => {
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Item name : &nbsp;</>
+                                    <>Item Name : &nbsp;</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
@@ -306,7 +299,7 @@ const AdminSystem = () => {
                                         type = "number"
                                         placeholder="enter count"
                                         name = "i3"
-                                        onKeyPress={preventMinus}
+                                        min="0"
                                         //value = {i3}
                                         //className="form-control"
                                         onChange={(e)=>setI3(e.target.value)}
@@ -317,7 +310,7 @@ const AdminSystem = () => {
                                 </div>
                                 <div ><Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Returnable :</>
+                                    <>Return Type :</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
@@ -342,7 +335,7 @@ const AdminSystem = () => {
                                 <div>
                                 <Grid container spacing={2} >
                                 <Grid container item xs={5} direction="column" >
-                                    <>max days :</>
+                                    <>Borrow Days :</>
                                     
                                 </Grid>
                                 <Grid container item xs={4} direction="column" >

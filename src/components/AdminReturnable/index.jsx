@@ -1,5 +1,4 @@
 import { Card } from "@mui/material"
-import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -12,130 +11,90 @@ import Grid from '@material-ui/core/Grid';
 import transaction from "../../server/transaction";
 
 
-const Student = () => {
-    const [quant , setQuant] = useState(0)
-    const [item1,setItem1] = useState()  
-    const [open1, setOpen1] = React.useState(false);
+const AdminReturnable = () => {
     const [item , setItem] = useState([])
+    const [open1, setOpen1] = React.useState(false);
     const [id,setId] = useState()
-    const [count,setCount] = useState(0)
-    const [type,setType] = useState()
-    const [maxd , setMaxd] = useState()
-    const [date1] = useState(new Date());
-    useEffect(() => {
-        setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
-    }, [item])
-    const handleClickOpen1 = (a,b,c,d) => {
-        setId(a)
-        setQuant(b)
-        setType(c)
-        setMaxd(d)
-        setOpen1(true);
-    };
+    const [i1,setI1] = useState()
+    const [date1] = useState(new Date())
+    const [item1,setItem1] = useState()
     const handleca =()=>{
-        setCount(0)
         setOpen1(false);
     }
+    useEffect(() => {
+        setItem1(item.sort((a,b)=>(a.transactionId-b.transactionId)))
+    }, [item])
+    const return1=()=>{
+        var ndate = new Date(date1.getTime());
+        ndate.setDate(date1.getDate() + parseInt(i1));
+        transaction.updateOneTransaction(id,{"returnDate":ndate.toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).split('/').reverse().join('-')}).then((response)=>{console.log(response)}).catch(error=>{console.log(error)})
+        window.location.reload()
+        
+    }
     const getAll = () => {
-        items.getAllItems().then((response) => {
+        transaction.getAllTransactions().then((response) => {
             setItem(response.data)
             console.log(response.data);
         }).catch(error =>{
             console.log(error);
         })}
-    const withdraw = (e) => {
-        var ndate = new Date(date1.getTime());
-        ndate.setDate(date1.getDate() + maxd);
-        if(count===0){alert("Item quantity shouldn't be zero" )}
-        else{
-            if(quant<count){alert("Item quantity must be less than "+quant)}
-            else{
-                if(!type){
-                    items.updateItem(id,{"quantity":quant-count})
-                    window.location.reload()
-                }
-                else{
-                    console.log({"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
-                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }).split('/').reverse().join('-'),"returned":false})
-                    window.location.reload()
-                }
-            }
-        }
-    }
-    
-    // const handleC1 = () => {
-    //     if(ret){
-    //         console.log({"quantity":quant,"returnable":ret,"maxDays":days})
-    //         items.updateItem(id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
-    //         setOpen1(false);
-    //         window.location.reload()
-    //     }
-    //     else{
-    //         console.log({"quantity":quant,"returnable":ret,"maxDays":null})
-    //         items.updateItem(id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
-    //         setOpen1(false);
-    //         window.location.reload()
-    //     }
-    // }
-    const handleSubmit = (event) => {
-        console.log('handleSubmit ran');
-        event.preventDefault(); 
-    }
-    
-    useEffect(() => {
+        useEffect(() => {
             getAll();
         }, [])
-
+        const handleClickOpen1 = (a) => {
+            setId(a)
+            setOpen1(true);
+        };
+        const handleSubmit = (event) => {
+            console.log('handleSubmit ran');
+            event.preventDefault(); 
+        }
+        
     return (
-    <div>
-        <div><div>
+        <div>
+            <div><div>
         <Card className="App-Card">
-            <h3>Student</h3>
+            <h3>Collectable Items</h3>
             <table className="table table-bordered table-striped" >
                     <thead>
                         <th> No </th>
+                        <th> Student Name</th>
                         <th> Item Name </th>
                         <th> Item Quantity </th>
-                        <th> Returnable Type </th>
-                        <th> Borrow days</th>
+                        <th> Return Date</th>
                         <th> Actions</th> 
                     </thead>
                     <tbody>
                         {
                         item.map(
                             itm =>
-                            <tr key = {itm.itemId}> 
-                                <td> {itm.itemId}</td>
-                                <td> {itm.itemName} </td>
-                                <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
-                                {itm.returnable ? (
-                                    <td>Yes</td>
-                                        ) : (
-                                    <td>No</td>
-                                )}
-                                <td>{itm.maxDays===null ?<>-</>:itm.maxDays}</td>
-                                <td >
-                                    
-                                    <Button onClick={()=>handleClickOpen1(itm.itemId,itm.quantity,itm.returnable,itm.maxDays)} color="info" variant="contained" >
-                                        Withdraw
-                                    </Button>
-                                    
-                                </td>
-                            </tr>
+                            {return !itm.returned?<tr open={itm.returned} key = {itm.transactionId}> 
+                            <td> {itm.transactionId}</td>
+                            <td> {itm.student.studentName}</td>
+                            <td> {itm.stationaryItem.itemName} </td>
+                            <td> {itm.withdrawnQuantity===null ?<>0</>:itm.withdrawnQuantity} </td>
+                            <td>{itm.returnDate===null ?<>-</>:itm.returnDate}</td>
+                            <td >
+                                
+                                <Button onClick={()=>handleClickOpen1(itm.transactionId)} color="info" variant="contained" >
+                                    change
+                                </Button>
+                                
+                            </td>
+                        </tr>:<></>}
                         )
                     }
                 </tbody>
             </table>
         </Card>
-        
         <div >
-            <Dialog maxWidth="md" open={open1} onClose={ handleca} > 
+        <Dialog maxWidth="md" open={open1} onClose={ handleca} > 
                 <DialogTitle>
-                Add the details here
+                Change the return date here
                 </DialogTitle>
                 <div>
                     <div className="container">
@@ -166,17 +125,17 @@ const Student = () => {
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
-                                    <>Item Quantity : &nbsp;&nbsp;</>
+                                    <>Borrow Date : &nbsp;&nbsp;</>
                                         
                                     </Grid>
                                     <Grid container item xs={4} direction="column" >
                                     
                                     <input
                                         type = "number"
-                                        min="1"
+                                        min="0"
                                         placeholder="enter count"
-                                        name = "i3"
-                                        onChange={(e)=>setCount(e.target.value)}
+                                        name = "i1"
+                                        onChange={(e)=>setI1(e.target.value)}
                                     ></input>
                                         
                                     </Grid>
@@ -226,8 +185,8 @@ const Student = () => {
                                 </Grid>
                 </div>*/}
                                 <DialogActions>
-                                    <Button onClick={(e)=>withdraw(e)} color="primary" variant="contained" >
-                                        Withdraw
+                                    <Button onClick={(e)=>return1(e)} color="primary" variant="contained" >
+                                        change
                                     </Button>
                                     <Button onClick={handleca} color="secondary" variant="contained">
                                         Cancel
@@ -246,4 +205,4 @@ const Student = () => {
     </div>
     )
 }
-export default Student;
+export default AdminReturnable
