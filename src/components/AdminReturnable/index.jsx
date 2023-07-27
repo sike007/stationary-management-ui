@@ -6,8 +6,8 @@ import {
     DialogTitle,
     DialogActions,
     Button,
-  } from '@material-ui/core';  
-import Grid from '@material-ui/core/Grid';
+  } from '@mui/material';  
+import Grid from '@mui/material/Grid';
 import transaction from "../../server/transaction";
 
 

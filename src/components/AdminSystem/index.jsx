@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import * as React from 'react';  
 import items from "../../server/items";
-import { Card } from "@mui/material";
-import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Button,
-    Typography,
-  } from '@material-ui/core';
-  import Grid from '@material-ui/core/Grid';
+import { Card, Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { DataGrid, GridToolbarContainer, GridActionsCellItem } from "@mui/x-data-grid";
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import Grid from '@mui/material/Grid';
  
 const AdminSystem = () => {
     const [item , setItem] = useState([])
@@ -30,10 +25,6 @@ const AdminSystem = () => {
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
     
-    useEffect(() => {
-
-        getAll();
-    }, [])
     useEffect(() => {
 
         console.log("hi")
@@ -116,61 +107,92 @@ const AdminSystem = () => {
             setResults(0);
         }
     },[results])
+    function EditToolbar(props) {
 
+        return (
+            <GridToolbarContainer>
+                <Button startIcon={<AddIcon />} onClick={handleClickOpen2}>
+                    Add Item
+                </Button>
+            </GridToolbarContainer>
+        );
+    }
+
+
+    const [rows, setRows] = useState([]);
+    const getData = () => items.getAllItems()
+        .then(response =>
+            setRows(response.data.map((item) => {
+                return {
+                    id: item.itemId,
+                    itemName: item.itemName,
+                    quantity: item.quantity,
+                    maxDays: item.maxDays,
+                    returnable: item.returnable
+                }
+            })));
+    useEffect(() => { getData(); }, [])
+
+    const columns = [
+        { field: 'id', headerName: 'ID', flex: .2 },
+        { field: 'itemName', headerName: 'Item Name', flex: .6 },
+        { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3 },
+        {
+            field: 'maxDays',
+            headerName: 'To be returned in (days)',
+            valueGetter: (params) => {
+                if (!params.value)
+                    return "Not returnable";
+                return params.value;
+            }, flex: .4
+        },
+        {
+            field: 'actions',
+            type: 'actions',
+            headerName: 'Actions',
+            cellClassName: 'actions',
+            getActions: ({ id, quantity, maxDays, returnable }) => {
+                return [
+                    <GridActionsCellItem
+                        icon={<EditIcon />}
+                        label="Edit"
+                        onClick={() => handleClickOpen1(id, quantity, returnable)}
+                        color="inherit"
+                    />,
+                    <GridActionsCellItem
+                        icon={<DeleteIcon />}
+                        label="Delete"
+                        onClick={() => handleClickOpen(id)}
+                        color="inherit"
+                    />,
+                ];
+            },
+        },
+    ];
     return(
         <div>
-
-            <header className="header1">
-            <button className="butt" onClick={handleClickOpen2}>Add Item</button>
-            </header>
-            <div>
-                <button className="butt" onClick={handleClickOpen2}>add item</button>
-                </div>
             <Card className="App-Card">
-            <h3>Admin</h3>
-                <table className="table table-bordered table-striped" >
-                    <thead>
-                        <th> No </th>
-                        <th> Item Name </th>
-                        <th> Item Quantity </th>
-
-                        <th> Returnable Type </th>
-                        <th> Borrow Days</th>
-                        <th> Actions</th>
-
-                    </thead>
-                    <tbody>
-                        {
-                        item.map(
-                            itm =>
-                            <tr key = {itm.itemId}> 
-                                <td> {itm.itemId}</td>
-                                <td> {itm.itemName} </td>
-                                <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
-                                {itm.returnable ? (
-                                    <td>Yes</td>
-                                        ) : (
-                                    <td>No</td>
-                                )}
-                                <td className="fit">
-                                    <span className="actions">
-                                    <BsFillPencilFill
-                                            className="edit-btn"
-                                            onClick={() => handleClickOpen1(itm.itemId,itm.quantity,itm.returnable)}
-                                        />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <BsFillTrashFill
-                                            className="delete-btn"
-                                            onClick={() => handleClickOpen(itm.itemId)}
-                                        />
-                                        
-                                    </span>
-                                </td>
-                            </tr>
-                        )
-                    }
-                </tbody>
-            </table>
-            
+            <Typography variant="h4" component="h1" >
+                INVENTORY
+            </Typography>
+            <Container component="main" maxWidth="md">
+                <div style={{ width: '100%' }}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 5 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10]}
+                        disableRowSelectionOnClick
+                        slots={{
+                            toolbar: EditToolbar,
+                        }}
+                    />
+                </div>
+                </Container>
         </Card>
         <div>
             <Dialog open={open} onClose={handleClose}>

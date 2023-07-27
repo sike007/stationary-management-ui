@@ -76,6 +76,9 @@
   border-radius: 8px;
   font-weight: 700;
 }
+div.MuiToolbar-root p {
+  margin-bottom: 0;
+}
 .butt:hover {
   background-color: rgb(225, 225, 225);
   color: black;
