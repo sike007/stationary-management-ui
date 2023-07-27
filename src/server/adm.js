@@ -5,5 +5,8 @@ class adm{
     loginAdmin(creds){
         return axios.post(url+"/login",creds);
     }
+    getAdminName(){
+        return axios.get(url);
+    }
 }
 export default new adm();
