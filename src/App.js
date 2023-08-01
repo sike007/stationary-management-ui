@@ -4,38 +4,50 @@ import PageRoutes from './components/PageRoutes';
 import { BrowserRouter } from 'react-router-dom';
 import useToken from './components/App/useToken.js';
 import Login from './components/Login';
-import PageRoutes3 from './components/PageRoutes3';
-import Headerb from './components/Headerb';
-import Headera from './components/Headera';
+import Header from './components/Header';
 
 
 function App() {
-  const {token,setToken} = useToken();
-
-  if(!token) {
-    return (
-      <Login setToken={setToken} />)
-  }
-  if(token==="admin"){
-    return (
+  const { token, setToken } = useToken();
+  let homePage;
+  if (!token)
+    homePage = <Login setToken={setToken} />;
+  else
+    homePage = (
       <BrowserRouter>
         <div className="App">
-          <Headerb />
+          <Header />
           <PageRoutes />
           <Footer />
         </div>
-      </BrowserRouter>
-    )
-  }
-  return (
-    <BrowserRouter>
-      <div className="App">
-        <Headera />
-        <PageRoutes3 />
-        <Footer />
-      </div>
-    </BrowserRouter>
-  );
+      </BrowserRouter >
+    );
+  return homePage;
+
+  //   if (!token) {
+  //     return (
+  //       <Login setToken={setToken} />)
+  //   }
+  //   if (token === "admin") {
+  //     return (
+  //       <BrowserRouter>
+  //         <div className="App">
+  //           <Headerb />
+  //           <PageRoutes />
+  //           <Footer />
+  //         </div>
+  //       </BrowserRouter>
+  //     )
+  //   }
+  //   return (
+  //     <BrowserRouter>
+  //       <div className="App">
+  //         <Headera />
+  //         <PageRoutes3 />
+  //         <Footer />
+  //       </div>
+  //     </BrowserRouter>
+  //   );
 }
 
 

@@ -48,61 +48,61 @@ const Login = ({ setToken }) => {
     instance.post('admin/login',
       { "adminEmail": data.get("email"), "adminPassword": data.get("password") })
       .then(function (response) {
-        setToken({token:"admin"});
-        sessionStorage.setItem("name",response.data.admin.adminName)
-        sessionStorage.setItem("id",response.data.admin.adminId)
+        setToken({ token: "admin" });
+        sessionStorage.setItem("name", response.data.admin.adminName)
+        sessionStorage.setItem("id", response.data.admin.adminId)
       })
-      .catch(function(response){
+      .catch(function (response) {
         console.log("not admin => " + response);
-        
+
         instance.post('/student/login ',
-        { "studentEmail": data.get("email"), "studentPassword": data.get("password") })
-        .then(function (response) {
-          setToken({token:"student"});
-          sessionStorage.setItem("name",response.data.student.studentName)
-        sessionStorage.setItem("id",response.data.student.studentId)
-        })
-        .catch(function(response){
-          console.log("not student => " + response);
-          alert("The credentials do not match. Please try again");
-        });
+          { "studentEmail": data.get("email"), "studentPassword": data.get("password") })
+          .then(function (response) {
+            setToken({ token: "student" });
+            sessionStorage.setItem("name", response.data.student.studentName)
+            sessionStorage.setItem("id", response.data.student.studentId)
+          })
+          .catch(function (response) {
+            console.log("not student => " + response);
+            alert("The credentials do not match. Please try again");
+          });
       });
 
   };
 
 
   const boxstyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "75%",
-  height: "70%",
-  bgcolor: "white",
-  boxShadow: 24,
-};
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "75%",
+    height: "70%",
+    bgcolor: "white",
+    boxShadow: 24,
+  };
 
-const center = {
-  position: "relative",
-  top: "50%",
-  left: "37%",
-};
+  const center = {
+    position: "relative",
+    top: "50%",
+    left: "37%",
+  };
 
   return (
     <>
-      <header className="App-header">      
-      <Box sx={{ display: 'flex', alignItems: 'center',marginTop: "0px", marginLeft: "20px"}}>
-          <Box sx={{marginRight:"20px"}}>
+      <header className="App-header">
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: "0px", marginLeft: "20px" }}>
+          <Box sx={{ marginRight: "20px" }}>
             <Logo />
           </Box>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-              Stationery Management System
+            Stationery Management System
           </Typography>
         </Box>
       </header>
       <div
         style={{
-          backgroundColor: "#880808",
+          backgroundColor: "white",
           backgroundSize: "cover",
           height: "100vh",
           color: "#f5f5f5",
@@ -132,86 +132,72 @@ const center = {
                 sx={{ borderLeft: 2, }}
               >
 
-                  <Container>
-                    <Box  sx={center} height='75px' />
-                      <Box >
-                        <Box display="flex" alignItems="center" justifyContent="center">
-                          <Avatar
-                            sx={{ ml: "0px", mb: "4px", bgcolor: "#000000" }}
-                          >
-                            <LockOutlinedIcon />
-                          </Avatar>
-                          </Box>
-                        <Box display="flex" alignItems="center" justifyContent="center">
-                        <Typography color="black" component="h1" variant="h4">
-                          Sign In
-                        </Typography>
-                        </Box>
+                <Container>
+                  <Box sx={center} height='75px' />
+                  <Box >
+                    <Box display="flex" alignItems="center" justifyContent="center">
+                      <Avatar
+                        sx={{ ml: "0px", mb: "4px", bgcolor: "#000000" }}
+                      >
+                        <LockOutlinedIcon />
+                      </Avatar>
                     </Box>
-                    <Box
-                      component="form"
-                      noValidate
-                      onSubmit={handleSubmit}
-                      sx={{ mt: 2 }}
-                    >
-                      <Grid container spacing={1}>
-                        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
-                          <TextField
-                            required
-                            fullWidth
-                            id="email"
-                            label="Username"
-                            name="email"
-                            autoComplete="email"
-                          />
-                        </Grid>
-                        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
-                          <TextField
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="new-password"
-                          />
-                        </Grid>
-                        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
-                          <Stack direction="row" spacing={2}>
-
-                            <Typography
-                              variant="body1"
-                              component="span"
-                              onClick={() => {}}
-                              style={{color:"black", marginTop: "10px", cursor: "pointer" }}
-                            >
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Typography>
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12} sx={{ ml: "5em", mr: "5em" }}>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            fullWidth="true"
-                            size="large"
-                            sx={{
-                              mt: "10px",
-                              mr: "20px",
-                              borderRadius: 28,
-                              color: "#ffffff",
-                              minWidth: "170px",
-                              backgroundColor: "#880808",
-                            }}
-                          >
-                            Sign in
-                          </Button>
-                        </Grid>
+                    <Box display="flex" alignItems="center" justifyContent="center">
+                      <Typography color="black" component="h1" variant="h4">
+                        Sign In
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box
+                    component="form"
+                    noValidate
+                    onSubmit={handleSubmit}
+                    sx={{ mt: 2 }}
+                  >
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
+                        <TextField
+                          required
+                          fullWidth
+                          id="email"
+                          label="Username"
+                          name="email"
+                          autoComplete="email"
+                        />
                       </Grid>
-                    </Box>
-                  </Container>
+                      <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
+                        <TextField
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="new-password"
+                        />
+                      </Grid>
+                      
+                      <Grid item xs={12} sx={{ ml: "5em", mr: "5em" }}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          fullWidth="true"
+                          size="large"
+                          sx={{
+                            mt: "20px",
+                            mr: "20px",
+                            borderRadius: 28,
+                            color: "#ffffff",
+                            minWidth: "170px",
+                            // backgroundColor: "#880808",
+                          }}
+                        >
+                          Sign in
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Container>
               </Box>
             </Grid>
           </Grid>

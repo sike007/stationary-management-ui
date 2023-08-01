@@ -20,7 +20,7 @@
   border-radius: 8px;
 }
 .App-header {
-  background: #a31c1c;
+  background: #6c88c8;
   font-size: 20px;
   color: white;
   display: flex;
@@ -34,7 +34,7 @@
   max-height: 70px;
 }
 .App-footer {
-  background-color: #a31c1c;
+  background: #6c88c8;
   font-size: 16px;
   bottom: 0;
   position: relative;
