@@ -1,4 +1,4 @@
-import { Card } from "@mui/material"
+import { Card, Container } from "@mui/material"
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -7,23 +7,22 @@ import {
     DialogActions,
     Button,
   } from '@mui/material';  
-import Grid from '@mui/material/Grid';
 import transaction from "../../server/transaction";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import EditIcon from '@mui/icons-material/Edit';
+import Grid from '@mui/material/Grid';
 
 
 const AdminReturnable = () => {
-    const [item , setItem] = useState([])
     const [open1, setOpen1] = React.useState(false);
     const [id,setId] = useState()
     const [i1,setI1] = useState()
     const [date1] = useState(new Date())
-    const [item1,setItem1] = useState()
+    const [item1,setItem1] = useState([])
     const handleca =()=>{
+        setI1()
         setOpen1(false);
     }
-    useEffect(() => {
-        setItem1(item.sort((a,b)=>(a.transactionId-b.transactionId)))
-    }, [item])
     const return1=()=>{
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + parseInt(i1));
@@ -35,16 +34,6 @@ const AdminReturnable = () => {
         window.location.reload()
         
     }
-    const getAll = () => {
-        transaction.getAllTransactions().then((response) => {
-            setItem(response.data)
-            console.log(response.data);
-        }).catch(error =>{
-            console.log(error);
-        })}
-        useEffect(() => {
-            getAll();
-        }, [])
         const handleClickOpen1 = (a) => {
             setId(a)
             setOpen1(true);
@@ -53,43 +42,81 @@ const AdminReturnable = () => {
             console.log('handleSubmit ran');
             event.preventDefault(); 
         }
+        const [rows, setRows] = useState([]);
+        const getData = () => transaction.getAllTransactions()
+            .then(response =>
+                setRows(response.data.map((ite) => {
+                    return {
+                        id: ite.transactionId,
+                        itemName: ite.stationaryItem.itemName,
+                        quantity: ite.withdrawnQuantity,                        
+                        maxDays: ite.returnDate,
+                        returnable: ite.returned,
+                        student: ite.student.studentName
+                    }
+                })));
+        useEffect(() => { getData(); }, []) 
+        useEffect(() => {
+            setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
+            setItem1(current =>
+                current.filter(employee => {
+                  return !employee.returnable ;
+                }),
+              );
+        }, [rows])
+    
+        const columns = [
+            { field: 'id', headerName: 'ID', flex: .2 },
+            {field: 'student', headerName: 'Student Name', flex: .4 },
+            { field: 'itemName', headerName: 'Item Name', flex: .4 },
+            { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4 },
+            {
+                field: 'maxDays',
+                headerName: 'Return Date',
+                valueGetter: (params) => {
+                    if (!params.value)
+                        return "Not returnable";
+                    return params.value;
+                }, flex: .4
+            },
+            {
+                field: 'actions',
+                type: 'actions',
+                headerName: 'Actions',
+                cellClassName: 'actions',
+                getActions: ({ id }) => {
+                    return [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleClickOpen1(id)}
+                            color="inherit"
+                        />,
+                    ];
+                },
+            },
+        ];
         
     return (
         <div>
             <div><div>
         <Card className="App-Card">
             <h3>Collectable Items</h3>
-            <table className="table table-bordered table-striped" >
-                    <thead>
-                        <th> No </th>
-                        <th> Student Name</th>
-                        <th> Item Name </th>
-                        <th> Item Quantity </th>
-                        <th> Return Date</th>
-                        <th> Actions</th> 
-                    </thead>
-                    <tbody>
-                        {
-                        item.map(
-                            itm =>
-                            {return !itm.returned?<tr open={itm.returned} key = {itm.transactionId}> 
-                            <td> {itm.transactionId}</td>
-                            <td> {itm.student.studentName}</td>
-                            <td> {itm.stationaryItem.itemName} </td>
-                            <td> {itm.withdrawnQuantity===null ?<>0</>:itm.withdrawnQuantity} </td>
-                            <td>{itm.returnDate===null ?<>-</>:itm.returnDate}</td>
-                            <td >
-                                
-                                <Button onClick={()=>handleClickOpen1(itm.transactionId)} color="info" variant="contained" >
-                                    change
-                                </Button>
-                                
-                            </td>
-                        </tr>:<></>}
-                        )
-                    }
-                </tbody>
-            </table>
+            <Container component="main" maxWidth="md">
+                <div style={{ width: '100%' }}>
+                    <DataGrid
+                        rows={item1}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 10 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10]}
+                        disableRowSelectionOnClick
+                    />
+                </div>
+                </Container>
         </Card>
         <div >
         <Dialog maxWidth="md" open={open1} onClose={ handleca} > 

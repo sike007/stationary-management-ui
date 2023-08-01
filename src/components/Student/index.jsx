@@ -1,4 +1,4 @@
-import { Card } from "@mui/material"
+import { Card, Container, Typography } from "@mui/material"
 import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
@@ -10,39 +10,32 @@ import {
   } from '@mui/material';  
 import Grid from '@mui/material/Grid';
 import transaction from "../../server/transaction";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 
 const Student = () => {
     const [quant , setQuant] = useState(0)
-    const [item1,setItem1] = useState()  
+    const [item1,setItem1] = useState([])  
     const [open1, setOpen1] = React.useState(false);
-    const [item , setItem] = useState([])
-    const [id,setId] = useState()
+    const [Id,setId] = useState()
     const [count,setCount] = useState(0)
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
     const [date1] = useState(new Date());
-    useEffect(() => {
-        setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
-    }, [item])
-    const handleClickOpen1 = (a,b,c,d) => {
+    useEffect(()=>{
+        items.getOneItem(Id).then((response)=>{setType(response.data.returnable); setQuant(response.data.quantity); setMaxd(response.data.maxDays)}).catch(
+            error=>{console.log(error)}
+        )
+    },[Id])
+    const handleClickOpen1 = (a) => {
         setId(a)
-        setQuant(b)
-        setType(c)
-        setMaxd(d)
         setOpen1(true);
     };
     const handleca =()=>{
         setCount(0)
         setOpen1(false);
     }
-    const getAll = () => {
-        items.getAllItems().then((response) => {
-            setItem(response.data)
-            console.log(response.data);
-        }).catch(error =>{
-            console.log(error);
-        })}
     const withdraw = (e) => {
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + maxd);
@@ -51,12 +44,12 @@ const Student = () => {
             if(quant<count){alert("Item quantity must be less than "+quant)}
             else{
                 if(!type){
-                    items.updateItem(id,{"quantity":quant-count})
+                    items.updateItem(Id,{"quantity":quant-count})
                     window.location.reload()
                 }
                 else{
-                    console.log({"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
-                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
+                    console.log({"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
+                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
@@ -86,50 +79,79 @@ const Student = () => {
         event.preventDefault(); 
     }
     
-    useEffect(() => {
-            getAll();
-        }, [])
+    
+    
+        const [rows, setRows] = useState([]);
+        const getData = () => items.getAllItems()
+            .then(response =>
+                setRows(response.data.map((ite) => {
+                    return {
+                        id: ite.itemId,
+                        itemName: ite.itemName,
+                        quantity: ite.quantity,
+                        maxDays: ite.maxDays,
+                        returnable: ite.returnable
+                    }
+                })));
+        useEffect(() => { getData(); }, [])
+        useEffect(() => {
+            console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
+            setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
+        }, [rows])
+    
+        const columns = [
+            { field: 'id', headerName: 'ID', flex: .2 },
+            { field: 'itemName', headerName: 'Item Name', flex: .6 },
+            { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3 },
+            {
+                field: 'maxDays',
+                headerName: 'To be returned in (days)',
+                valueGetter: (params) => {
+                    if (!params.value)
+                        return "Not returnable";
+                    return params.value;
+                }, flex: .4
+            },
+            {
+                field: 'actions',
+                type: 'actions',
+                headerName: 'Actions',
+                cellClassName: 'actions',
+                getActions: (params) => {
+                    return [
+                        <GridActionsCellItem
+                            icon={<ShoppingBagIcon />}
+                            label="Edit"
+                            onClick={() => handleClickOpen1(params.id)}
+                            color="inherit"
+                        />,
+                    ];
+                },
+            },
+        ];
 
     return (
     <div>
         <div><div>
         <Card className="App-Card">
-            <h3>Student</h3>
-            <table className="table table-bordered table-striped" >
-                    <thead>
-                        <th> No </th>
-                        <th> Item Name </th>
-                        <th> Item Quantity </th>
-                        <th> Returnable Type </th>
-                        <th> Borrow days</th>
-                        <th> Actions</th> 
-                    </thead>
-                    <tbody>
-                        {
-                        item.map(
-                            itm =>
-                            <tr key = {itm.itemId}> 
-                                <td> {itm.itemId}</td>
-                                <td> {itm.itemName} </td>
-                                <td> {itm.quantity===null ?<>0</>:itm.quantity} </td>
-                                {itm.returnable ? (
-                                    <td>Yes</td>
-                                        ) : (
-                                    <td>No</td>
-                                )}
-                                <td>{itm.maxDays===null ?<>-</>:itm.maxDays}</td>
-                                <td >
-                                    
-                                    <Button onClick={()=>handleClickOpen1(itm.itemId,itm.quantity,itm.returnable,itm.maxDays)} color="info" variant="contained" >
-                                        Withdraw
-                                    </Button>
-                                    
-                                </td>
-                            </tr>
-                        )
-                    }
-                </tbody>
-            </table>
+            <Typography variant="h4" component="h1" >
+                INVENTORY
+            </Typography>
+            <Container component="main" maxWidth="md">
+                <div style={{ width: '100%' }}>
+                    <DataGrid
+                        rows={item1}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 10 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10]}
+                        disableRowSelectionOnClick
+                    />
+                </div>
+                </Container>
         </Card>
         
         <div >

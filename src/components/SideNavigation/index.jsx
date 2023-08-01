@@ -22,7 +22,7 @@ const SideNavigation = () => {
     return (
         <Box>
             <IconButton id="side-navigation" onClick={handleOpen} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" />
+                <Avatar alt="Remy Sharp" /><>{sessionStorage.getItem('name')}</>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}

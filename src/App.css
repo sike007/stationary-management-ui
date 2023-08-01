@@ -8,6 +8,14 @@
   padding-right: 20px;
   padding-left: 40px;
 }
+.margin1{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.margin2{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .butt2{
   background-color: #c11d1d;
   border: none;
@@ -37,10 +45,10 @@
   background: #6c88c8;
   font-size: 16px;
   bottom: 0;
-  position: relative;
+  position: fixed;
   width: 100%;
   text-align: center;
-  padding: 25px;
+  padding: 15px;
 }
 .App-footer a {
   color: white !important;

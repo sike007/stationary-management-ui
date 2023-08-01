@@ -9,9 +9,8 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Grid from '@mui/material/Grid';
  
 const AdminSystem = () => {
-    const [item , setItem] = useState([])
-    const [item1,setItem1] = useState()  
-    const [id,setId] = useState()
+    const [item1,setItem1] = useState([])  
+    const [Id,setId] = useState()
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
@@ -24,23 +23,26 @@ const AdminSystem = () => {
     const [i1, setI1] = useState();
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
+    const [ch,setCh] = useState(0);
     
-    useEffect(() => {
-
-        console.log("hi")
-        console.log(item.sort((a,b)=>(a.itemId-b.itemId)))
-        setItem1(item.sort((a,b)=>(a.itemId-b.itemId)))
-    }, [item])
     
     const handleClickOpen = (e) => {
         setOpen(true);
         setId(e);
     };
-    const handleClickOpen1 = (a,b,c) => {
-        setOpen1(true);
-        setQuant(b)
-        setRet(c)
+    useEffect(()=>{
+        console.log('ok')
+        items.getOneItem(Id).then((response)=>{setRet(response.data.returnable); setQuant(response.data.quantity); setDays(response.data.maxDays)}).catch(
+            error=>{console.log(error)}
+        )
+    },[ch])
+    const handleClickOpen1 = (a) => {
+        
         setId(a);
+        setCh(ch+1)
+        setOpen1(true)
+        
+
     };
     const handleClickOpen2 = () => {
         setOpen2(true);
@@ -49,7 +51,7 @@ const AdminSystem = () => {
         setOpen3(true);
     };
     const handleClose1 = () => {
-        items.deleteItem(id).catch(error=>{console.log(error)});
+        items.deleteItem(Id).catch(error=>{console.log(error)});
         setOpen(false);
         window.location.reload();
     }
@@ -58,13 +60,22 @@ const AdminSystem = () => {
         setOpen(false);
     };
     const handleC1 = () => {
-        console.log({"quantity":quant})
-        items.updateItem(id,{"quantity":quant,"returnable":ret}).catch(error=>{console.log(error)});
-        setOpen1(false);
-        window.location.reload();
+        if(ret){
+            console.log({"quantity":quant,"returnable":ret,"maxDays":days})
+            items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
+            setOpen1(false);
+            window.location.reload()
+        }
+        else{
+            console.log({"quantity":quant,"returnable":ret,"maxDays":null})
+            items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
+            setOpen1(false);
+            window.location.reload()
+        }
     }
     const handleC = () => {
         setOpen1(false);
+        
     };
     const handleCa = () => {
         setI2()
@@ -75,14 +86,6 @@ const AdminSystem = () => {
     const handle2 = () => {
         setOpen3(false);
     };
-    const getAll = () => {
-        items.getAllItems().then((response) => {
-            setItem(response.data)
-            console.log(response.data);
-        }).catch(error =>{
-            console.log(error);
-        })
-    }
     const fun = () => {
         if(ret){setRet(false)}else{setRet(true)}
     }
@@ -122,16 +125,20 @@ const AdminSystem = () => {
     const [rows, setRows] = useState([]);
     const getData = () => items.getAllItems()
         .then(response =>
-            setRows(response.data.map((item) => {
+            setRows(response.data.map((ite) => {
                 return {
-                    id: item.itemId,
-                    itemName: item.itemName,
-                    quantity: item.quantity,
-                    maxDays: item.maxDays,
-                    returnable: item.returnable
+                    id: ite.itemId,
+                    itemName: ite.itemName,
+                    quantity: ite.quantity,
+                    maxDays: ite.maxDays,
+                    returnable: ite.returnable
                 }
-            })));
+            }))).catch(error=>{console.log(error)});
     useEffect(() => { getData(); }, [])
+    useEffect(() => {
+        console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
+        setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
+    }, [rows])
 
     const columns = [
         { field: 'id', headerName: 'ID', flex: .2 },
@@ -151,18 +158,18 @@ const AdminSystem = () => {
             type: 'actions',
             headerName: 'Actions',
             cellClassName: 'actions',
-            getActions: ({ id, quantity, maxDays, returnable }) => {
+            getActions: (params ) => {
                 return [
                     <GridActionsCellItem
                         icon={<EditIcon />}
                         label="Edit"
-                        onClick={() => handleClickOpen1(id, quantity, returnable)}
+                        onClick={() => handleClickOpen1(params.id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
-                        onClick={() => handleClickOpen(id)}
+                        onClick={() => handleClickOpen(params.id)}
                         color="inherit"
                     />,
                 ];
@@ -178,14 +185,14 @@ const AdminSystem = () => {
             <Container component="main" maxWidth="md">
                 <div style={{ width: '100%' }}>
                     <DataGrid
-                        rows={rows}
+                        rows={item1}
                         columns={columns}
                         initialState={{
                             pagination: {
-                                paginationModel: { page: 0, pageSize: 5 },
+                                paginationModel: { page: 0, pageSize: 10},
                             },
                         }}
-                        pageSizeOptions={[5, 10]}
+                        pageSizeOptions={[5,10]}
                         disableRowSelectionOnClick
                         slots={{
                             toolbar: EditToolbar,
@@ -195,7 +202,8 @@ const AdminSystem = () => {
                 </Container>
         </Card>
         <div>
-            <Dialog open={open} onClose={handleClose}>
+        
+            <Dialog open={open} onClose={handleClose} position={{ X: 0, Y: 140 }}>
                 <DialogTitle>
                     Confirm the action
                 </DialogTitle>
@@ -242,11 +250,11 @@ const AdminSystem = () => {
                 </DialogContent>
                 <DialogContent className="pr-4">
                 <Grid container spacing={2} >
-                    <Grid container item xs={5} direction="column" >
+                    <Grid className="margin1" direction="column" >
                     <>Borrow Days :</>
                         
                     </Grid>
-                    <Grid direction="column" >
+                    <Grid className="margin1" direction="column" >
                     {ret?<>
                     <button className="pl-4" onClick={()=>{if(days!==0)setDays(days-1)}}>-</button>&nbsp;&nbsp;{days===null ?<>{setDays(0)}</>:days}&nbsp;&nbsp;
                     <button className="pl-4" onClick={()=>{setDays(days+1)}}>+</button></>:<>&nbsp;0</>}
@@ -257,7 +265,7 @@ const AdminSystem = () => {
                <DialogContent className="pr-4">
                <Grid container spacing={2} >
                     <Grid container item xs={5} direction="column" >
-                    <>Return Type:</>
+                    <>Returnable : </>
                     </Grid>
                     <Grid container item xs={4} direction="column" >
                         <test>{ret ? (<test>Yes</test>) : (<test>No</test>)}&nbsp;&nbsp;</test>
@@ -267,6 +275,8 @@ const AdminSystem = () => {
                
                  </DialogContent>
 
+            
+                
                 <DialogActions>
                     <Button onClick={handleC} color="primary" variant="contained" >
                         Cancel
@@ -294,16 +304,17 @@ const AdminSystem = () => {
                                 
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
-                                    <Grid container item xs={5} direction="column" >
+                                    <Grid className="margin2" container item xs={5} direction="column" >
                                     <>Item Name : &nbsp;</>
                                         
                                     </Grid>
-                                    <Grid container item xs={4} direction="column" >
+                                    <Grid className="margin2" container item xs={4} direction="column" >
                                     <input
                                         type = "text"
                                         placeholder="enter name"
                                         name = "i2"
                                         value = {i2}
+                                       // className="form-control"
                                         onChange={(e)=>setI2(e.target.value)}
                                     ></input>
                                         
@@ -311,12 +322,12 @@ const AdminSystem = () => {
                                     </Grid>
                                 </div>
                                 <div className="form-group-mb-2">
-                                <Grid container spacing={2} >
+                                <Grid className="margin2" container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
                                     <>Item Quantity : &nbsp;&nbsp;</>
                                         
                                     </Grid>
-                                    <Grid container item xs={4} direction="column" >
+                                    <Grid className="margin2" container item xs={4} direction="column" >
                                     <input
                                         type = "number"
                                         placeholder="enter count"
@@ -331,11 +342,11 @@ const AdminSystem = () => {
                                     </Grid>
                                 </div>
                                 <div ><Grid container spacing={2} >
-                                    <Grid container item xs={5} direction="column" >
-                                    <>Return Type :</>
+                                    <Grid className="margin2" container item xs={5} direction="column" >
+                                    <>Returnable :</>
                                         
                                     </Grid>
-                                    <Grid container item xs={4} direction="column" >
+                                    <Grid className="margin2" container item xs={4} direction="column" >
                                     <select id="mySelect"
                                         onChange={(e)=>setI4(e.target.value)}
                                         
@@ -356,11 +367,11 @@ const AdminSystem = () => {
                                 </div>
                                 <div>
                                 <Grid container spacing={2} >
-                                <Grid container item xs={5} direction="column" >
+                                <Grid className="margin2" container item xs={5} direction="column" >
                                     <>Borrow Days :</>
                                     
                                 </Grid>
-                                <Grid container item xs={4} direction="column" >
+                                <Grid className="margin2" container item xs={4} direction="column" >
                                     
                                     {(i4==='Yes')?(<div className="form-group-mb-2">
                                     <input
@@ -393,6 +404,8 @@ const AdminSystem = () => {
                 </div>
             </div>
                     </div>
+                
+                
             </Dialog>
         </div>
         <div>
