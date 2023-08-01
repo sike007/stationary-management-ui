@@ -26,15 +26,9 @@ const SideNavigation = () => {
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
                 keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >

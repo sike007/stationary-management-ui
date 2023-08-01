@@ -8,6 +8,15 @@
   padding-right: 20px;
   padding-left: 40px;
 }
+body {
+  height: 100%;
+}
+html {
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 75px;
+  /* equal to footer height */
+}
 .butt2{
   background-color: #c11d1d;
   border: none;
@@ -33,11 +42,13 @@
 .App-header img {
   max-height: 70px;
 }
+
 .App-footer {
+  position: absolute;
+  height: 75px;
   background: #6c88c8;
   font-size: 16px;
   bottom: 0;
-  position: relative;
   width: 100%;
   text-align: center;
   padding: 25px;
@@ -51,7 +62,7 @@
 }
 #side-navigation {
   position: absolute;
-  right: 0;
+  right: 5px;
   top: 15px;
   color: #fff;
 }
