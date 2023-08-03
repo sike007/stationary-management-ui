@@ -1,4 +1,4 @@
-import { Box, Card, Container } from "@mui/material"
+import { Box, Card, Container,Alert,Snackbar  } from "@mui/material"
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -15,6 +15,7 @@ import VerticalTab from "../VerticalTab";
 
 const Transaction = () => {
     const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
     const [id,setId] = useState()
     const [item1,setItem1] = useState([])
     const handleca =()=>{
@@ -24,11 +25,18 @@ const Transaction = () => {
         transaction.updateOneTransaction(id,{"returned":true})
         window.location.reload()
     }
-        const handleClickOpen1 = (a) => {
+    const handleClickOpen1 = (a) => {
             setId(a)
             setOpen1(true);
         };
-    
+    const handleClose= ()=>{
+            setOpen2(false);
+        };
+    const return2=()=>{
+        setOpen2(true);
+        return1();
+
+    };
         const [rows, setRows] = useState([]);
         const getData = () => transaction.getTransactionByStudent(sessionStorage.getItem('id'))
             .then(response =>
@@ -111,7 +119,7 @@ const Transaction = () => {
                 Do you want to return this item
                 </DialogTitle>
                 <DialogActions>
-                    <Button onClick={return1} color="primary" variant="contained" >
+                    <Button onClick={return2} color="primary" variant="contained" >
                         return
                     </Button>
                     <Button onClick={handleca} color="secondary" variant="contained">
@@ -120,6 +128,14 @@ const Transaction = () => {
                 </DialogActions> 
             </Dialog>
         </div>
+        <><Snackbar open={open2} onClose={handleClose} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose} severity="success" >
+                Item returned successfully
+                </Alert>
+            </Snackbar>
+            
+            </>
     </div>
     )
 }

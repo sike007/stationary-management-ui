@@ -1,4 +1,4 @@
-import { Box, Card, Container } from "@mui/material"
+import { Box, Card, Container,Alert,Snackbar } from "@mui/material"
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -16,6 +16,7 @@ import VerticalTab from "../VerticalTab";
 
 const AdminReturnable = () => {
     const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
     const [id,setId] = useState()
     const [i1,setI1] = useState()
     const [date1] = useState(new Date())
@@ -43,6 +44,14 @@ const AdminReturnable = () => {
             console.log('handleSubmit ran');
             event.preventDefault(); 
         }
+        const handleChange=(e)=>{
+            setOpen2(true);
+            return1(e)
+        }
+        const handleC = () => {
+            setOpen2(false);
+            
+        };
         const [rows, setRows] = useState([]);
         const getData = () => transaction.getAllTransactions()
             .then(response =>
@@ -217,7 +226,7 @@ const AdminReturnable = () => {
                                 </Grid>
                 </div>*/}
                                 <DialogActions>
-                                    <Button onClick={(e)=>return1(e)} color="primary" variant="contained" >
+                                    <Button onClick={(e)=>handleChange(e)} color="primary" variant="contained" >
                                         change
                                     </Button>
                                     <Button onClick={handleca} color="secondary" variant="contained">
@@ -232,6 +241,13 @@ const AdminReturnable = () => {
             </div>
                     </div>
             </Dialog>
+        </div>
+        <div><Snackbar open={open2} onClose={handleC} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleC} severity="success" >
+                Borrow date changed successfully
+                </Alert>
+            </Snackbar>
         </div>
         </div></div>
     </div>
