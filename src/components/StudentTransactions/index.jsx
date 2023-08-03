@@ -58,9 +58,8 @@ const Transaction = () => {
                 }),
               );
         }, [rows])
-    
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left' },
+            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left'},
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {
@@ -69,7 +68,8 @@ const Transaction = () => {
                 align: 'left', headerAlign: 'left',
                 valueGetter: (params) => {
                     if (!params.value)
-                        return "Not returnable";
+                    return "Not returnable";
+                    if(new Date(params.value)<new Date())return "overdue";
                     return params.value;
                 }, flex: .4
             },
@@ -82,10 +82,10 @@ const Transaction = () => {
                 getActions: ({ id }) => {
                     return [
                         <GridActionsCellItem
-                            icon={<KeyboardReturnIcon />}
-                            label="Edit"
-                            onClick={() => handleClickOpen1(id)}
-                            color="inherit"
+                        icon={<KeyboardReturnIcon />}
+                        label="Edit"
+                        onClick={() => handleClickOpen1(id)}
+                        color="inherit"
                         />,
                     ];
                 },
@@ -119,11 +119,11 @@ const Transaction = () => {
                 Do you want to return this item
                 </DialogTitle>
                 <DialogActions>
-                    <Button onClick={return2} color="primary" variant="contained" >
-                        return
-                    </Button>
-                    <Button onClick={handleca} color="secondary" variant="contained">
+                    <Button onClick={handleca} color="primary" variant="contained">
                         Cancel
+                    </Button>
+                    <Button onClick={return2} color="secondary" variant="contained" >
+                        return
                     </Button>
                 </DialogActions> 
             </Dialog>

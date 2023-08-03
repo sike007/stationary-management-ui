@@ -424,11 +424,11 @@ const AdminSystem = () => {
                                                 </Grid>
                                             </div>
                                             <DialogActions>
-                                    <Button onClick={(e)=>saveAndCheck(e)} color="primary" variant="contained" >
-                                                    Save
-                                                </Button>
-                                                <Button onClick={handleCa} color="secondary" variant="contained">
+                                                <Button onClick={handleCa} color="primary" variant="contained">
                                                     Cancel
+                                                </Button>
+                                                <Button onClick={(e)=>saveAndCheck(e)} color="secondary" variant="contained" >
+                                                    Save
                                                 </Button>
 
                                             </DialogActions>

@@ -198,11 +198,11 @@ const Student = () => {
                                     </Grid>
                                     </Grid>
                                 </div> <DialogActions>
-                                    <Button onClick={(e)=>handleclick(e)} color="primary" variant="contained" >
-                                        Withdraw
-                                    </Button>
-                                    <Button onClick={handleca} color="secondary" variant="contained">
+                                    <Button onClick={handleca} color="primary" variant="contained">
                                         Cancel
+                                    </Button>
+                                    <Button onClick={(e)=>handleclick(e)} color="secondary" variant="contained" >
+                                        Withdraw
                                     </Button>
                                     
                                 </DialogActions> 
