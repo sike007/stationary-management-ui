@@ -15,6 +15,7 @@
 .margin2{
   padding-top: 15px;
   padding-bottom: 15px;
+}
 body {
   height: 100%;
 }
@@ -129,4 +130,17 @@ div.MuiToolbar-root p {
 .align-right {
   display: flex !important;
   justify-content: right !important;
+}
+
+/* .MuiDataGrid-toolbarContainer {
+  display: flex !important;
+  justify-content: right !important;
+}  */
+.MuiDataGrid-toolbarContainer button {
+  background-color: #6c88c8;
+  color: white;
+}
+.MuiDataGrid-toolbarContainer button:hover {
+  color: #6c88c8;
+  background-color: white;
 }

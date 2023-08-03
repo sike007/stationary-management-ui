@@ -1,4 +1,4 @@
-import { Card, Container, Typography } from "@mui/material"
+import { Box, Card, Container, Typography } from "@mui/material"
 import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import transaction from "../../server/transaction";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import VerticalTab from "../VerticalTab";
 
 
 const Student = () => {
@@ -100,9 +101,9 @@ const Student = () => {
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2 },
-            { field: 'itemName', headerName: 'Item Name', flex: .6 },
-            { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3 },
+            { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
+            { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
+            { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
             {
                 field: 'maxDays',
                 headerName: 'To be returned in (days)',
@@ -110,11 +111,13 @@ const Student = () => {
                     if (!params.value)
                         return "Not returnable";
                     return params.value;
-                }, flex: .4
+                }, flex: .4, 
+                align: 'left', headerAlign: 'left' 
             },
             {
                 field: 'actions',
-                type: 'actions',
+                type: 'actions', 
+                align: 'center', headerAlign: 'center',
                 headerName: 'Actions',
                 cellClassName: 'actions',
                 getActions: (params) => {
@@ -134,11 +137,10 @@ const Student = () => {
     <div>
         <div><div>
         <Card className="App-Card">
-            <Typography variant="h4" component="h1" >
-                INVENTORY
-            </Typography>
-            <Container component="main" maxWidth="md">
-                <div style={{ width: '100%' }}>
+            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
+                <VerticalTab activeTab='0' />
+                <Container component="main" >
+                    <div style={{ width: '100%' , paddingTop: "30px"}}>
                     <DataGrid
                         rows={item1}
                         columns={columns}
@@ -150,8 +152,9 @@ const Student = () => {
                         pageSizeOptions={[5, 10]}
                         disableRowSelectionOnClick
                     />
-                </div>
+                    </div>
                 </Container>
+            </Box>
         </Card>
         
         <div >
