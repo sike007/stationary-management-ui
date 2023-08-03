@@ -28,6 +28,7 @@ const AdminSystem = () => {
     const [open4, setOpen4] = React.useState(false);
     const [open5, setOpen5] = React.useState(false);
     const [open6, setOpen6] = React.useState(false);
+    const [reload, setReload] = useState(0);
 
     const handleClickOpen = (e) => {
         setOpen(true);
@@ -52,6 +53,7 @@ const AdminSystem = () => {
     };
     const handleClickOpen3 = () => {
         setOpen3(true);
+        setI1();setI2();setI3();setI4()
     };
     const handleClickOpen4 = () => {
         setOpen4(true);
@@ -61,11 +63,13 @@ const AdminSystem = () => {
     };
     const handleClickOpen6 = () => {
         setOpen6(true);
+        setQuant()
+        setDays()
     };
     const handleClose1 = () => {
         items.deleteItem(Id).catch(error=>{console.log(error)});
         setOpen(false);
-        window.location.reload();
+        setReload(reload+1);
         handleClickOpen5();
     };
 
@@ -85,24 +89,27 @@ const AdminSystem = () => {
             console.log({"quantity":quant,"returnable":ret,"maxDays":days})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
             setOpen1(false);
-            window.location.reload();
+            setReload(reload+1);
             handleClickOpen6();
         }
         else{
             console.log({"quantity":quant,"returnable":ret,"maxDays":null})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
             setOpen1(false);
-            window.location.reload();
+            setReload(reload+1);
             handleClickOpen6();
         }
     }
     const handleC = () => {
         setOpen1(false);
+        setQuant()
+        setDays()
+        setI3()
 
     };
     const handleCa = () => {
         setI2()
-        setI3(0)
+        setI3()
         setI4('no')
         setOpen2(false);
     };
@@ -128,7 +135,7 @@ const AdminSystem = () => {
         console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
         items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);
-            window.location.reload();handleClickOpen4();
+            setReload(reload+1);handleClickOpen4();
         }).catch(error => {
             console.log(error)
             handleClickOpen3();
@@ -137,7 +144,7 @@ const AdminSystem = () => {
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
-            window.location.reload()}else{
+            setReload(reload+1);}else{
             setOpen2(false);
             setResults(0);
         }
@@ -166,7 +173,8 @@ const AdminSystem = () => {
                     returnable: ite.returnable
                 }
             }))).catch(error=>{console.log(error)});
-    useEffect(() => { getData(); }, [])
+    useEffect(() => { getData(); 
+    setI1();setI2();setI3();setI4()}, [reload])
     useEffect(() => {
         console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
         setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
@@ -199,12 +207,14 @@ const AdminSystem = () => {
                         label="Edit"
                         onClick={() => handleClickOpen1(params.id)}
                         color="inherit"
+                        title="Edit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
                         onClick={() => handleClickOpen(params.id)}
                         color="inherit"
+                        title="Delete"
                     />,
                 ];
             },
@@ -368,7 +378,7 @@ const AdminSystem = () => {
                                                             style={{width: "210px"}}
                                                             name = "i3"
                                                             min="1"
-                                                            value={quant}
+                                                            value={i3}
                                                             onChange={handleInput}
                                                         ></input>
 

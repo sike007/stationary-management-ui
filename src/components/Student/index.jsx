@@ -27,6 +27,7 @@ const Student = () => {
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
     const [date1] = useState(new Date());
+    const [reload,setReload] = useState(0);
     useEffect(()=>{
         items.getOneItem(Id).then((response)=>{setType(response.data.returnable); setQuant(response.data.quantity); setMaxd(response.data.maxDays)}).catch(
             error=>{console.log(error)}
@@ -50,19 +51,22 @@ const Student = () => {
         setQuant(e);
     }
     const handleca =()=>{
-        setCount(0)
+        setCount()
         setOpen1(false);
     }
     const withdraw = (e) => {
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + maxd);
-        if(count===0){setOpen3(true)}
+        console.log(count)
+        if(count==='0' || count===undefined){setOpen3(true)}
         else{
             if(quant<count){handleClick1(quant)}
             else{
                 if(!type){
                     items.updateItem(Id,{"quantity":quant-count})
-                    window.location.reload()
+                    setReload(reload+1)
+                    setOpen1(false)
+                    setCount()
                 }
                 else{
                     console.log({"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
@@ -70,8 +74,11 @@ const Student = () => {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
-                    }).split('/').reverse().join('-'),"returned":false})
-                    window.location.reload()
+                    }).split('/').reverse().join('-'),"returned":false}).catch(error=>{console.log(error)})
+                    setReload(reload+1)
+                    setOpen1(false)
+                    setCount()
+                    setOpen2(true)
                 }
             }
         }
@@ -103,7 +110,7 @@ const Student = () => {
                         returnable: ite.returnable
                     }
                 })));
-        useEffect(() => { getData(); }, [])
+        useEffect(() => { getData(); }, [reload])
         useEffect(() => {
             console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
             setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
@@ -112,7 +119,7 @@ const Student = () => {
         const columns = [
             { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
             { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
-            { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
+            //{ field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
             {
                 field: 'maxDays',
                 headerName: 'To be returned in (days)',
@@ -134,8 +141,10 @@ const Student = () => {
                         <GridActionsCellItem
                             icon={<ShoppingBagIcon />}
                             label="Edit"
+                            className="gridbutton1"
                             onClick={() => handleClickOpen1(params.id)}
                             color="inherit"
+                            title="Withdraw"
                         />,
                     ];
                 },

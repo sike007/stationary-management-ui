@@ -21,6 +21,7 @@ const AdminReturnable = () => {
     const [i1,setI1] = useState()
     const [date1] = useState(new Date())
     const [item1,setItem1] = useState([])
+    const [reload, setReload] = useState(0) 
     const handleca =()=>{
         setI1()
         setOpen1(false);
@@ -33,8 +34,9 @@ const AdminReturnable = () => {
             month: '2-digit',
             day: '2-digit',
         }).split('/').reverse().join('-')}).then((response)=>{console.log(response)}).catch(error=>{console.log(error)})
-        window.location.reload()
-        
+        setReload(reload+1)
+
+        setOpen1(false)
     }
         const handleClickOpen1 = (a) => {
             setId(a)
@@ -65,7 +67,7 @@ const AdminReturnable = () => {
                         student: ite.student.studentName
                     }
                 })));
-        useEffect(() => { getData(); }, []) 
+        useEffect(() => { getData(); }, [reload]) 
         useEffect(() => {
             setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
             setItem1(current =>
@@ -103,6 +105,7 @@ const AdminReturnable = () => {
                             label="Edit"
                             onClick={() => handleClickOpen1(id)}
                             color="inherit"
+                            title="Edit"
                         />,
                     ];
                 },
