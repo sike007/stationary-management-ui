@@ -6,7 +6,6 @@ import useToken from './components/App/useToken.js';
 import Login from './components/Login';
 import Header from './components/Header';
 
-
 function App() {
   const { token, setToken } = useToken();
   let homePage;
@@ -23,31 +22,7 @@ function App() {
       </BrowserRouter >
     );
   return homePage;
-
-  //   if (!token) {
-  //     return (
-  //       <Login setToken={setToken} />)
-  //   }
-  //   if (token === "admin") {
-  //     return (
-  //       <BrowserRouter>
-  //         <div className="App">
-  //           <Headerb />
-  //           <PageRoutes />
-  //           <Footer />
-  //         </div>
-  //       </BrowserRouter>
-  //     )
-  //   }
-  //   return (
-  //     <BrowserRouter>
-  //       <div className="App">
-  //         <Headera />
-  //         <PageRoutes3 />
-  //         <Footer />
-  //       </div>
-  //     </BrowserRouter>
-  //   );
+  
 }
 
 
