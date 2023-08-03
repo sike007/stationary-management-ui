@@ -16,12 +16,14 @@ import VerticalTab from "../VerticalTab";
 
 
 const Student = () => {
-    const [quant , setQuant] = useState(0)
+    const [quant , setQuant] = useState()
     const [item1,setItem1] = useState([])  
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
+    const [open3, setOpen3] = React.useState(false);
+    const [open4, setOpen4] = React.useState(false);
     const [Id,setId] = useState()
-    const [count,setCount] = useState(0)
+    const [count,setCount] = useState()
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
     const [date1] = useState(new Date());
@@ -35,12 +37,18 @@ const Student = () => {
         setOpen1(true);
     };
     const handleclick = (e)=>{
-        setOpen2(true);
+        
         withdraw(e);
     };
     const handleClose = ()=>{
         setOpen2(false);
+        setOpen3(false);
+        setOpen4(false);
     };
+    const handleClick1=(e)=>{
+        setOpen4(true);
+        setQuant(e);
+    }
     const handleca =()=>{
         setCount(0)
         setOpen1(false);
@@ -48,9 +56,9 @@ const Student = () => {
     const withdraw = (e) => {
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + maxd);
-        if(count===0){alert("Item quantity shouldn't be zero" )}
+        if(count===0){setOpen3(true)}
         else{
-            if(quant<count){alert("Item quantity must be less than "+quant)}
+            if(quant<count){handleClick1(quant)}
             else{
                 if(!type){
                     items.updateItem(Id,{"quantity":quant-count})
@@ -72,6 +80,13 @@ const Student = () => {
     const handleSubmit = (event) => {
         console.log('handleSubmit ran');
         event.preventDefault(); 
+    };
+    const handleInput=(e)=>{
+        const value = e.target.value;
+                if (/^[0-9]*$/.test(value)) {
+                    setCount(value);
+                    
+                }
     }
     
     
@@ -162,26 +177,6 @@ const Student = () => {
                     <div >
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
-                                
-                                {/* <div className="form-group-mb-2">
-                                <Grid container spacing={2} >
-                                    <Grid container item xs={5} direction="column" >
-                                    <>Item name : &nbsp;</>
-                                        
-                                    </Grid>
-                                    <Grid container item xs={3} direction="column" >
-                                    <input
-                                        type = "text"
-                                        //placeholder=item.itemName
-                                        name = "i2"
-                                        value = {items.}
-                                       // className="form-control"
-                                      // onChange={handleChange}
-                                    ></input>
-                                        
-                                    </Grid>
-                                    </Grid>
-                                </div> */}
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
@@ -193,58 +188,16 @@ const Student = () => {
                                     <input
                                         type = "number"
                                         min="1"
-                                        placeholder="enter count"
+                                        placeholder="enter count(positive only)"
+                                        style={{width: "210px"}}
                                         name = "i3"
-                                        onChange={(e)=>setCount(e.target.value)}
+                                        value={count}
+                                        onChange={handleInput}
                                     ></input>
                                         
                                     </Grid>
                                     </Grid>
-                                </div>{/*
-                                <div ><Grid container spacing={2} >
-                                    <Grid container item xs={5} direction="column" >
-                                    <>Returnable :</>
-                                        
-                                    </Grid>
-                                    <Grid container item xs={4} direction="column" >
-                                    <select id="mySelect"
-                                        onChange={(e)=>setI4(e.target.value)}
-                                        
-                                    >
-                                        <option disabled selected value=''> -- select an option -- </option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                        
-                                    </select>
-                                   
-                                    </Grid>
-                                    </Grid>
-                                </div>
-                                <div>
-                                <Grid container spacing={2} >
-                                <Grid container item xs={5} direction="column" >
-                                    <>max days :</>
-                                    
-                                </Grid>
-                                <Grid container item xs={4} direction="column" >
-                                    
-                                    {(i4==='Yes')?(<div className="form-group-mb-2">
-                                    <input
-                                        type = "number"
-                                        placeholder="enter max days"
-                                        name = "i1"
-                                        
-                                        onChange={(e)=>setI1(e.target.value)}
-                                    ></input>
-                                    </div>):
-                                    (<div className="form-group-mb-2"><label className="form-label">
-                                            -
-                                        </label></div>)}
-                                  
-                                </Grid>
-                                </Grid>
-                </div>*/}
-                                <DialogActions>
+                                </div> <DialogActions>
                                     <Button onClick={(e)=>handleclick(e)} color="primary" variant="contained" >
                                         Withdraw
                                     </Button>
@@ -261,14 +214,27 @@ const Student = () => {
                     </div>
             </Dialog>
         </div>
-        <><Snackbar open={open2} onClose={handleClose} 
+        <>
+        <Snackbar open={open2} onClose={handleClose} 
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="success" >
                 Item withdrawn successfully
                 </Alert>
-            </Snackbar>
-            
-            </>
+        </Snackbar>
+        <Snackbar open={open3} onClose={handleClose} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose} severity="error" >
+                Item quantity shouldn't be zero
+                </Alert>
+        </Snackbar>
+        <Snackbar open={open4} onClose={handleClose} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                    
+                <Alert onClose={handleClose} severity="error" >
+                {"Item quantity must be lessthan or equal to "+quant}
+                </Alert>
+        </Snackbar>    
+        </>
         </div></div>
     </div>
     )

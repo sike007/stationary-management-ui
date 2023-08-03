@@ -16,11 +16,11 @@ const AdminSystem = () => {
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [open3, setOpen3] = React.useState(false);
-    const [quant , setQuant] = useState(0)
-    const [days , setDays] = useState(0)
+    const [quant , setQuant] = useState()
+    const [days , setDays] = useState()
     const [ret,setRet] = React.useState()
     const [i2,setI2] = useState()
-    const [i3, setI3] = React.useState(0);
+    const [i3, setI3] = React.useState();
     const [i1, setI1] = useState();
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
@@ -109,6 +109,13 @@ const AdminSystem = () => {
     const handle3 = () => {
         setOpen3(false);
     };
+    const handleInput =(e)=>{
+        const value = e.target.value;
+                if (/^[0-9]*$/.test(value)) {
+                    setQuant(value);
+                    setI3(value);
+                }
+    }
     const fun = () => {
         if(ret){setRet(false)}else{setRet(true)}
     }
@@ -262,13 +269,13 @@ const AdminSystem = () => {
                             </Grid>
                             <Grid container item xs={4} direction="column" >
                                 <input
-                                        type = "number"
-                                    placeholder="enter count"
-                                        name = "i3"
-                                    min="0"
-                                    //value = {i3}
-                                    //className="form-control"
-                                    onChange={event => setQuant(event.target.value)}
+                                    type = "number"
+                                    placeholder="enter count(positive only)"
+                                    style={{width: "210px"}}
+                                    name = "i3"
+                                    min="1"
+                                    value={quant}
+                                    onChange={handleInput}
                                 ></input>
 
                             </Grid>
@@ -356,13 +363,13 @@ const AdminSystem = () => {
                                                     </Grid>
                                                     <Grid className="margin2" container item xs={4} direction="column" >
                                                         <input
-                                        type = "number"
-                                                            placeholder="enter count"
-                                        name = "i3"
-                                                            min="0"
-                                                            //value = {i3}
-                                                            //className="form-control"
-                                        onChange={(e)=>setI3(e.target.value)}
+                                                            type = "number"
+                                                            placeholder="enter count(positive only)"
+                                                            style={{width: "210px"}}
+                                                            name = "i3"
+                                                            min="1"
+                                                            value={quant}
+                                                            onChange={handleInput}
                                                         ></input>
 
                                                     </Grid>
