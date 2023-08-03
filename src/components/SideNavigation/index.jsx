@@ -1,52 +1,43 @@
-import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
-import { useState } from "react";
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 import useToken from "../App/useToken";
-import { useNavigate } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 const SideNavigation = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const handleOpen = (event) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const navigate = useNavigate()
+    const { token, setToken } = useToken();
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const navigate = useNavigate();
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const { token, setToken } = useToken();
-    const settings = [];
-    if (token === "admin")
-        settings.push(["Inventory", "/"], ["Transactions", "/transactions"]);
-    if (token === "student")
-        settings.push(["Order item", "/"], ["My Transactions", "/transactions"]);
     return (
-        <Box>
-            <IconButton id="side-navigation" onClick={handleOpen} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" /><>{sessionStorage.getItem('name')}</>
-            </IconButton>
-            <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
+        <>
+            <Button
+                id="side-navigation"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
             >
-                {settings.map(([setting, link]) => (
-                    <MenuItem key={setting} onClick={() => {
-                        navigate(link)
-                        handleClose()
-                    }
-                    }>
-                        <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                ))}
+                <MenuIcon />
+            </Button>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                }}
+            >
                 <MenuItem key="Logout" onClick={() => {
                     setToken({ token: null })
                     navigate('/')
@@ -56,7 +47,7 @@ const SideNavigation = () => {
                     <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
             </Menu>
-        </Box>);
-}
-
+        </>
+    );
+};
 export default SideNavigation;

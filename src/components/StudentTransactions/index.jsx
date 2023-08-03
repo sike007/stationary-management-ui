@@ -1,4 +1,4 @@
-import { Card, Container } from "@mui/material"
+import { Box, Card, Container } from "@mui/material"
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -10,6 +10,7 @@ import {
 import transaction from "../../server/transaction";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import VerticalTab from "../VerticalTab";
 
 
 const Transaction = () => {
@@ -51,12 +52,13 @@ const Transaction = () => {
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2 },
-            { field: 'itemName', headerName: 'Item Name', flex: .4 },
-            { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4 },
+            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left' },
+            { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
+            { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {
                 field: 'maxDays',
                 headerName: 'Return Date',
+                align: 'left', headerAlign: 'left',
                 valueGetter: (params) => {
                     if (!params.value)
                         return "Not returnable";
@@ -65,7 +67,8 @@ const Transaction = () => {
             },
             {
                 field: 'actions',
-                type: 'actions',
+                type: 'actions',  
+                align: 'center', headerAlign: 'center' ,
                 headerName: 'Actions',
                 cellClassName: 'actions',
                 getActions: ({ id }) => {
@@ -82,12 +85,11 @@ const Transaction = () => {
         ];
     return (
         <div class name="body">
-        <header className="header1">
-            </header>
-        <Card className="App-Card">
-            <h3>Student Transactions</h3>
-            <Container component="main" maxWidth="md">
-                <div style={{ width: '100%' }}>
+            <Card className="App-Card">
+            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
+                <VerticalTab activeTab='1' />
+                <Container component="main" >
+                    <div style={{ width: '100%' , paddingTop: "30px"}}>
                     <DataGrid
                         rows={item1}
                         columns={columns}
@@ -101,6 +103,7 @@ const Transaction = () => {
                     />
                 </div>
                 </Container>
+                </Box>
         </Card>
         <div >
             <Dialog maxWidth="md" open={open1} onClose={ handleca} > 

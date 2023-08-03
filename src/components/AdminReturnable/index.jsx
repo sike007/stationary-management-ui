@@ -1,4 +1,4 @@
-import { Card, Container } from "@mui/material"
+import { Box, Card, Container } from "@mui/material"
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -11,6 +11,7 @@ import transaction from "../../server/transaction";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import EditIcon from '@mui/icons-material/Edit';
 import Grid from '@mui/material/Grid';
+import VerticalTab from "../VerticalTab";
 
 
 const AdminReturnable = () => {
@@ -66,10 +67,10 @@ const AdminReturnable = () => {
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2 },
-            {field: 'student', headerName: 'Student Name', flex: .4 },
-            { field: 'itemName', headerName: 'Item Name', flex: .4 },
-            { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4 },
+            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left' },
+            {field: 'student', headerName: 'Student Name', flex: .4,  align: 'left', headerAlign: 'left' },
+            { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
+            { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {
                 field: 'maxDays',
                 headerName: 'Return Date',
@@ -77,12 +78,14 @@ const AdminReturnable = () => {
                     if (!params.value)
                         return "Not returnable";
                     return params.value;
-                }, flex: .4
+                }, flex: .4,
+                align: 'left', headerAlign: 'left'
             },
             {
                 field: 'actions',
                 type: 'actions',
                 headerName: 'Actions',
+                align: 'center', headerAlign: 'center',
                 cellClassName: 'actions',
                 getActions: ({ id }) => {
                     return [
@@ -100,10 +103,11 @@ const AdminReturnable = () => {
     return (
         <div>
             <div><div>
-        <Card className="App-Card">
-            <h3>Collectable Items</h3>
-            <Container component="main" maxWidth="md">
-                <div style={{ width: '100%' }}>
+            <Card className="App-Card">
+            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
+                <VerticalTab activeTab='1' />
+                <Container component="main" >
+                    <div style={{ width: '100%' , paddingTop: "30px"}}>
                     <DataGrid
                         rows={item1}
                         columns={columns}
@@ -117,6 +121,7 @@ const AdminReturnable = () => {
                     />
                 </div>
                 </Container>
+            </Box>
         </Card>
         <div >
         <Dialog maxWidth="md" open={open1} onClose={ handleca} > 
