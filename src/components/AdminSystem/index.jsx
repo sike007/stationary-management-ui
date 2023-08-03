@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import items from "../../server/items";
-import { Card, Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, } from "@mui/material";
+import { Alert, Snackbar, Card, Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, } from "@mui/material";
 import { DataGrid, GridToolbarContainer, GridActionsCellItem } from "@mui/x-data-grid";
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,7 +25,9 @@ const AdminSystem = () => {
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
     const [ch,setCh] = useState(0);
-
+    const [open4, setOpen4] = React.useState(false);
+    const [open5, setOpen5] = React.useState(false);
+    const [open6, setOpen6] = React.useState(false);
 
     const handleClickOpen = (e) => {
         setOpen(true);
@@ -51,27 +53,47 @@ const AdminSystem = () => {
     const handleClickOpen3 = () => {
         setOpen3(true);
     };
+    const handleClickOpen4 = () => {
+        setOpen4(true);
+    };
+    const handleClickOpen5 = () => {
+        setOpen5(true);
+    };
+    const handleClickOpen6 = () => {
+        setOpen6(true);
+    };
     const handleClose1 = () => {
         items.deleteItem(Id).catch(error=>{console.log(error)});
         setOpen(false);
         window.location.reload();
-    }
+        handleClickOpen5();
+    };
 
     const handleClose = () => {
         setOpen(false);
     };
+    const handleClose4 = (reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen4(false);
+        setOpen5(false);
+        setOpen6(false);
+      };
     const handleC1 = () => {
         if(ret){
             console.log({"quantity":quant,"returnable":ret,"maxDays":days})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
             setOpen1(false);
-            window.location.reload()
+            window.location.reload();
+            handleClickOpen6();
         }
         else{
             console.log({"quantity":quant,"returnable":ret,"maxDays":null})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
             setOpen1(false);
-            window.location.reload()
+            window.location.reload();
+            handleClickOpen6();
         }
     }
     const handleC = () => {
@@ -84,7 +106,7 @@ const AdminSystem = () => {
         setI4('no')
         setOpen2(false);
     };
-    const handle2 = () => {
+    const handle3 = () => {
         setOpen3(false);
     };
     const fun = () => {
@@ -98,7 +120,9 @@ const AdminSystem = () => {
         e.preventDefault();
         console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
         items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
-            console.log(response.data);}).catch(error => {
+            console.log(response.data);
+            window.location.reload();handleClickOpen4();
+        }).catch(error => {
             console.log(error)
             handleClickOpen3();
         })
@@ -412,16 +436,31 @@ const AdminSystem = () => {
                 </Dialog>
             </div>
             <div>
-                <Dialog open={open3} onClose={handle2}>
-                    <DialogTitle>
-                        name shouldn't be empty or same
-                    </DialogTitle>
-                    <DialogActions>
-                        <Button onClick={handle2} color="primary">
-                            Ok
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+            <Snackbar open={open3} onClose={handle3} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handle3} severity="error" >
+                name shouldn't be empty or same
+                </Alert>
+            </Snackbar>
+            <Snackbar   open={open4} autoHideDuration={6000} onClose={handleClose4}
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose4} severity="success" >
+                Item added successfully
+                </Alert>
+            </Snackbar>
+            <Snackbar   open={open5} onClose={handleClose4} autoHideDuration={6000}
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose4} severity="success" >
+                Item deleted successfully
+                </Alert>
+            </Snackbar>
+            <Snackbar   open={open6} autoHideDuration={6000} onClose={handleClose4}
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose4} severity="success" >
+                Item edited successfuly
+                </Alert>
+            </Snackbar>
+            
             </div>
         </div>
     )

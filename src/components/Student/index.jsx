@@ -1,4 +1,4 @@
-import { Box, Card, Container, Typography } from "@mui/material"
+import { Box, Card, Container, Alert,Snackbar } from "@mui/material"
 import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
@@ -19,6 +19,7 @@ const Student = () => {
     const [quant , setQuant] = useState(0)
     const [item1,setItem1] = useState([])  
     const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
     const [Id,setId] = useState()
     const [count,setCount] = useState(0)
     const [type,setType] = useState()
@@ -32,6 +33,13 @@ const Student = () => {
     const handleClickOpen1 = (a) => {
         setId(a)
         setOpen1(true);
+    };
+    const handleclick = (e)=>{
+        setOpen2(true);
+        withdraw(e);
+    };
+    const handleClose = ()=>{
+        setOpen2(false);
     };
     const handleca =()=>{
         setCount(0)
@@ -60,21 +68,7 @@ const Student = () => {
             }
         }
     }
-    
-    // const handleC1 = () => {
-    //     if(ret){
-    //         console.log({"quantity":quant,"returnable":ret,"maxDays":days})
-    //         items.updateItem(id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
-    //         setOpen1(false);
-    //         window.location.reload()
-    //     }
-    //     else{
-    //         console.log({"quantity":quant,"returnable":ret,"maxDays":null})
-    //         items.updateItem(id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
-    //         setOpen1(false);
-    //         window.location.reload()
-    //     }
-    // }
+   
     const handleSubmit = (event) => {
         console.log('handleSubmit ran');
         event.preventDefault(); 
@@ -251,7 +245,7 @@ const Student = () => {
                                 </Grid>
                 </div>*/}
                                 <DialogActions>
-                                    <Button onClick={(e)=>withdraw(e)} color="primary" variant="contained" >
+                                    <Button onClick={(e)=>handleclick(e)} color="primary" variant="contained" >
                                         Withdraw
                                     </Button>
                                     <Button onClick={handleca} color="secondary" variant="contained">
@@ -267,6 +261,14 @@ const Student = () => {
                     </div>
             </Dialog>
         </div>
+        <><Snackbar open={open2} onClose={handleClose} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose} severity="success" >
+                Item withdrawn successfully
+                </Alert>
+            </Snackbar>
+            
+            </>
         </div></div>
     </div>
     )
