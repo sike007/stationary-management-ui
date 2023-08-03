@@ -13,5 +13,8 @@ class items{
     saveItem(data){
         return axios.post(url+"/add_item ",data)
     }
+    getOneItem(pram){
+        return axios.get(url+'/'+pram);
+    }
 }
 export default new items();
