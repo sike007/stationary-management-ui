@@ -16,11 +16,11 @@ const AdminSystem = () => {
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [open3, setOpen3] = React.useState(false);
-    const [quant , setQuant] = useState(0)
-    const [days , setDays] = useState(0)
+    const [quant , setQuant] = useState()
+    const [days , setDays] = useState()
     const [ret,setRet] = React.useState()
     const [i2,setI2] = useState()
-    const [i3, setI3] = React.useState(0);
+    const [i3, setI3] = React.useState();
     const [i1, setI1] = useState();
     const [i4, setI4] = React.useState('no');
     const [results,setResults] = useState(0);
@@ -28,6 +28,7 @@ const AdminSystem = () => {
     const [open4, setOpen4] = React.useState(false);
     const [open5, setOpen5] = React.useState(false);
     const [open6, setOpen6] = React.useState(false);
+    const [reload, setReload] = useState(0);
 
     const handleClickOpen = (e) => {
         setOpen(true);
@@ -52,6 +53,7 @@ const AdminSystem = () => {
     };
     const handleClickOpen3 = () => {
         setOpen3(true);
+        setI1();setI2();setI3();setI4()
     };
     const handleClickOpen4 = () => {
         setOpen4(true);
@@ -61,11 +63,13 @@ const AdminSystem = () => {
     };
     const handleClickOpen6 = () => {
         setOpen6(true);
+        setQuant()
+        setDays()
     };
     const handleClose1 = () => {
         items.deleteItem(Id).catch(error=>{console.log(error)});
         setOpen(false);
-        window.location.reload();
+        setReload(reload+1);
         handleClickOpen5();
     };
 
@@ -85,30 +89,40 @@ const AdminSystem = () => {
             console.log({"quantity":quant,"returnable":ret,"maxDays":days})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
             setOpen1(false);
-            window.location.reload();
+            setReload(reload+1);
             handleClickOpen6();
         }
         else{
             console.log({"quantity":quant,"returnable":ret,"maxDays":null})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
             setOpen1(false);
-            window.location.reload();
+            setReload(reload+1);
             handleClickOpen6();
         }
     }
     const handleC = () => {
         setOpen1(false);
+        setQuant()
+        setDays()
+        setI3()
 
     };
     const handleCa = () => {
         setI2()
-        setI3(0)
+        setI3()
         setI4('no')
         setOpen2(false);
     };
     const handle3 = () => {
         setOpen3(false);
     };
+    const handleInput =(e)=>{
+        const value = e.target.value;
+                if (/^[0-9]*$/.test(value)) {
+                    setQuant(value);
+                    setI3(value);
+                }
+    }
     const fun = () => {
         if(ret){setRet(false)}else{setRet(true)}
     }
@@ -121,7 +135,7 @@ const AdminSystem = () => {
         console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
         items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);
-            window.location.reload();handleClickOpen4();
+            setReload(reload+1);handleClickOpen4();
         }).catch(error => {
             console.log(error)
             handleClickOpen3();
@@ -130,7 +144,7 @@ const AdminSystem = () => {
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
-            window.location.reload()}else{
+            setReload(reload+1);}else{
             setOpen2(false);
             setResults(0);
         }
@@ -159,14 +173,15 @@ const AdminSystem = () => {
                     returnable: ite.returnable
                 }
             }))).catch(error=>{console.log(error)});
-    useEffect(() => { getData(); }, [])
+    useEffect(() => { getData(); 
+    setI1();setI2();setI3();setI4()}, [reload])
     useEffect(() => {
         console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
         setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
     }, [rows])
 
     const columns = [
-        { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
+       // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
         { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
         { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
         {
@@ -192,12 +207,14 @@ const AdminSystem = () => {
                         label="Edit"
                         onClick={() => handleClickOpen1(params.id)}
                         color="inherit"
+                        title="Edit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
                         onClick={() => handleClickOpen(params.id)}
                         color="inherit"
+                        title="Delete"
                     />,
                 ];
             },
@@ -262,13 +279,13 @@ const AdminSystem = () => {
                             </Grid>
                             <Grid container item xs={4} direction="column" >
                                 <input
-                                        type = "number"
-                                    placeholder="enter count"
-                                        name = "i3"
-                                    min="0"
-                                    //value = {i3}
-                                    //className="form-control"
-                                    onChange={event => setQuant(event.target.value)}
+                                    type = "number"
+                                    placeholder="enter count(positive only)"
+                                    style={{width: "210px"}}
+                                    name = "i3"
+                                    min="1"
+                                    value={quant}
+                                    onChange={handleInput}
                                 ></input>
 
                             </Grid>
@@ -356,13 +373,13 @@ const AdminSystem = () => {
                                                     </Grid>
                                                     <Grid className="margin2" container item xs={4} direction="column" >
                                                         <input
-                                        type = "number"
-                                                            placeholder="enter count"
-                                        name = "i3"
-                                                            min="0"
-                                                            //value = {i3}
-                                                            //className="form-control"
-                                        onChange={(e)=>setI3(e.target.value)}
+                                                            type = "number"
+                                                            placeholder="enter count(positive only)"
+                                                            style={{width: "210px"}}
+                                                            name = "i3"
+                                                            min="1"
+                                                            value={i3}
+                                                            onChange={handleInput}
                                                         ></input>
 
                                                     </Grid>
@@ -417,11 +434,11 @@ const AdminSystem = () => {
                                                 </Grid>
                                             </div>
                                             <DialogActions>
-                                    <Button onClick={(e)=>saveAndCheck(e)} color="primary" variant="contained" >
-                                                    Save
-                                                </Button>
-                                                <Button onClick={handleCa} color="secondary" variant="contained">
+                                                <Button onClick={handleCa} color="primary" variant="contained">
                                                     Cancel
+                                                </Button>
+                                                <Button onClick={(e)=>saveAndCheck(e)} color="secondary" variant="contained" >
+                                                    Save
                                                 </Button>
 
                                             </DialogActions>

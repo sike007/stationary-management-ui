@@ -16,15 +16,18 @@ import VerticalTab from "../VerticalTab";
 
 
 const Student = () => {
-    const [quant , setQuant] = useState(0)
+    const [quant , setQuant] = useState()
     const [item1,setItem1] = useState([])  
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
+    const [open3, setOpen3] = React.useState(false);
+    const [open4, setOpen4] = React.useState(false);
     const [Id,setId] = useState()
-    const [count,setCount] = useState(0)
+    const [count,setCount] = useState()
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
     const [date1] = useState(new Date());
+    const [reload,setReload] = useState(0);
     useEffect(()=>{
         items.getOneItem(Id).then((response)=>{setType(response.data.returnable); setQuant(response.data.quantity); setMaxd(response.data.maxDays)}).catch(
             error=>{console.log(error)}
@@ -35,26 +38,35 @@ const Student = () => {
         setOpen1(true);
     };
     const handleclick = (e)=>{
-        setOpen2(true);
+        
         withdraw(e);
     };
     const handleClose = ()=>{
         setOpen2(false);
+        setOpen3(false);
+        setOpen4(false);
     };
+    const handleClick1=(e)=>{
+        setOpen4(true);
+        setQuant(e);
+    }
     const handleca =()=>{
-        setCount(0)
+        setCount()
         setOpen1(false);
     }
     const withdraw = (e) => {
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + maxd);
-        if(count===0){alert("Item quantity shouldn't be zero" )}
+        console.log(count)
+        if(count==='0' || count===undefined){setOpen3(true)}
         else{
-            if(quant<count){alert("Item quantity must be less than "+quant)}
+            if(quant<count){handleClick1(quant)}
             else{
                 if(!type){
                     items.updateItem(Id,{"quantity":quant-count})
-                    window.location.reload()
+                    setReload(reload+1)
+                    setOpen1(false)
+                    setCount()
                 }
                 else{
                     console.log({"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
@@ -62,8 +74,11 @@ const Student = () => {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
-                    }).split('/').reverse().join('-'),"returned":false})
-                    window.location.reload()
+                    }).split('/').reverse().join('-'),"returned":false}).catch(error=>{console.log(error)})
+                    setReload(reload+1)
+                    setOpen1(false)
+                    setCount()
+                    setOpen2(true)
                 }
             }
         }
@@ -72,6 +87,13 @@ const Student = () => {
     const handleSubmit = (event) => {
         console.log('handleSubmit ran');
         event.preventDefault(); 
+    };
+    const handleInput=(e)=>{
+        const value = e.target.value;
+                if (/^[0-9]*$/.test(value)) {
+                    setCount(value);
+                    
+                }
     }
     
     
@@ -88,16 +110,27 @@ const Student = () => {
                         returnable: ite.returnable
                     }
                 })));
-        useEffect(() => { getData(); }, [])
+        useEffect(() => { getData(); }, [reload])
         useEffect(() => {
             console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
             setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
+           // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
             { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
-            { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
+           // { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
+            // {
+            //     field: 'maxDays',
+            //     headerName: 'To be returned in (days)',
+            //     valueGetter: (params) => {
+            //         if (!params.value)
+            //             return "Not returnable";
+            //         return params.value;
+            //     }, flex: .4, 
+            //     align: 'left', headerAlign: 'left' 
+            // },
+            //{ field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
             {
                 field: 'maxDays',
                 headerName: 'To be returned in (days)',
@@ -119,8 +152,10 @@ const Student = () => {
                         <GridActionsCellItem
                             icon={<ShoppingBagIcon />}
                             label="Edit"
+                            className="gridbutton1"
                             onClick={() => handleClickOpen1(params.id)}
                             color="inherit"
+                            title="Withdraw"
                         />,
                     ];
                 },
@@ -162,26 +197,6 @@ const Student = () => {
                     <div >
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
-                                
-                                {/* <div className="form-group-mb-2">
-                                <Grid container spacing={2} >
-                                    <Grid container item xs={5} direction="column" >
-                                    <>Item name : &nbsp;</>
-                                        
-                                    </Grid>
-                                    <Grid container item xs={3} direction="column" >
-                                    <input
-                                        type = "text"
-                                        //placeholder=item.itemName
-                                        name = "i2"
-                                        value = {items.}
-                                       // className="form-control"
-                                      // onChange={handleChange}
-                                    ></input>
-                                        
-                                    </Grid>
-                                    </Grid>
-                                </div> */}
                                 <div className="form-group-mb-2">
                                 <Grid container spacing={2} >
                                     <Grid container item xs={5} direction="column" >
@@ -193,63 +208,21 @@ const Student = () => {
                                     <input
                                         type = "number"
                                         min="1"
-                                        placeholder="enter count"
+                                        placeholder="enter count(positive only)"
+                                        style={{width: "210px"}}
                                         name = "i3"
-                                        onChange={(e)=>setCount(e.target.value)}
+                                        value={count}
+                                        onChange={handleInput}
                                     ></input>
                                         
                                     </Grid>
                                     </Grid>
-                                </div>{/*
-                                <div ><Grid container spacing={2} >
-                                    <Grid container item xs={5} direction="column" >
-                                    <>Returnable :</>
-                                        
-                                    </Grid>
-                                    <Grid container item xs={4} direction="column" >
-                                    <select id="mySelect"
-                                        onChange={(e)=>setI4(e.target.value)}
-                                        
-                                    >
-                                        <option disabled selected value=''> -- select an option -- </option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                        
-                                    </select>
-                                   
-                                    </Grid>
-                                    </Grid>
-                                </div>
-                                <div>
-                                <Grid container spacing={2} >
-                                <Grid container item xs={5} direction="column" >
-                                    <>max days :</>
-                                    
-                                </Grid>
-                                <Grid container item xs={4} direction="column" >
-                                    
-                                    {(i4==='Yes')?(<div className="form-group-mb-2">
-                                    <input
-                                        type = "number"
-                                        placeholder="enter max days"
-                                        name = "i1"
-                                        
-                                        onChange={(e)=>setI1(e.target.value)}
-                                    ></input>
-                                    </div>):
-                                    (<div className="form-group-mb-2"><label className="form-label">
-                                            -
-                                        </label></div>)}
-                                  
-                                </Grid>
-                                </Grid>
-                </div>*/}
-                                <DialogActions>
-                                    <Button onClick={(e)=>handleclick(e)} color="primary" variant="contained" >
-                                        Withdraw
-                                    </Button>
-                                    <Button onClick={handleca} color="secondary" variant="contained">
+                                </div> <DialogActions>
+                                    <Button onClick={handleca} color="primary" variant="contained">
                                         Cancel
+                                    </Button>
+                                    <Button onClick={(e)=>handleclick(e)} color="secondary" variant="contained" >
+                                        Withdraw
                                     </Button>
                                     
                                 </DialogActions> 
@@ -261,14 +234,27 @@ const Student = () => {
                     </div>
             </Dialog>
         </div>
-        <><Snackbar open={open2} onClose={handleClose} 
+        <>
+        <Snackbar open={open2} onClose={handleClose} 
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="success" >
                 Item withdrawn successfully
                 </Alert>
-            </Snackbar>
-            
-            </>
+        </Snackbar>
+        <Snackbar open={open3} onClose={handleClose} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                <Alert onClose={handleClose} severity="error" >
+                Item quantity shouldn't be zero
+                </Alert>
+        </Snackbar>
+        <Snackbar open={open4} onClose={handleClose} 
+                anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
+                    
+                <Alert onClose={handleClose} severity="error" >
+                {"Item quantity must be lessthan or equal to "+quant}
+                </Alert>
+        </Snackbar>    
+        </>
         </div></div>
     </div>
     )

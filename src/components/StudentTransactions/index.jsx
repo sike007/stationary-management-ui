@@ -18,12 +18,14 @@ const Transaction = () => {
     const [open2, setOpen2] = React.useState(false);
     const [id,setId] = useState()
     const [item1,setItem1] = useState([])
+    const [reload,setReload] = useState(0)
     const handleca =()=>{
         setOpen1(false);
     }
     const return1=()=>{
         transaction.updateOneTransaction(id,{"returned":true})
-        window.location.reload()
+        setReload(reload+1)
+        setOpen1(false)
     }
     const handleClickOpen1 = (a) => {
             setId(a)
@@ -49,7 +51,7 @@ const Transaction = () => {
                         returnable: ite.returned,
                     }
                 })));
-        useEffect(() => { getData(); }, []) 
+        useEffect(() => { getData(); }, [reload]) 
         useEffect(() => {
             setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
             setItem1(current =>
@@ -58,9 +60,8 @@ const Transaction = () => {
                 }),
               );
         }, [rows])
-    
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left' },
+            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left'},
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {
@@ -69,7 +70,8 @@ const Transaction = () => {
                 align: 'left', headerAlign: 'left',
                 valueGetter: (params) => {
                     if (!params.value)
-                        return "Not returnable";
+                    return "Not returnable";
+                    if(new Date(params.value)<new Date())return "overdue";
                     return params.value;
                 }, flex: .4
             },
@@ -82,10 +84,11 @@ const Transaction = () => {
                 getActions: ({ id }) => {
                     return [
                         <GridActionsCellItem
-                            icon={<KeyboardReturnIcon />}
-                            label="Edit"
-                            onClick={() => handleClickOpen1(id)}
-                            color="inherit"
+                        icon={<KeyboardReturnIcon />}
+                        label="Edit"
+                        onClick={() => handleClickOpen1(id)}
+                        color="inherit"
+                        title="Return"
                         />,
                     ];
                 },
@@ -119,11 +122,11 @@ const Transaction = () => {
                 Do you want to return this item
                 </DialogTitle>
                 <DialogActions>
-                    <Button onClick={return2} color="primary" variant="contained" >
-                        return
-                    </Button>
-                    <Button onClick={handleca} color="secondary" variant="contained">
+                    <Button onClick={handleca} color="primary" variant="contained">
                         Cancel
+                    </Button>
+                    <Button onClick={return2} color="secondary" variant="contained" >
+                        return
                     </Button>
                 </DialogActions> 
             </Dialog>
