@@ -18,12 +18,14 @@ const Transaction = () => {
     const [open2, setOpen2] = React.useState(false);
     const [id,setId] = useState()
     const [item1,setItem1] = useState([])
+    const [reload,setReload] = useState(0)
     const handleca =()=>{
         setOpen1(false);
     }
     const return1=()=>{
         transaction.updateOneTransaction(id,{"returned":true})
-        window.location.reload()
+        setReload(reload+1)
+        setOpen1(false)
     }
     const handleClickOpen1 = (a) => {
             setId(a)
@@ -49,7 +51,7 @@ const Transaction = () => {
                         returnable: ite.returned,
                     }
                 })));
-        useEffect(() => { getData(); }, []) 
+        useEffect(() => { getData(); }, [reload]) 
         useEffect(() => {
             setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
             setItem1(current =>
@@ -86,6 +88,7 @@ const Transaction = () => {
                         label="Edit"
                         onClick={() => handleClickOpen1(id)}
                         color="inherit"
+                        title="Return"
                         />,
                     ];
                 },
