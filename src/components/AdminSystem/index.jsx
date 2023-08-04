@@ -182,7 +182,7 @@ const AdminSystem = () => {
 
     const columns = [
        // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
-        { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
+        { field: 'itemName', headerName: 'Item Name', flex: .3, align: 'left', headerAlign: 'left' },
         { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
         {
             field: 'maxDays',
@@ -191,7 +191,7 @@ const AdminSystem = () => {
                 if (!params.value)
                     return "Non-returnable";
                 return params.value;
-            }, flex: .4,
+            }, flex: .3,
             align: 'left', headerAlign: 'left'
         },
         {
@@ -281,7 +281,7 @@ const AdminSystem = () => {
                                 <input
                                     type = "number"
                                     placeholder="enter count(positive only)"
-                                    style={{width: "210px"}}
+                                    style={{width: "170px" }}
                                     name = "i3"
                                     min="1"
                                     value={quant}
@@ -295,7 +295,7 @@ const AdminSystem = () => {
                     <DialogContent className="pr-4">
                         <Grid container spacing={2} >
                             <Grid className="margin1" direction="column" >
-                                <>Borrow Days :</>
+                                <>Borrow Days   :</>
 
                             </Grid>
                             <Grid className="margin1" direction="column" >
@@ -309,7 +309,7 @@ const AdminSystem = () => {
                     <DialogContent className="pr-4">
                         <Grid container spacing={2} >
                             <Grid container item xs={5} direction="column" >
-                                <>Returnable : </>
+                                <>Returnable     : </>
                             </Grid>
                             <Grid container item xs={4} direction="column" >
                                 <test>{ret ? (<test>Yes</test>) : (<test>No</test>)}&nbsp;&nbsp;</test>
@@ -375,7 +375,7 @@ const AdminSystem = () => {
                                                         <input
                                                             type = "number"
                                                             placeholder="enter count(positive only)"
-                                                            style={{width: "210px"}}
+                                                            style={{width: "190px"}}
                                                             name = "i3"
                                                             min="1"
                                                             value={i3}
@@ -391,7 +391,7 @@ const AdminSystem = () => {
 
                                                 </Grid>
                                                 <Grid className="margin2" container item xs={4} direction="column" >
-                                                    <select id="mySelect"
+                                                    <select id="mySelect" style={{width: "190px"}}
                                         onChange={(e)=>setI4(e.target.value)}
 
                                                     >

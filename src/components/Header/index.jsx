@@ -2,7 +2,9 @@ import { Box, Typography } from "@mui/material";
 import Logo from "../Logo";
 import SideNavigation from "../SideNavigation";
 
+
 const Header = () => {
+  
   return (
     <>
       <header className="App-header">
@@ -11,7 +13,7 @@ const Header = () => {
             <Logo />
           </Box>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-            Stationery Management System
+            {'Stationery Management System'}
           </Typography>
           <SideNavigation />
         </Box>

@@ -61,7 +61,7 @@ const Transaction = () => {
               );
         }, [rows])
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left'},
+            { field: 'id', headerName: 'Transaction ID', flex: .3,  align: 'left', headerAlign: 'left'},
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {

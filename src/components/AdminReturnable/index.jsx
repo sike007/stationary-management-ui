@@ -78,7 +78,7 @@ const AdminReturnable = () => {
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left' },
+            { field: 'id', headerName: 'Transaction ID', flex: .3,  align: 'left', headerAlign: 'left' },
             {field: 'student', headerName: 'Student Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
@@ -88,6 +88,7 @@ const AdminReturnable = () => {
                 valueGetter: (params) => {
                     if (!params.value)
                         return "Not returnable";
+                    if(new Date(params.value)<new Date())return "overdue";
                     return params.value;
                 }, flex: .4,
                 align: 'left', headerAlign: 'left'
