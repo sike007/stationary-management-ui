@@ -65,8 +65,8 @@ const AdminSystem = () => {
         setQuant()
         setDays()
     };
-    const handleClose1 = () => {
-        items.deleteItem(Id).catch(error=>{console.log(error)});
+    const handleClose1 = async () => {
+        await items.deleteItem(Id).catch(error=>{console.log(error)});
         setOpen(false);
         setReload(reload+1);
         handleClickOpen5();
@@ -83,17 +83,17 @@ const AdminSystem = () => {
         setOpen5(false);
         setOpen6(false);
       };
-    const handleC1 = () => {
+    const handleC1 = async () => {
         if(ret){
             console.log({"quantity":quant,"returnable":ret,"maxDays":days})
-            items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
+            await items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
             setOpen1(false);
             setReload(reload+1);
             handleClickOpen6();
         }
         else{
             console.log({"quantity":quant,"returnable":ret,"maxDays":null})
-            items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
+            await items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
             setOpen1(false);
             setReload(reload+1);
             handleClickOpen6();
@@ -129,14 +129,15 @@ const AdminSystem = () => {
         console.log('handleSubmit ran');
         event.preventDefault();
     }
-    const saveAndCheck = (e) => {
+    const saveAndCheck = async (e) => {
         e.preventDefault();
         console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
-        items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
+        await items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);
             setReload(reload+1);handleClickOpen4();
         }).catch(error => {
             console.log(error)
+            setOpen4(false)
             handleClickOpen3();
         })
     }

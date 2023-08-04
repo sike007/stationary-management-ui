@@ -22,8 +22,8 @@ const Transaction = () => {
     const handleca =()=>{
         setOpen1(false);
     }
-    const return1=()=>{
-        transaction.updateOneTransaction(id,{"returned":true})
+    const return1 = async ()=>{
+        await transaction.updateOneTransaction(id,{"returned":true})
         setReload(reload+1)
         setOpen1(false)
     }

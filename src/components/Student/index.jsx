@@ -53,7 +53,7 @@ const Student = () => {
         setCount()
         setOpen1(false);
     }
-    const withdraw = (e) => {
+    const withdraw = async (e) => {
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + maxd);
         console.log(count)
@@ -62,14 +62,14 @@ const Student = () => {
             if(quant<count){handleClick1(quant)}
             else{
                 if(!type){
-                    items.updateItem(Id,{"quantity":quant-count})
+                    await items.updateItem(Id,{"quantity":quant-count})
                     setReload(reload+1)
                     setOpen1(false)
                     setCount()
                 }
                 else{
                     console.log({"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
-                    transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
+                    await transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
