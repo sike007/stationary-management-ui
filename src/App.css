@@ -45,12 +45,10 @@ html {
   font-size: 20px;
   color: white;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.header1{
-  background-color: white;
-  padding: 8px;
-}
 .App-header img {
   max-height: 70px;
 }
@@ -73,9 +71,8 @@ html {
   font-size: 16px;
 }
 #side-navigation {
-  position: absolute;
-  right: 5px;
-  top: 15px;
+  position: relative;
+  /* margin-right: 5px; */
   color: #fff;
 }
 .App-Card {
@@ -136,10 +133,10 @@ div.MuiToolbar-root p {
   justify-content: right !important;
 }
 
-/* .MuiDataGrid-toolbarContainer {
+.MuiDataGrid-toolbarContainer {
   display: flex !important;
   justify-content: right !important;
-}  */
+} 
 .MuiDataGrid-toolbarContainer button {
   background-color: #6c88c8;
   color: white;
