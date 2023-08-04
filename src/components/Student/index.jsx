@@ -110,19 +110,19 @@ const Student = () => {
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
+           // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
             { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
-            { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
-            {
-                field: 'maxDays',
-                headerName: 'To be returned in (days)',
-                valueGetter: (params) => {
-                    if (!params.value)
-                        return "Not returnable";
-                    return params.value;
-                }, flex: .4, 
-                align: 'left', headerAlign: 'left' 
-            },
+           // { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
+            // {
+            //     field: 'maxDays',
+            //     headerName: 'To be returned in (days)',
+            //     valueGetter: (params) => {
+            //         if (!params.value)
+            //             return "Not returnable";
+            //         return params.value;
+            //     }, flex: .4, 
+            //     align: 'left', headerAlign: 'left' 
+            // },
             {
                 field: 'actions',
                 type: 'actions', 

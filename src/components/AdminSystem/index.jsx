@@ -65,7 +65,7 @@ const AdminSystem = () => {
     const handleClose1 = () => {
         items.deleteItem(Id).catch(error=>{console.log(error)});
         setOpen(false);
-        window.location.reload();
+        ;
         handleClickOpen5();
     };
 
@@ -85,14 +85,14 @@ const AdminSystem = () => {
             console.log({"quantity":quant,"returnable":ret,"maxDays":days})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":days}).catch(error=>{console.log(error)});
             setOpen1(false);
-            window.location.reload();
+            ;
             handleClickOpen6();
         }
         else{
             console.log({"quantity":quant,"returnable":ret,"maxDays":null})
             items.updateItem(Id,{"quantity":quant,"returnable":ret,"maxDays":null}).catch(error=>{console.log(error);});
             setOpen1(false);
-            window.location.reload();
+            ;
             handleClickOpen6();
         }
     }
@@ -128,7 +128,7 @@ const AdminSystem = () => {
         console.log({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)})
         items.saveItem({ "itemName":i2, "quantity":parseInt(i3),"returnable":i4==='Yes',"maxDays":parseInt(i1)}).then((response)=>{ setResults(response.data)
             console.log(response.data);
-            window.location.reload();handleClickOpen4();
+            ;handleClickOpen4();
         }).catch(error => {
             console.log(error)
             handleClickOpen3();
@@ -137,7 +137,7 @@ const AdminSystem = () => {
     useEffect(()=>{
         if(results !== 0){
             setOpen2(false);
-            window.location.reload()}else{
+            }else{
             setOpen2(false);
             setResults(0);
         }
@@ -173,7 +173,7 @@ const AdminSystem = () => {
     }, [rows])
 
     const columns = [
-        { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
+       // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
         { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
         { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
         {
