@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import items from "../../server/items";
-import { Alert, Snackbar, Card, Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, } from "@mui/material";
+import { Alert, Snackbar, Card, Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, Tooltip, } from "@mui/material";
 import { DataGrid, GridToolbarContainer, GridActionsCellItem } from "@mui/x-data-grid";
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,7 +10,6 @@ import Grid from '@mui/material/Grid';
 import VerticalTab from "../VerticalTab";
 
 const AdminSystem = () => {
-    const [item1,setItem1] = useState([])  
     const [Id,setId] = useState()
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
@@ -175,10 +174,6 @@ const AdminSystem = () => {
             }))).catch(error=>{console.log(error)});
     useEffect(() => { getData(); 
     setI1();setI2();setI3();setI4()}, [reload])
-    useEffect(() => {
-        console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
-        setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
-    }, [rows])
 
     const columns = [
        // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
@@ -203,18 +198,18 @@ const AdminSystem = () => {
             getActions: (params ) => {
                 return [
                     <GridActionsCellItem
-                        icon={<EditIcon />}
+                        icon={<Tooltip title="Edit"><EditIcon /></Tooltip>}
                         label="Edit"
                         onClick={() => handleClickOpen1(params.id)}
                         color="inherit"
-                        title="Edit"
+                        
                     />,
                     <GridActionsCellItem
-                        icon={<DeleteIcon />}
+                        icon={<Tooltip title="Delete"><DeleteIcon /></Tooltip>}
                         label="Delete"
                         onClick={() => handleClickOpen(params.id)}
                         color="inherit"
-                        title="Delete"
+                        
                     />,
                 ];
             },
@@ -228,11 +223,14 @@ const AdminSystem = () => {
                     <Container component="main" >
                         <div style={{ width: '100%' , paddingTop: "30px"}}>
                             <DataGrid
-                                rows={item1}
+                                rows={rows}
                                 columns={columns}
                                 initialState={{
                                     pagination: {
                                 paginationModel: { page: 0, pageSize: 10},
+                                    },
+                                    sorting: {
+                                        sortModel: [{field: 'itemName', sort: 'asc'}],
                                     },
                                 }}
                         pageSizeOptions={[5,10]}

@@ -1,4 +1,4 @@
-import { Box, Card, Container, Alert,Snackbar } from "@mui/material"
+import { Box, Card, Container, Alert,Snackbar, Tooltip } from "@mui/material"
 import items from "../../server/items";
 import { useEffect, useState } from "react";
 import * as React from "react";
@@ -17,7 +17,6 @@ import VerticalTab from "../VerticalTab";
 
 const Student = () => {
     const [quant , setQuant] = useState()
-    const [item1,setItem1] = useState([])  
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [open3, setOpen3] = React.useState(false);
@@ -111,10 +110,6 @@ const Student = () => {
                     }
                 })));
         useEffect(() => { getData(); }, [reload])
-        useEffect(() => {
-            console.log(rows.slice().sort((a,b)=>(a.id-b.id)))
-            setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
-        }, [rows])
     
         const columns = [
            // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
@@ -136,7 +131,7 @@ const Student = () => {
                 headerName: 'To be returned in (days)',
                 valueGetter: (params) => {
                     if (!params.value)
-                        return "Not returnable";
+                        return "Non-returnable";
                     return params.value;
                 }, flex: .4, 
                 align: 'left', headerAlign: 'left' 
@@ -150,12 +145,11 @@ const Student = () => {
                 getActions: (params) => {
                     return [
                         <GridActionsCellItem
-                            icon={<ShoppingBagIcon />}
+                            icon={<Tooltip title="Withdraw"><ShoppingBagIcon /></Tooltip>}
                             label="Edit"
                             className="gridbutton1"
                             onClick={() => handleClickOpen1(params.id)}
                             color="inherit"
-                            title="Withdraw"
                         />,
                     ];
                 },
@@ -171,11 +165,14 @@ const Student = () => {
                 <Container component="main" >
                     <div style={{ width: '100%' , paddingTop: "30px"}}>
                     <DataGrid
-                        rows={item1}
+                        rows={rows}
                         columns={columns}
                         initialState={{
                             pagination: {
                                 paginationModel: { page: 0, pageSize: 10 },
+                            },
+                            sorting: {
+                                sortModel: [{field: 'itemName', sort: 'asc'}],
                             },
                         }}
                         pageSizeOptions={[5, 10]}

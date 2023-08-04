@@ -8,12 +8,15 @@ const Header = () => {
   return (
     <>
       <header className="App-header">
-        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: "0px", marginLeft: "20px" }}>
-          <Box sx={{ marginRight: "20px" }}>
-            <Logo />
-          </Box>
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-            {'Stationery Management System'}
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px'}}>
+          <Logo />
+          <Typography variant="h5" component="div" sx={{marginLeft: '10px'}}>
+            Stationery Management System
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', }}>
+          <Typography variant="h6" component="div" sx={{fontWeight: '300', }}>
+            {sessionStorage.getItem('name')}
           </Typography>
           <SideNavigation />
         </Box>

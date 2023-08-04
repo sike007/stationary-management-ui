@@ -1,4 +1,4 @@
-import { Box, Card, Container,Alert,Snackbar  } from "@mui/material"
+import { Box, Card, Container,Alert,Snackbar, Tooltip  } from "@mui/material"
 import { useEffect, useState } from "react";
 import * as React from "react";
 import {
@@ -47,13 +47,13 @@ const Transaction = () => {
                         id: ite.transactionId,
                         itemName: ite.stationaryItem.itemName,
                         quantity: ite.withdrawnQuantity,                        
-                        maxDays: ite.returnDate,
+                        returnDate: ite.returnDate,
                         returnable: ite.returned,
                     }
                 })));
         useEffect(() => { getData(); }, [reload]) 
         useEffect(() => {
-            setItem1(rows.slice().sort((a,b)=>(a.id-b.id)))
+            setItem1(rows)
             setItem1(current =>
                 current.filter(employee => {
                   return !employee.returnable ;
@@ -63,14 +63,14 @@ const Transaction = () => {
         const columns = [
             { field: 'id', headerName: 'Transaction ID', flex: .3,  align: 'left', headerAlign: 'left'},
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
-            { field: 'quantity', headerName: 'Quantity to be return', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
+            { field: 'quantity', headerName: 'Quantity', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {
-                field: 'maxDays',
+                field: 'returnDate',
                 headerName: 'Return Date',
                 align: 'left', headerAlign: 'left',
                 valueGetter: (params) => {
                     if (!params.value)
-                    return "Not returnable";
+                    return "Non-returnable";
                     if(new Date(params.value)<new Date())return "overdue";
                     return params.value;
                 }, flex: .4
@@ -84,11 +84,11 @@ const Transaction = () => {
                 getActions: ({ id }) => {
                     return [
                         <GridActionsCellItem
-                        icon={<KeyboardReturnIcon />}
+                        icon={<Tooltip title="Return"><KeyboardReturnIcon /></Tooltip>}
                         label="Edit"
                         onClick={() => handleClickOpen1(id)}
                         color="inherit"
-                        title="Return"
+                        
                         />,
                     ];
                 },

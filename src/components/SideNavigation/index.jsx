@@ -22,7 +22,7 @@ const SideNavigation = () => {
         setAnchorEl(null);
     };
     return (
-        <>
+        <div>
             <Button
                 id="side-navigation"
                 aria-controls={open ? "basic-menu" : undefined}
@@ -50,7 +50,7 @@ const SideNavigation = () => {
                     <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
             </Menu>
-        </>
+        </div>
     );
 };
 export default SideNavigation;
