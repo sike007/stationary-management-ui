@@ -78,7 +78,7 @@ const AdminReturnable = () => {
         }, [rows])
     
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left' },
+            { field: 'id', headerName: 'Transaction ID', flex: .3,  align: 'left', headerAlign: 'left' },
             {field: 'student', headerName: 'Student Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'quantity', headerName: 'Quantity', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
@@ -88,6 +88,7 @@ const AdminReturnable = () => {
                 valueGetter: (params) => {
                     if (!params.value)
                         return "Non-returnable";
+                    if(new Date(params.value)<new Date())return "overdue";
                     return params.value;
                 }, flex: .4,
                 align: 'left', headerAlign: 'left'
@@ -181,7 +182,7 @@ const AdminReturnable = () => {
                     </div>
             </Dialog>
         </div>
-        <div><Snackbar open={open2} onClose={handleC} 
+        <div><Snackbar open={open2} onClose={handleC} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleC} severity="success" >
                 Borrow date changed successfully

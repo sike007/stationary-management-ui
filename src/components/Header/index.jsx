@@ -2,7 +2,9 @@ import { Box, Typography } from "@mui/material";
 import Logo from "../Logo";
 import SideNavigation from "../SideNavigation";
 
+
 const Header = () => {
+  
   return (
     <>
       <header className="App-header">

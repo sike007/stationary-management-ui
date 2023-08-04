@@ -113,7 +113,7 @@ const Student = () => {
     
         const columns = [
            // { field: 'id', headerName: 'ID', flex: .2, align: 'left', headerAlign: 'left' },
-            { field: 'itemName', headerName: 'Item Name', flex: .6, align: 'left', headerAlign: 'left' },
+            { field: 'itemName', headerName: 'Item Name', flex: .4, align: 'left', headerAlign: 'left' },
            // { field: 'quantity', headerName: 'Quantity in Stock', type: 'number', flex: .3, align: 'left', headerAlign: 'left' },
             // {
             //     field: 'maxDays',
@@ -232,19 +232,19 @@ const Student = () => {
             </Dialog>
         </div>
         <>
-        <Snackbar open={open2} onClose={handleClose} 
+        <Snackbar open={open2} onClose={handleClose} autoHideDuration={6000} 
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="success" >
                 Item withdrawn successfully
                 </Alert>
         </Snackbar>
-        <Snackbar open={open3} onClose={handleClose} 
+        <Snackbar open={open3} onClose={handleClose} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="error" >
                 Item quantity shouldn't be zero
                 </Alert>
         </Snackbar>
-        <Snackbar open={open4} onClose={handleClose} 
+        <Snackbar open={open4} onClose={handleClose} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                     
                 <Alert onClose={handleClose} severity="error" >

@@ -61,7 +61,7 @@ const Transaction = () => {
               );
         }, [rows])
         const columns = [
-            { field: 'id', headerName: 'ID', flex: .2,  align: 'left', headerAlign: 'left'},
+            { field: 'id', headerName: 'Transaction ID', flex: .3,  align: 'left', headerAlign: 'left'},
             { field: 'itemName', headerName: 'Item Name', flex: .4,  align: 'left', headerAlign: 'left' },
             { field: 'quantity', headerName: 'Quantity', type: 'number', flex: .4,  align: 'left', headerAlign: 'left' },
             {
@@ -131,7 +131,7 @@ const Transaction = () => {
                 </DialogActions> 
             </Dialog>
         </div>
-        <><Snackbar open={open2} onClose={handleClose} 
+        <><Snackbar open={open2} onClose={handleClose} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="success" >
                 Item returned successfully
