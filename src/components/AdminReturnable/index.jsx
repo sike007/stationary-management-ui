@@ -182,7 +182,7 @@ const AdminReturnable = () => {
                     </div>
             </Dialog>
         </div>
-        <div><Snackbar open={open2} onClose={handleC} 
+        <div><Snackbar open={open2} onClose={handleC} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleC} severity="success" >
                 Borrow date changed successfully

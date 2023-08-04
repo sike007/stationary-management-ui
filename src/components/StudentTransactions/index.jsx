@@ -131,7 +131,7 @@ const Transaction = () => {
                 </DialogActions> 
             </Dialog>
         </div>
-        <><Snackbar open={open2} onClose={handleClose} 
+        <><Snackbar open={open2} onClose={handleClose} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="success" >
                 Item returned successfully

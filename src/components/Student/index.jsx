@@ -235,19 +235,19 @@ const Student = () => {
             </Dialog>
         </div>
         <>
-        <Snackbar open={open2} onClose={handleClose} 
+        <Snackbar open={open2} onClose={handleClose} autoHideDuration={6000} 
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="success" >
                 Item withdrawn successfully
                 </Alert>
         </Snackbar>
-        <Snackbar open={open3} onClose={handleClose} 
+        <Snackbar open={open3} onClose={handleClose} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                 <Alert onClose={handleClose} severity="error" >
                 Item quantity shouldn't be zero
                 </Alert>
         </Snackbar>
-        <Snackbar open={open4} onClose={handleClose} 
+        <Snackbar open={open4} onClose={handleClose} autoHideDuration={6000}
                 anchorOrigin={{vertical:'top' ,horizontal:'center'}}>
                     
                 <Alert onClose={handleClose} severity="error" >
