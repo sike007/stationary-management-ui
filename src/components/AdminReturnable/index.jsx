@@ -26,10 +26,10 @@ const AdminReturnable = () => {
         setI1()
         setOpen1(false);
     }
-    const return1=()=>{
+    const return1=async()=>{
         var ndate = new Date(date1.getTime());
         ndate.setDate(date1.getDate() + parseInt(i1));
-        transaction.updateOneTransaction(id,{"returnDate":ndate.toLocaleDateString('en-GB', {
+        await transaction.updateOneTransaction(id,{"returnDate":ndate.toLocaleDateString('en-GB', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
