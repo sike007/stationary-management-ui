@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -42,9 +43,15 @@ const CssTextField = styled(TextField)({
 });
 
 const Login = ({ setToken }) => {
+  const [isStudent, setIsStudent] = useState(false);
+  const handleToggleUserType = () => {
+    setIsStudent((IsStudent) => !IsStudent);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const tokenType = isStudent ? "student" : "admin";
+    if(tokenType=="admin"){
     instance.post('admin/login',
       { "adminEmail": data.get("email"), "adminPassword": data.get("password") })
       .then(function (response) {
@@ -53,8 +60,8 @@ const Login = ({ setToken }) => {
         sessionStorage.setItem("id", response.data.admin.adminId)
       })
       .catch(function (response) {
-        console.log("not admin => " + response);
-
+        console.log("not admin => " + response);});
+      }else{
         instance.post('/student/login ',
           { "studentEmail": data.get("email"), "studentPassword": data.get("password") })
           .then(function (response) {
@@ -66,7 +73,7 @@ const Login = ({ setToken }) => {
             console.log("not student => " + response);
             alert("The credentials do not match. Please try again");
           });
-      });
+        }
 
   };
 
@@ -135,6 +142,28 @@ const Login = ({ setToken }) => {
                 <Container>
                   <Box sx={center} height='75px' />
                   <Box >
+                  <Box display="flex" alignItems="center" justifyContent="center">
+                      <Button
+                          variant="contained"
+                          size="large"
+                          onClick={handleToggleUserType}
+                          sx={{
+                            bgcolor: "#F2F2F2",
+                            color: "#000000",
+                            textTransform: "none",
+                            borderRadius: "30px",
+                            fontSize: "18px",
+                            "&:hover": {
+                              backgroundColor: "#FFFFFF",
+                            },
+                          mb:'10px'
+                          }
+                          
+                        }
+                      >
+                          {isStudent ? "Student Login" : "Admin Login"}
+                      </Button>
+                    </Box>
                     <Box display="flex" alignItems="center" justifyContent="center">
                       <Avatar
                         sx={{ ml: "0px", mb: "4px", bgcolor: "#000000" }}
