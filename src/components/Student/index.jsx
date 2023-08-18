@@ -26,8 +26,8 @@ const Student = () => {
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
     const [reload,setReload] = useState(0);
-    
-    let date1 = new Date();
+    const [date1,setDate1] = useState(new Date())
+
 
     const addStringDate = (date, days) => {
         date.setDate(date.getDate() + days);
@@ -236,7 +236,7 @@ const Student = () => {
                                         min={addStringDate(new Date(),0)}
                                         max={addStringDate(new Date(),maxd)}
                                         style={{width: "210px"}}
-                                        onChange={(e) => {date1 = new Date(Date.parse(e.target.value))}}
+                                        onChange={(e) => {setDate1(new Date(Date.parse(e.target.value)))}}
                                         ></input>
                                         
                                         
