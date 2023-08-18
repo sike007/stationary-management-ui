@@ -25,10 +25,19 @@ const Student = () => {
     const [count,setCount] = useState()
     const [type,setType] = useState()
     const [maxd , setMaxd] = useState()
-    const [date1] = useState(new Date());
     const [reload,setReload] = useState(0);
+    const [date1,setDate1] = useState(new Date())
+
+
+    const addStringDate = (date, days) => {
+        date.setDate(date.getDate() + days);
+        return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2, '0')+'-'+date.getDate();
+    }
     useEffect(()=>{
-        items.getOneItem(Id).then((response)=>{setType(response.data.returnable); setQuant(response.data.quantity); setMaxd(response.data.maxDays)}).catch(
+        items.getOneItem(Id).then((response)=>{
+            setType(response.data.returnable); 
+            setQuant(response.data.quantity); 
+            setMaxd(response.data.maxDays)}).catch(
             error=>{console.log(error)}
         )
     },[Id])
@@ -54,8 +63,6 @@ const Student = () => {
         setOpen1(false);
     }
     const withdraw = async (e) => {
-        var ndate = new Date(date1.getTime());
-        ndate.setDate(date1.getDate() + maxd);
         console.log(count)
         if(count==='0' || count===undefined){setOpen3(true)}
         else{
@@ -68,8 +75,8 @@ const Student = () => {
                     setCount()
                 }
                 else{
-                    console.log({"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB'),"returned":false})
-                    await transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":ndate.toLocaleDateString('en-GB', {
+                    console.log({"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":date1.toLocaleDateString('en-GB'),"returned":false})
+                    await transaction.createTransaction(sessionStorage.getItem("id"),{"stationaryItemId":Id,"withdrawnQuantity":count,"returnDate":date1.toLocaleDateString('en-GB', {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
@@ -212,8 +219,30 @@ const Student = () => {
                                         onChange={handleInput}
                                     ></input>
                                         
+                                        
                                     </Grid>
+                                </Grid>
+                                {type === true &&
+
+                                <Grid container spacing={2} >
+                                    <Grid container item xs={5} direction="column" >
+                                    <>Return Date : &nbsp;&nbsp;</>
+                                        
                                     </Grid>
+                                    <Grid container item xs={4} direction="column" >
+                                    
+                                    <input
+                                        type = "date"
+                                        min={addStringDate(new Date(),0)}
+                                        max={addStringDate(new Date(),maxd)}
+                                        style={{width: "210px"}}
+                                        onChange={(e) => {setDate1(new Date(Date.parse(e.target.value)))}}
+                                        ></input>
+                                        
+                                        
+                                    </Grid>
+                                </Grid>
+                                    }
                                 </div> <DialogActions>
                                     <Button onClick={handleca} color="primary" variant="contained">
                                         Cancel
