@@ -107,6 +107,7 @@ const Login = ({ setToken }) => {
           height: "100vh",
           color: "#f5f5f5",
         }}
+        role="login_page"
       >
         <Box sx={boxstyle}>
           <Grid container>

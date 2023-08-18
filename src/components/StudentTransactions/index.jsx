@@ -95,7 +95,7 @@ const Transaction = () => {
             },
         ];
     return (
-        <div class name="body">
+        <div class name="body" role="grid2">
             <Card className="App-Card">
             <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', }}>
                 <VerticalTab activeTab='1' />
